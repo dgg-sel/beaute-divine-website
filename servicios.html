@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "surface": "#f9f9f7",
+                    "on-background": "#1a1c1b",
+                    "surface-variant": "#e2e3e1",
+                    "inverse-surface": "#2f3130",
+                    "on-secondary-container": "#6d6234",
+                    "surface-container-high": "#e8e8e6",
+                    "on-surface-variant": "#4e4638",
+                    "primary-fixed": "#ffdea3",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#f9f9f7",
+                    "secondary-fixed-dim": "#d5c68e",
+                    "surface-dim": "#dadad8",
+                    "surface-container-low": "#f4f4f2",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#d2b26f",
+                    "tertiary-fixed-dim": "#e4c27d",
+                    "outline-variant": "#d1c5b3",
+                    "on-primary-fixed": "#261900",
+                    "primary": "#785910",
+                    "background": "#f9f9f7",
+                    "on-tertiary-fixed-variant": "#5a4309",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-tertiary-container": "#5a440a",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#eac16f",
+                    "on-secondary-fixed": "#221b00",
+                    "tertiary-fixed": "#ffdf9e",
+                    "surface-container": "#eeeeec",
+                    "surface-tint": "#785910",
+                    "secondary-fixed": "#f2e2a8",
+                    "on-tertiary-fixed": "#261a00",
+                    "on-secondary-fixed-variant": "#50461b",
+                    "on-surface": "#1a1c1b",
+                    "outline": "#807666",
+                    "secondary-container": "#efe0a5",
+                    "on-primary-container": "#5d4300",
+                    "secondary": "#695e30",
+                    "primary-container": "#d8b060",
+                    "inverse-primary": "#eac16f",
+                    "surface-container-highest": "#e2e3e1",
+                    "tertiary": "#745b21",
+                    "on-primary-fixed-variant": "#5c4200"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-padding": "120px",
+                    "container-max": "1200px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Bodoni Moda"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-md": ["Bodoni Moda"],
+                    "headline-lg-mobile": ["Bodoni Moda"],
+                    "display-lg": ["Bodoni Moda"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+
+<link href="css/custom.css" rel="stylesheet"/>
+</head>
+<body class="bg-surface text-on-surface font-body-md">
+<!-- Top Navigation Bar -->
+<!-- Navigation -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
+<nav class="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto">
+<a href="index.html" class="font-headline-md text-headline-md text-primary tracking-tighter hover:opacity-80 transition-all uppercase">
+                BEAUTÉ DIVINE ESPACE
+            </a>
+<div class="hidden md:flex items-center gap-8 font-body-md text-body-md uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300" href="quien-soy.html">Quién Soy</a>
+<div class="relative group">
+  <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1" href="fascias.html">
+    Fascias
+    <span class="material-symbols-outlined text-sm">expand_more</span>
+  </a>
+  <div class="absolute left-0 top-full mt-2 w-64 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
+    <a href="facial-sculpt.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Facial Sculpt</a>
+    <a href="fascial-fit-remodeling.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Fascial Fit Remodeling</a>
+    <a href="neuro-fascial-balance.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Neuro Fascial Balance</a>
+  </div>
+</div>
+<div class="relative group">
+  <a class="text-primary border-b-2 border-primary pb-1 font-bold flex items-center gap-1" href="servicios.html">
+    Servicios
+    <span class="material-symbols-outlined text-sm">expand_more</span>
+  </a>
+  <div class="absolute left-0 top-full mt-2 w-56 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
+    <a href="tratamientos-corporales.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Tratamientos Corporales</a>
+    <a href="tratamientos-faciales.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Tratamientos Faciales</a>
+    <a href="beauty-coaching.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Beauty Coaching</a>
+    <a href="terapias.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Terapias</a>
+  </div>
+</div>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300" href="contacto.html">Contacto</a>
+</div>
+<a href="contacto.html" class="bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
+                Reservar
+            </a>
+</nav>
+</header>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-8 mb-24 text-center">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-4 block">Nuestras Experiencias</span>
+<h1 class="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-6 italic">Rituales de Belleza Sagrada</h1>
+<p class="max-w-2xl mx-auto font-body-lg text-body-lg text-on-surface-variant">
+                Descubra una curación de tratamientos diseñados para armonizar su ser exterior con su paz interior. Un santuario donde la estética moderna se encuentra con el bienestar holístico.
+            </p>
+</section>
+<!-- Services Bento Grid -->
+<section class="max-w-container-max mx-auto px-8 mb-section-padding">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <!-- Card 1: Tratamientos Corporales -->
+  <a href="tratamientos-corporales.html" class="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
+    <div class="aspect-video mb-6 overflow-hidden">
+      <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCldpHOlSF7D2lKs5wNNfNwtlpES5OKxWg9uVJO1ANYy3HU8qgbb5x2dtPpB_QZSxER4nPocOz5Dh51zJwlFr_PFumOmCbk2VuxnWY8wUPrVHu-AXk_hrM8vzRUchvrjot2sC54GU2LtYsf7uiOP3e4eR2PvFxlCemNUTqNG0w5tlIhZrfSB3AQnDInld2XIinbnl55mcNXSPSj6CzkmrQAfrRr9XsdVeUPYccXoek6SEZ7PmqsX3H94HrBUVf4z8ylP2FsFIeqfYg" alt="Tratamientos Corporales">
+    </div>
+    <h3 class="font-headline-md text-headline-md mb-4 text-primary">Tratamientos Corporales</h3>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-8 grow">Masajes descontracturantes, drenaje linfático, Day Spa y más experiencias para aliviar, relajar y remodelar tu cuerpo.</p>
+    <div class="flex items-center justify-between mt-auto">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Ver Servicios</span>
+      <span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+    </div>
+  </a>
+
+  <!-- Card 2: Tratamientos Faciales -->
+  <a href="tratamientos-faciales.html" class="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
+    <div class="aspect-video mb-6 overflow-hidden">
+      <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiXFITE8vL3AVu4-sthOehTURWgkZnU14PZKzS31pH4wkzXtUz6F94Erlu0r8cHvby2Ei0HkHiiZdDwV4Djlj-veWR0NtOmSf7KuIGcxJyZXL8nHZhXwZzuXzsSCl35He85rs8_t2NQWvm7mLCQbPc3PJTN7TcW3JahPwBX2HZcE5OFkdkvJU1CHQLgsPSuu1vVxxq5E-1KWqSXrT2UBUvO5ZEtJcNPoIAfj4xITUm4dkWKrXjRN6Jm7e2_FD7GKd9quzAOcyuVwo" alt="Tratamientos Faciales">
+    </div>
+    <h3 class="font-headline-md text-headline-md mb-4 text-primary">Tratamientos Faciales</h3>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-8 grow">Limpiezas profundas, Facial Sculpt, peelings y tratamientos específicos para purificar e iluminar tu rostro.</p>
+    <div class="flex items-center justify-between mt-auto">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Ver Servicios</span>
+      <span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+    </div>
+  </a>
+
+  <!-- Card 3: Beauty Coaching -->
+  <a href="beauty-coaching.html" class="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
+    <div class="aspect-video mb-6 overflow-hidden">
+      <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQKWZVloZOQO1n-RaSGbSWUkWPw730bY0dpQ4bMPBM72CyDl0J0CgL8YlpVkzi-OTmZT4QRq3vYu6TpXPzAsm861Qlv66X4PGcDPXpJLovFnwwFU8yvC8lMreTAMcd7IxFQk9eP_SGXZ4JNWJ8JDDC-_tAx2CMcLMlnJirgwo1ZatlWhV9FvGZPunSiF6bjb28gnFDUmECqgoOepYjsgqBUvCOUk0NLAph5GIn09nol9ndsxpjaREJw8hxwvXWIbzs_UZ_SCqW1sc" alt="Beauty Coaching">
+    </div>
+    <h3 class="font-headline-md text-headline-md mb-4 text-primary">Beauty Coaching</h3>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-8 grow">Diagnóstico, rutina personalizada y guía profesional para tu piel.</p>
+    <div class="flex items-center justify-between mt-auto">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Ver Servicios</span>
+      <span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+    </div>
+  </a>
+
+  <!-- Card 4: Terapias -->
+  <a href="terapias.html" class="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
+    <div class="aspect-video mb-6 overflow-hidden">
+      <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-vUuP7IUbrEwCNZCLOTV6gF_iiOzHnia3r430O5gVIu10dgZrIi9L80EXJpGj5sfhFNhTDGvu8jENga1e7Y2gFHOTeuyCjIZZuohm_XHAcdBoZVFRRMFtSqmveONIhljgWav8AnKYYJyQa-yQSsKtxT5_LuhwQOdxUB7SDWaFy42naiFGTfaW9gKKYmF1HIHIvW_ForWRWFlbUz8ijpoI0nRqhPaq7zRV27HKaVQGS8WpyCieoGX-EBZ2CPeqdkft7PhKtsZB-ns" alt="Terapias">
+    </div>
+    <h3 class="font-headline-md text-headline-md mb-4 text-primary">Terapias</h3>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-8 grow">Sound Healing, Saint-Touche, Registros Akáshicos y Tameana para armonizar tu cuerpo, mente y emociones.</p>
+    <div class="flex items-center justify-between mt-auto">
+      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Ver Servicios</span>
+      <span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform">arrow_forward</span>
+    </div>
+  </a>
+</div>
+</section>
+<!-- CTA Section with animated background placeholder logic -->
+<section class="relative py-section-padding overflow-hidden">
+<div class="absolute inset-0 bg-primary-container/10"></div>
+<!-- Subtly using the glassmorphism logic for a floating box -->
+<div class="relative max-w-4xl mx-auto px-8 text-center bg-surface/40 backdrop-blur-md p-16 gold-border">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-8">Reservá tu experiencia</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10">
+                    Estoy lista para guiarte en tu transformación física, mental y almica!<br>
+                    Dejame tus datos y te contactaré para agendar una consulta personalizada.</p>
+<div class="flex flex-col md:flex-row gap-6 justify-center">
+<button class="bg-primary text-white px-10 py-4 font-label-sm text-label-sm uppercase hover:opacity-90 transition-all">Consultar Disponibilidad</button>
+<button class="border border-primary text-primary px-10 py-4 font-label-sm text-label-sm uppercase hover:bg-primary-container transition-all">Ver Paquetes</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-primary/20">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-container-max mx-auto gap-8">
+<div class="flex flex-col gap-2 mb-8 md:mb-0 text-center md:text-left">
+<div class="font-headline-md text-2xl text-primary uppercase">BEAUTÉ DIVINE ESPACE</div>
+<p class="font-body-md text-on-surface-variant max-w-xs text-sm">Una mirada consciente de la belleza.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 font-label-sm text-label-sm uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="https://youtube.com/@beautedivineespace" target="_blank">YouTube</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="https://instagram.com/beautedivine" target="_blank">Instagram</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="https://facebook.com/beautedivine" target="_blank">Facebook</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacidad</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-xs opacity-70 text-center md:text-right">
+                © 2026 Beauté Divine Espace. Todos los derechos reservados. <br/>
+                Diseñado por DGG Diseños
+            </div>
+</div>
+</footer>
+<script>
+        // Subtle interaction for the active navigation state
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('nav a').forEach(l => {
+                    l.classList.remove('text-primary', 'border-b-2', 'border-primary', 'font-bold');
+                    l.classList.add('text-on-surface-variant');
+                });
+                this.classList.add('text-primary', 'border-b-2', 'border-primary', 'font-bold');
+                this.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

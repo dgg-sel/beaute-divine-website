@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contacto | BEAUTÉ DIVINE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+
+
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "surface": "#f9f9f7",
+                    "on-background": "#1a1c1b",
+                    "surface-variant": "#e2e3e1",
+                    "inverse-surface": "#2f3130",
+                    "on-secondary-container": "#6d6234",
+                    "surface-container-high": "#e8e8e6",
+                    "on-surface-variant": "#4e4638",
+                    "primary-fixed": "#ffdea3",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#f9f9f7",
+                    "secondary-fixed-dim": "#d5c68e",
+                    "surface-dim": "#dadad8",
+                    "surface-container-low": "#f4f4f2",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#d2b26f",
+                    "tertiary-fixed-dim": "#e4c27d",
+                    "outline-variant": "#d1c5b3",
+                    "on-primary-fixed": "#261900",
+                    "primary": "#785910",
+                    "background": "#f9f9f7",
+                    "on-tertiary-fixed-variant": "#5a4309",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-on-surface": "#f1f1ef",
+                    "on-tertiary-container": "#5a440a",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#eac16f",
+                    "on-secondary-fixed": "#221b00",
+                    "tertiary-fixed": "#ffdf9e",
+                    "surface-container": "#eeeeec",
+                    "surface-tint": "#785910",
+                    "secondary-fixed": "#f2e2a8",
+                    "on-tertiary-fixed": "#261a00",
+                    "on-secondary-fixed-variant": "#50461b",
+                    "on-surface": "#1a1c1b",
+                    "outline": "#807666",
+                    "secondary-container": "#efe0a5",
+                    "on-primary-container": "#5d4300",
+                    "secondary": "#695e30",
+                    "primary-container": "#d8b060",
+                    "inverse-primary": "#eac16f",
+                    "surface-container-highest": "#e2e3e1",
+                    "tertiary": "#745b21",
+                    "on-primary-fixed-variant": "#5c4200"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-padding": "120px",
+                    "container-max": "1200px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Bodoni Moda"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-md": ["Bodoni Moda"],
+                    "headline-lg-mobile": ["Bodoni Moda"],
+                    "display-lg": ["Bodoni Moda"],
+                    "body-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+
+<link href="css/custom.css" rel="stylesheet"/>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<!-- Navigation -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
+<nav class="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto">
+<a href="index.html" class="font-headline-md text-headline-md text-primary tracking-tighter hover:opacity-80 transition-all uppercase">
+                BEAUTÉ DIVINE ESPACE
+            </a>
+<div class="hidden md:flex items-center gap-8 font-body-md text-body-md uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300" href="quien-soy.html">Quién Soy</a>
+<div class="relative group">
+  <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1" href="fascias.html">
+    Fascias
+    <span class="material-symbols-outlined text-sm">expand_more</span>
+  </a>
+  <div class="absolute left-0 top-full mt-2 w-64 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
+    <a href="facial-sculpt.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Facial Sculpt</a>
+    <a href="fascial-fit-remodeling.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Fascial Fit Remodeling</a>
+    <a href="neuro-fascial-balance.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Neuro Fascial Balance</a>
+  </div>
+</div>
+<div class="relative group">
+  <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1" href="servicios.html">
+    Servicios
+    <span class="material-symbols-outlined text-sm">expand_more</span>
+  </a>
+  <div class="absolute left-0 top-full mt-2 w-56 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
+    <a href="tratamientos-corporales.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Tratamientos Corporales</a>
+    <a href="tratamientos-faciales.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Tratamientos Faciales</a>
+    <a href="beauty-coaching.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Beauty Coaching</a>
+    <a href="terapias.html" class="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Terapias</a>
+  </div>
+</div>
+<a class="text-primary border-b-2 border-primary pb-1 font-bold" href="contacto.html">Contacto</a>
+</div>
+<a href="contacto.html" class="bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
+                Reservar
+            </a>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[614px] flex items-center justify-center overflow-hidden bg-surface-container-low">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center opacity-40 mix-blend-multiply" data-alt="A serene spa environment with soft sunlight filtering through sheer linen curtains, casting gentle shadows over a minimalist treatment table. The color palette is a sophisticated mix of off-whites and golden highlights, reflecting a high-end luxury wellness aesthetic. The atmosphere is quiet and ethereal, emphasizing sacred radiance and tranquil space." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjBvtDWzQa8pjYR2qBusDCIPuZLBWZ4sehvMM0WRaP1YCRNVZBLn1U4MkE6qwBMX1mGgprXrp7I1g6ineBXJ6aTl3qj1TsTf5MSc8uD4iqSKIdkxNCUPE-iRxMYioj1FOyl5dOlXuhYx5Ua7hcxg-3dkZl8eWXMksR7tGcjo6HftVjNMGUECx_rK2KU4ZU_v8XiOBPjoheG5JvQ5qejsGc3AJvIqE_tADytM9AwpgreK4QW9TIPth1W8A__RVS6EHU3ZTYCO00kwY')"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface"></div>
+</div>
+<div class="relative z-10 text-center px-4">
+<h1 class="font-display-lg text-display-lg text-primary mb-4 reveal">Entra en el Espacio</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-2xl mx-auto reveal">Encuentra tu centro. Estamos aquí para acompañarte en tu viaje hacia la radiancia sagrada y el bienestar holístico.</p>
+</div>
+</section>
+<!-- Contact Grid (Bento Style) -->
+<section class="max-w-container-max mx-auto px-8 py-section-padding">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Column: Form -->
+<div class="lg:col-span-7 bg-white p-12 reveal border border-primary/10 shadow-sm">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-8">Conecta con Nosotros</h2>
+<form action="https://formsubmit.co/marcelahilu@hotmail.com" method="POST" class="space-y-10" id="contactForm">
+<input type="hidden" name="_subject" value="Nuevo mensaje de contacto - Beauté Divine">
+<input type="hidden" name="_template" value="table">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="relative">
+<label class="font-label-sm text-label-sm uppercase text-outline mb-2 block">Nombre</label>
+<input class="input-elegant w-full font-body-md" placeholder="Tu nombre completo" type="text"/>
+</div>
+<div class="relative">
+<label class="font-label-sm text-label-sm uppercase text-outline mb-2 block">Correo Electrónico</label>
+<input class="input-elegant w-full font-body-md" placeholder="email@ejemplo.com" type="email"/ name="email">
+</div>
+</div>
+<div class="relative">
+<label class="font-label-sm text-label-sm uppercase text-outline mb-2 block">Servicio de Interés</label>
+<select class="input-elegant w-full font-body-md appearance-none" name="servicio">
+<option>Masaje Fit Massage</option>
+<option>Facial Holístico</option>
+<option>Consulta de Bienestar</option>
+<option>Otro</option>
+</select>
+</div>
+<div class="relative">
+<label class="font-label-sm text-label-sm uppercase text-outline mb-2 block">Tu Mensaje</label>
+<textarea class="input-elegant w-full font-body-md resize-none" placeholder="¿Cómo podemos ayudarte?" rows="4" name="mensaje"></textarea>
+</div>
+<button class="bg-primary text-on-primary px-12 py-4 font-label-sm text-label-sm uppercase w-full md:w-auto hover:opacity-90 active:scale-95 transition-all" type="submit">
+                            Enviar Mensaje
+                        </button>
+</form>
+</div>
+<!-- Right Column: Info & Map -->
+<div class="lg:col-span-5 flex flex-col gap-12">
+<!-- Info Cards -->
+<div class="bg-secondary-container/30 p-10 reveal border border-primary/10">
+<h3 class="font-headline-md text-headline-md text-secondary mb-6">Detalles de Contacto</h3>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div class="font-body-md">
+<p class="font-bold text-primary">Nuestra Ubicación</p>
+<p class="text-on-surface-variant">Av. Santa Fe 782<br/>Acassusso<br/>San Isidro, Buenos Aires</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">call</span>
+<div class="font-body-md">
+<p class="font-bold text-primary">WhatsApp</p>
+<p class="text-on-surface-variant">+54 911 4413 3627</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">mail</span>
+<div class="font-body-md">
+<p class="font-bold text-primary">Email</p>
+<p class="text-on-surface-variant">marcelahilu@hotmail.com</p>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-primary/20">
+<p class="font-label-sm text-label-sm uppercase text-outline mb-4">Síguenos</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-primary flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">camera_alt</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-primary flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">face_nod</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Map Placeholder -->
+<div class="relative h-full min-h-[300px] w-full bg-surface-variant overflow-hidden reveal group">
+<iframe src="https://maps.google.com/maps?q=Av.+Santa+Fe+782,+Acassuso,+San+Isidro,+Buenos+Aires&t=&z=15&ie=UTF8&iwloc=&output=embed" class="absolute inset-0 w-full h-full grayscale contrast-75 hover:grayscale-0 transition-all duration-700" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<div class="absolute inset-0 bg-primary/10 pointer-events-none mix-blend-multiply"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Atmosphere Section -->
+<section class="bg-surface py-section-padding border-t border-primary/10 overflow-hidden">
+<div class="max-w-container-max mx-auto px-8 grid grid-cols-1 md:grid-cols-2 items-center gap-16">
+<div class="reveal">
+<span class="font-label-sm text-label-sm uppercase text-primary mb-4 block">Horarios de Apertura</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-8">Momentos para ti</h2>
+<div class="space-y-4 font-body-lg">
+<div class="flex justify-between border-b border-primary/10 pb-2">
+<span>Lunes — Viernes</span>
+<span class="text-primary">09:00 - 20:00</span>
+</div>
+<div class="flex justify-between border-b border-primary/10 pb-2">
+<span>Sábados</span>
+<span class="text-primary">10:00 - 18:00</span>
+</div>
+<div class="flex justify-between border-b border-primary/10 pb-2">
+<span>Domingos</span>
+<span class="text-primary italic font-light">Cerrado por descanso</span>
+</div>
+</div>
+</div>
+<div class="relative reveal delay-200">
+<div class="aspect-square bg-cover bg-center rounded-full border-[12px] border-white shadow-2xl" data-alt="Close-up of high-quality organic facial oils in delicate glass bottles sitting on a polished stone surface. Soft sunlight catches the golden liquid and the smooth edges of the glass, creating a sense of luxury and purity. The background is softly blurred to focus on the tactile textures of the products, following a sacred wellness and radiant beauty theme." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMYY_8IEr4GqimcepwxpPzDF4b_KRG1GChlmdrArSTssNuUIGuitWGqRNZJ7FZKNj2GkHqTHCiAO4lbFnno5aryS4pwFcBMtej6uChwXH-fslA9km-mJy-B_X0JcCgRFIlo7ATajObaR-0Uv5-Ka8rVAmQarF9zUb7rbn-oPgsvimyykPKay5f2rpOUYAT8ZgAx8w9yNMqdZpGGBTnz25QmbOLqu2VIi0KxQE9RZYKr5Z-NTUJ5fgl0Nm53IQPwYoyg6fI1On5hRA')"></div>
+<div class="absolute -top-4 -right-4 w-32 h-32 bg-secondary-container/50 rounded-full -z-10 blur-xl"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-primary/20">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-container-max mx-auto gap-8">
+<div class="flex flex-col gap-2 mb-8 md:mb-0 text-center md:text-left">
+<div class="font-headline-md text-2xl text-primary uppercase">BEAUTÉ DIVINE ESPACE</div>
+<p class="font-body-md text-on-surface-variant max-w-xs text-sm">Una mirada consciente de la belleza.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 font-label-sm text-label-sm uppercase tracking-widest">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="https://youtube.com/@beautedivineespace" target="_blank">YouTube</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="https://instagram.com/beautedivine" target="_blank">Instagram</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="https://facebook.com/beautedivine" target="_blank">Facebook</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacidad</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-xs opacity-70 text-center md:text-right">
+                © 2026 Beauté Divine Espace. Todos los derechos reservados. <br/>
+                Diseñado por DGG Diseños
+            </div>
+</div>
+</footer>
+<script>
+        // Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            
+            // Mobile Nav Scroll Effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2', 'shadow-sm');
+                    header.classList.remove('py-4');
+                } else {
+                    header.classList.remove('py-2', 'shadow-sm');
+                    header.classList.add('py-4');
+                }
+            });
+
+            // Form Submit Interactivity
+            
+        });
+    </script>
+</body></html>
