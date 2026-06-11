@@ -136,10 +136,44 @@
 </div>
 <a class="text-primary border-b-2 border-primary pb-1 font-bold" href="contacto.html">Contacto</a>
 </div>
-<a href="contacto.html" class="bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
-                Reservar
-            </a>
+<div class="flex items-center gap-4 relative z-50">
+<a href="contacto.html" class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
+    Reservar
+</a>
+<button id="mobile-menu-btn" class="md:hidden text-primary p-2 focus:outline-none">
+    <span class="material-symbols-outlined text-3xl" id="menu-icon">menu</span>
+</button>
+</div>
 </nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" class="fixed inset-0 bg-surface z-[45] flex flex-col pt-24 px-8 opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto pb-8">
+    <div class="flex flex-col gap-6 font-headline-md text-2xl text-on-surface">
+        <a href="quien-soy.html" class="hover:text-primary transition-colors">Quién Soy</a>
+        
+        <div class="flex flex-col gap-4">
+            <span class="text-primary font-bold text-xl uppercase tracking-widest text-sm">Fascias</span>
+            <div class="flex flex-col gap-3 pl-4 text-lg">
+                <a href="facial-sculpt.html" class="text-on-surface-variant hover:text-primary transition-colors">Facial Sculpt</a>
+                <a href="fascial-fit-remodeling.html" class="text-on-surface-variant hover:text-primary transition-colors">Fascial Fit Remodeling</a>
+                <a href="neuro-fascial-balance.html" class="text-on-surface-variant hover:text-primary transition-colors">Neuro Fascial Balance</a>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <span class="text-primary font-bold text-xl uppercase tracking-widest text-sm">Servicios</span>
+            <div class="flex flex-col gap-3 pl-4 text-lg">
+                <a href="tratamientos-corporales.html" class="text-on-surface-variant hover:text-primary transition-colors">Tratamientos Corporales</a>
+                <a href="tratamientos-faciales.html" class="text-on-surface-variant hover:text-primary transition-colors">Tratamientos Faciales</a>
+                <a href="beauty-coaching.html" class="text-on-surface-variant hover:text-primary transition-colors">Beauty Coaching</a>
+                <a href="terapias.html" class="text-on-surface-variant hover:text-primary transition-colors">Terapias</a>
+            </div>
+        </div>
+        
+        <a href="contacto.html" class="hover:text-primary transition-colors">Contacto</a>
+    </div>
+</div>
+
 </header>
 <main>
 <!-- Hero Section -->
@@ -319,4 +353,31 @@
             
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        let isMenuOpen = false;
+
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                    mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+                    menuIcon.textContent = 'close';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                    mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+                    menuIcon.textContent = 'menu';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    });
+</script>
+
 </body></html>
