@@ -98,3 +98,9 @@ body {
     color: #785910;
     transform: translateY(-2px);
 }
+
+
+/* iOS Safe Area for bottom nav */
+.pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+}

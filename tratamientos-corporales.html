@@ -99,7 +99,7 @@
 
 <link href="css/custom.css" rel="stylesheet"/>
 </head>
-<body class="bg-surface text-on-surface font-body-md">
+<body class="pb-20 md:pb-0 bg-surface text-on-surface font-body-md">
 <!-- Top Navigation Bar -->
 <!-- Navigation -->
 <header class="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
@@ -134,30 +134,13 @@
 </div>
 <a class="text-on-surface-variant hover:text-primary transition-colors duration-300" href="contacto.html">Contacto</a>
 </div>
-<div class="flex items-center gap-4 relative z-50">
 <a href="contacto.html" class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
     Reservar
 </a>
-<button id="mobile-menu-btn" class="md:hidden text-primary p-2 focus:outline-none">
-    <span class="material-symbols-outlined text-3xl" id="menu-icon">menu</span>
-</button>
-</div>
 </nav>
 
 </header>
-<!-- Mobile Menu Overlay -->
-<div id="mobile-menu" class="fixed inset-0 bg-surface z-[100] flex flex-col pt-24 px-8 opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto pb-8">
-    <div class="flex flex-col gap-6 font-headline-md text-2xl text-on-surface">
-        <a href="quien-soy.html" class="hover:text-primary transition-colors">Quién Soy</a>
-        
-        <div class="flex flex-col gap-4">
-            <span class="text-primary font-bold text-xl uppercase tracking-widest text-sm">Fascias</span>
-            <div class="flex flex-col gap-3 pl-4 text-lg">
-                <a href="facial-sculpt.html" class="text-on-surface-variant hover:text-primary transition-colors">Facial Sculpt</a>
-                <a href="fascial-fit-remodeling.html" class="text-on-surface-variant hover:text-primary transition-colors">Fascial Fit Remodeling</a>
-                <a href="neuro-fascial-balance.html" class="text-on-surface-variant hover:text-primary transition-colors">Neuro Fascial Balance</a>
-            </div>
-        </div>
+</div>
 
         <div class="flex flex-col gap-4">
             <span class="text-primary font-bold text-xl uppercase tracking-widest text-sm">Servicios</span>
@@ -320,30 +303,29 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        let isMenuOpen = false;
 
-        if (mobileBtn && mobileMenu) {
-            mobileBtn.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                if (isMenuOpen) {
-                    mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
-                    mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
-                    menuIcon.textContent = 'close';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    mobileMenu.classList.add('opacity-0', 'pointer-events-none');
-                    mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
-                    menuIcon.textContent = 'menu';
-                    document.body.style.overflow = '';
-                }
-            });
-        }
-    });
-</script>
+
+
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 luxury-blur border-t border-primary/20 z-[100] pb-safe">
+    <div class="flex justify-around items-center h-16">
+        <a href="index.html" class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors gap-1 group">
+            <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">home</span>
+            <span class="text-[10px] font-label-sm uppercase tracking-wider">Inicio</span>
+        </a>
+        <a href="servicios.html" class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors gap-1 group">
+            <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">spa</span>
+            <span class="text-[10px] font-label-sm uppercase tracking-wider">Servicios</span>
+        </a>
+        <a href="fascias.html" class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors gap-1 group">
+            <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">sign_language</span>
+            <span class="text-[10px] font-label-sm uppercase tracking-wider">Fascias</span>
+        </a>
+        <a href="contacto.html" class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors gap-1 group">
+            <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">chat_bubble</span>
+            <span class="text-[10px] font-label-sm uppercase tracking-wider">Contacto</span>
+        </a>
+    </div>
+</nav>
 
 </body></html>
