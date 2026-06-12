@@ -35,7 +35,7 @@
                     "tertiary-fixed-dim": "#e4c27d",
                     "outline-variant": "#d1c5b3",
                     "on-primary-fixed": "#261900",
-                    "primary": "#785910",
+                    "primary": "#5C440C",
                     "background": "#f9f9f7",
                     "on-tertiary-fixed-variant": "#5a4309",
                     "surface-container-lowest": "#ffffff",
@@ -46,7 +46,7 @@
                     "on-secondary-fixed": "#221b00",
                     "tertiary-fixed": "#ffdf9e",
                     "surface-container": "#eeeeec",
-                    "surface-tint": "#785910",
+                    "surface-tint": "#5C440C",
                     "secondary-fixed": "#f2e2a8",
                     "on-tertiary-fixed": "#261a00",
                     "on-secondary-fixed-variant": "#50461b",
@@ -54,8 +54,8 @@
                     "outline": "#807666",
                     "secondary-container": "#efe0a5",
                     "on-primary-container": "#5d4300",
-                    "secondary": "#695e30",
-                    "primary-container": "#d8b060",
+                    "secondary": "#4F4724",
+                    "primary-container": "#B8934A",
                     "inverse-primary": "#eac16f",
                     "surface-container-highest": "#e2e3e1",
                     "tertiary": "#745b21",
@@ -238,7 +238,67 @@
             <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">chat_bubble</span>
             <span class="text-[10px] font-label-sm uppercase tracking-wider">Contacto</span>
         </a>
+            <button id="mobile-more-btn" class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors gap-1 group focus:outline-none">
+            <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform" id="more-icon">menu</span>
+            <span class="text-[10px] font-label-sm uppercase tracking-wider">Más</span>
+        </button>
     </div>
 </nav>
+
+
+<!-- Mobile More Overlay -->
+<div id="mobile-more-overlay" class="lg:hidden fixed inset-0 bg-surface z-[90] flex flex-col pt-24 px-8 opacity-0 pointer-events-none transition-all duration-300 overflow-y-auto pb-32 translate-y-10">
+    <div class="flex flex-col gap-6 font-headline-md text-2xl text-on-surface">
+        <a href="quien-soy.html" class="hover:text-primary transition-colors border-b border-primary/10 pb-4">Quién Soy</a>
+        
+        <div class="flex flex-col gap-4 border-b border-primary/10 pb-4">
+            <span class="text-primary font-bold text-xl uppercase tracking-widest text-sm">Fascias</span>
+            <div class="flex flex-col gap-3 pl-4 text-lg font-body-md">
+                <a href="facial-sculpt.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Facial Sculpt</a>
+                <a href="fascial-fit-remodeling.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Fascial Fit Remodeling</a>
+                <a href="neuro-fascial-balance.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Neuro Fascial Balance</a>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-4 border-b border-primary/10 pb-4">
+            <span class="text-primary font-bold text-xl uppercase tracking-widest text-sm">Servicios</span>
+            <div class="flex flex-col gap-3 pl-4 text-lg font-body-md">
+                <a href="tratamientos-corporales.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Tratamientos Corporales</a>
+                <a href="tratamientos-faciales.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Tratamientos Faciales</a>
+                <a href="beauty-coaching.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Beauty Coaching</a>
+                <a href="terapias.html" class="text-on-surface-variant hover:text-primary transition-colors block py-2">Terapias</a>
+            </div>
+        </div>
+        
+        <a href="contacto.html" class="hover:text-primary transition-colors">Contacto</a>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const moreBtn = document.getElementById('mobile-more-btn');
+        const moreOverlay = document.getElementById('mobile-more-overlay');
+        const moreIcon = document.getElementById('more-icon');
+        let isMoreOpen = false;
+
+        if (moreBtn && moreOverlay) {
+            moreBtn.addEventListener('click', () => {
+                isMoreOpen = !isMoreOpen;
+                if (isMoreOpen) {
+                    moreOverlay.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
+                    moreOverlay.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                    moreIcon.textContent = 'close';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    moreOverlay.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
+                    moreOverlay.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                    moreIcon.textContent = 'menu';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    });
+</script>
 
 </body></html>
