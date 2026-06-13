@@ -1,5 +1,5 @@
 import Link from 'next/link';
-
+import packageJson from '../package.json';
 export default function Footer() {
   return (
     <>
@@ -17,7 +17,7 @@ export default function Footer() {
           </div>
           <div className="text-on-surface-variant font-body-md text-xs opacity-70 text-center md:text-right">
             © 2026 Beauté Divine Espace. Todos los derechos reservados. <br/>
-            Diseñado por DGG Diseños
+            v{packageJson.version} | Desarrollado por DGG
           </div>
         </div>
       </footer>
