@@ -1,0 +1,92 @@
+"use server";
+import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+async function uploadToCloudinary(file: File): Promise<string> {
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload_stream(
+      { folder: process.env.CLOUDINARY_UPLOAD_FOLDER || "beaute-divine-espace" },
+      (error, result) => {
+        if (error || !result) {
+          reject(error || new Error("Failed to upload to Cloudinary"));
+        } else {
+          resolve(result.secure_url);
+        }
+      }
+    ).end(buffer);
+  });
+}
+
+export async function addCategory(formData: FormData) {
+  const name = formData.get("name") as string;
+  if (name) {
+    await prisma.category.create({ data: { name } });
+    revalidatePath("/admin");
+    revalidatePath("/catalogo");
+  }
+}
+
+export async function deleteCategory(id: string) {
+  await prisma.category.delete({ where: { id } });
+  revalidatePath("/admin");
+  revalidatePath("/catalogo");
+}
+
+export async function addProduct(formData: FormData) {
+  await upsertProduct(null, formData);
+}
+
+export async function editProduct(id: string, formData: FormData) {
+  await upsertProduct(id, formData);
+}
+
+export async function deleteProduct(id: string) {
+  await prisma.product.delete({ where: { id } });
+  revalidatePath("/admin");
+  revalidatePath("/catalogo");
+}
+
+async function upsertProduct(id: string | null, formData: FormData) {
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const categoryId = formData.get("categoryId") as string;
+  const price = parseFloat(formData.get("price") as string) || 0;
+  const stock = parseInt(formData.get("stock") as string) || 0;
+  const tag = formData.get("tag") as string;
+
+  const imageFile = formData.get("imageFile") as File | null;
+  let image = formData.get("existingImage") as string || "";
+
+  if (imageFile && imageFile.size > 0) {
+    image = await uploadToCloudinary(imageFile);
+  }
+
+  const data = {
+    title,
+    description,
+    categoryId: categoryId === "none" ? null : categoryId,
+    image,
+    price,
+    stock,
+    tag,
+  };
+
+  if (id) {
+    await prisma.product.update({ where: { id }, data });
+  } else {
+    await prisma.product.create({ data });
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/catalogo");
+}

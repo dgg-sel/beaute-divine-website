@@ -1,0 +1,171 @@
+"use client";
+import { useState, useEffect } from "react";
+import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct } from "@/app/admin/actions";
+import type { Product, Category } from "@prisma/client";
+import ProductImage from "@/components/ProductImage";
+
+type ProductWithCategory = Product & { category: Category | null };
+
+export default function AdminPanel({ products, categories }: { products: ProductWithCategory[], categories: Category[] }) {
+  const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openNewProductModal = () => {
+    setEditingProduct(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (p: ProductWithCategory) => {
+    setEditingProduct(p);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+    if (isModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsUploading(true);
+    const formData = new FormData(e.currentTarget);
+    try {
+      if (editingProduct) {
+        await editProduct(editingProduct.id, formData);
+      } else {
+        await addProduct(formData);
+      }
+      closeModal();
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  return (
+    <div className="grid lg:grid-cols-12 gap-12">
+      <div className="lg:col-span-4 flex flex-col gap-8">
+        {/* Categories Section */}
+        <section className="bg-surface-container-low p-6 rounded-sm soft-glow border border-primary/10">
+          <h2 className="font-headline-md text-2xl mb-4 text-primary">Categorías</h2>
+          <form action={addCategory} className="flex gap-2 mb-4">
+            <input name="name" placeholder="Nueva Categoría" required className="input-elegant py-2 flex-grow" />
+            <button type="submit" className="bg-primary text-on-primary px-4 font-label-sm uppercase tracking-widest">Crear</button>
+          </form>
+          <ul className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-2">
+            {categories.map(c => (
+              <li key={c.id} className="flex justify-between items-center text-sm p-2 bg-surface border border-primary/10 rounded-sm">
+                {c.name}
+                <button onClick={() => deleteCategory(c.id)} className="text-red-500 hover:text-red-700 material-symbols-outlined text-sm">delete</button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      {/* Products List Section */}
+      <div className="lg:col-span-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="font-headline-md text-3xl text-primary">Lista de Productos ({products.length})</h2>
+          <button onClick={openNewProductModal} className="bg-primary text-on-primary py-2 px-6 font-label-sm uppercase tracking-widest">
+            + Nuevo Producto
+          </button>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4 max-h-[800px] overflow-y-auto pr-2">
+          {products.map(p => (
+            <div key={p.id} className="bg-surface p-4 border border-primary/10 soft-glow rounded-sm flex gap-4">
+              {/* Thumbnail */}
+              <div className="flex-shrink-0">
+                <ProductImage 
+                  src={p.image.includes('http') ? p.image : `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dcwkpo1j1'}/image/upload/beaute-divine-espace/catalogo/${p.image}`}
+                  alt={p.title} 
+                  className="w-24 h-24 object-cover rounded-sm border border-primary/10" 
+                />
+              </div>
+
+              {/* Details */}
+              <div className="flex flex-col flex-grow">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-bold text-lg leading-tight line-clamp-1" title={p.title}>{p.title}</h3>
+                </div>
+                <div className="mb-2">
+                  <span className="text-[10px] bg-secondary-container/30 px-2 py-1 rounded-full text-primary whitespace-nowrap">
+                    {p.category?.name || 'Sin Categoría'}
+                  </span>
+                </div>
+                <p className="text-sm text-on-surface-variant mb-2 line-clamp-2 flex-grow">{p.description}</p>
+                
+                <div className="flex justify-between items-center mt-auto pt-2 border-t border-primary/10">
+                  <div className="font-label-sm text-sm">${p.price} | Stock: {p.stock}</div>
+                  <div className="flex gap-2">
+                    <button onClick={() => openEditModal(p)} className="text-primary hover:opacity-70 material-symbols-outlined">edit</button>
+                    <button onClick={() => { if(confirm('¿Seguro que deseas eliminarlo?')) deleteProduct(p.id) }} className="text-red-500 hover:text-red-700 material-symbols-outlined">delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal Popup for Product Form */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-surface p-8 rounded-sm soft-glow border border-primary/20 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="font-headline-md text-2xl text-primary">
+                {editingProduct ? 'Editar Producto' : 'Crear Producto'}
+              </h2>
+              <button onClick={closeModal} className="text-on-surface-variant hover:text-primary material-symbols-outlined">close</button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <input name="title" defaultValue={editingProduct?.title} placeholder="Título" required className="input-elegant py-2" />
+              <textarea name="description" defaultValue={editingProduct?.description} placeholder="Descripción" required className="input-elegant py-2" rows={3}></textarea>
+              
+              <select name="categoryId" defaultValue={editingProduct?.categoryId || "none"} className="input-elegant py-2 bg-transparent">
+                <option value="none">Sin Categoría</option>
+                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-on-surface-variant font-label-sm uppercase tracking-widest">{editingProduct ? 'Cambiar Foto (Opcional)' : 'Foto del Producto'}</label>
+                <input name="imageFile" type="file" accept="image/*" required={!editingProduct} className="input-elegant py-2 text-sm" />
+                <input type="hidden" name="existingImage" value={editingProduct?.image || ''} />
+              </div>
+
+              <div className="flex gap-4">
+                <input name="price" defaultValue={editingProduct?.price || ''} placeholder="Precio" type="number" step="0.01" className="input-elegant py-2 w-1/2" />
+                <input name="stock" defaultValue={editingProduct?.stock || ''} placeholder="Stock" type="number" required className="input-elegant py-2 w-1/2" />
+              </div>
+              
+              <input name="tag" defaultValue={editingProduct?.tag || ''} placeholder="Etiqueta (ej: Consultar)" className="input-elegant py-2" />
+              
+              <div className="flex gap-2 mt-4 pt-4 border-t border-primary/10">
+                <button type="button" onClick={closeModal} className="border border-primary text-primary py-3 px-4 font-label-sm uppercase tracking-widest w-1/3">
+                  Cancelar
+                </button>
+                <button type="submit" disabled={isUploading} className="bg-primary text-on-primary py-3 px-4 font-label-sm uppercase tracking-widest flex-grow disabled:opacity-50">
+                  {isUploading ? 'Subiendo Foto...' : editingProduct ? 'Guardar Cambios' : 'Agregar'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
