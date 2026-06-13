@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import ProductImage from "@/components/ProductImage";
 import Link from "next/link";
+import CategoryDropdown from "@/components/CategoryDropdown";
 
 export const dynamic = 'force-dynamic';
 
@@ -38,20 +39,8 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
             <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Categorías</h2>
           </div>
           
-          {/* Mobile Dropdown */}
           <div className="lg:hidden">
-            <select 
-              className="w-full bg-surface-container-low border border-primary/20 text-primary py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest outline-none focus:border-primary"
-              onChange={(e) => {
-                window.location.href = e.target.value;
-              }}
-              defaultValue={searchParams.categoryId ? `/catalogo?categoryId=${searchParams.categoryId}` : "/catalogo"}
-            >
-              <option value="/catalogo">Todos</option>
-              {categories.map(cat => (
-                <option key={cat.id} value={`/catalogo?categoryId=${cat.id}`}>{cat.name}</option>
-              ))}
-            </select>
+            <CategoryDropdown categories={categories} currentCategoryId={searchParams.categoryId} />
           </div>
 
           {/* Desktop List */}
