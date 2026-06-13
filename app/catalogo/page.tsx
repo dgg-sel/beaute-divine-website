@@ -38,9 +38,26 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
             <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Categorías</h2>
           </div>
           
-          <div className="flex flex-col gap-4 font-body-md border-l border-primary/10 pl-4">
+          {/* Mobile Dropdown */}
+          <div className="lg:hidden">
+            <select 
+              className="w-full bg-surface-container-low border border-primary/20 text-primary py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest outline-none focus:border-primary"
+              onChange={(e) => {
+                window.location.href = e.target.value;
+              }}
+              defaultValue={searchParams.categoryId ? `/catalogo?categoryId=${searchParams.categoryId}` : "/catalogo"}
+            >
+              <option value="/catalogo">Todos</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={`/catalogo?categoryId=${cat.id}`}>{cat.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Desktop List */}
+          <div className="hidden lg:flex flex-col gap-4 font-body-md border-l border-primary/10 pl-4">
             <Link href="/catalogo" className={`text-left transition-colors ${!searchParams.categoryId ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
-              Todos los Productos
+              Todos
             </Link>
             
             {categories.map(cat => (
@@ -48,10 +65,6 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
                 {cat.name}
               </Link>
             ))}
-
-            <Link href="/catalogo?categoryId=uncategorized" className={`text-left transition-colors mt-4 ${searchParams.categoryId === 'uncategorized' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
-              Sin Categoría
-            </Link>
           </div>
 
           {/* Aesthetic Badge */}
