@@ -105,7 +105,7 @@ export default function AdminPanel({ products, categories }: { products: Product
             </div>
             {categoryError && <p className="text-red-500 text-xs font-label-sm">{categoryError}</p>}
           </form>
-          <ul className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-2">
+          <ul className="flex flex-col gap-2 pr-2">
             {categories.filter(c => !c.parentId).map(parent => (
               <div key={parent.id} className="flex flex-col gap-1">
                 <li className="flex justify-between items-center text-sm p-2 bg-surface border border-primary/10 rounded-sm font-bold">
