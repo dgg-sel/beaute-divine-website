@@ -8,11 +8,18 @@ export const dynamic = 'force-dynamic';
 export default async function CatalogoPage({ searchParams }: { searchParams: { categoryId?: string } }) {
   const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
   
-  const whereClause = searchParams.categoryId === 'uncategorized' 
-    ? { categoryId: null } 
-    : searchParams.categoryId 
-      ? { categoryId: searchParams.categoryId } 
-      : {};
+  let whereClause: any = {};
+
+  if (searchParams.categoryId === 'uncategorized') {
+    whereClause = { categoryId: null };
+  } else if (searchParams.categoryId) {
+    const subCategories = categories.filter(c => c.parentId === searchParams.categoryId);
+    const categoryIdsToInclude = [searchParams.categoryId, ...subCategories.map(c => c.id)];
+    
+    whereClause = {
+      categoryId: { in: categoryIdsToInclude }
+    };
+  }
 
   const products = await prisma.product.findMany({ 
     where: whereClause,
@@ -49,10 +56,17 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
               Todos
             </Link>
             
-            {categories.map(cat => (
-              <Link key={cat.id} href={`/catalogo?categoryId=${cat.id}`} className={`text-left transition-colors ${searchParams.categoryId === cat.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
-                {cat.name}
-              </Link>
+            {categories.filter(c => !c.parentId).map(parent => (
+              <div key={parent.id} className="flex flex-col gap-2">
+                <Link href={`/catalogo?categoryId=${parent.id}`} className={`text-left transition-colors ${searchParams.categoryId === parent.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+                  {parent.name}
+                </Link>
+                {categories.filter(child => child.parentId === parent.id).map(child => (
+                  <Link key={child.id} href={`/catalogo?categoryId=${child.id}`} className={`text-left transition-colors text-sm ml-4 ${searchParams.categoryId === child.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+                    ↳ {child.name}
+                  </Link>
+                ))}
+              </div>
             ))}
           </div>
 

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct } from "@/app/admin/actions";
 import type { Product, Category } from "@prisma/client";
 import ProductImage from "@/components/ProductImage";
@@ -10,6 +11,36 @@ export default function AdminPanel({ products, categories }: { products: Product
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  const handleAddCategory = async (formData: FormData) => {
+    setCategoryError(null);
+    const result = await addCategory(formData);
+    if (result?.error) {
+      setCategoryError(result.error);
+    } else {
+      // Clear the input on success
+      const form = document.getElementById("add-category-form") as HTMLFormElement;
+      if (form) form.reset();
+      router.refresh();
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (confirm('¿Seguro que deseas eliminar esta categoría?')) {
+      await deleteCategory(id);
+      router.refresh();
+    }
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    if (confirm('¿Seguro que deseas eliminar este producto?')) {
+      await deleteProduct(id);
+      router.refresh();
+    }
+  };
 
   const openNewProductModal = () => {
     setEditingProduct(null);
@@ -49,6 +80,7 @@ export default function AdminPanel({ products, categories }: { products: Product
         await addProduct(formData);
       }
       closeModal();
+      router.refresh();
     } finally {
       setIsUploading(false);
     }
@@ -60,16 +92,33 @@ export default function AdminPanel({ products, categories }: { products: Product
         {/* Categories Section */}
         <section className="bg-surface-container-low p-6 rounded-sm soft-glow border border-primary/10">
           <h2 className="font-headline-md text-2xl mb-4 text-primary">Categorías</h2>
-          <form action={addCategory} className="flex gap-2 mb-4">
+          <form id="add-category-form" action={handleAddCategory} className="flex flex-col gap-2 mb-4">
             <input name="name" placeholder="Nueva Categoría" required className="input-elegant py-2 flex-grow" />
-            <button type="submit" className="bg-primary text-on-primary px-4 font-label-sm uppercase tracking-widest">Crear</button>
+            <div className="flex gap-2">
+              <select name="parentId" className="input-elegant py-2 flex-grow bg-transparent text-sm">
+                <option value="none">Principal (Sin padre)</option>
+                {categories.filter(c => !c.parentId).map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+              <button type="submit" className="bg-primary text-on-primary px-4 font-label-sm uppercase tracking-widest whitespace-nowrap">Crear</button>
+            </div>
+            {categoryError && <p className="text-red-500 text-xs font-label-sm">{categoryError}</p>}
           </form>
-          <ul className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-2">
-            {categories.map(c => (
-              <li key={c.id} className="flex justify-between items-center text-sm p-2 bg-surface border border-primary/10 rounded-sm">
-                {c.name}
-                <button onClick={() => deleteCategory(c.id)} className="text-red-500 hover:text-red-700 material-symbols-outlined text-sm">delete</button>
-              </li>
+          <ul className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-2">
+            {categories.filter(c => !c.parentId).map(parent => (
+              <div key={parent.id} className="flex flex-col gap-1">
+                <li className="flex justify-between items-center text-sm p-2 bg-surface border border-primary/10 rounded-sm font-bold">
+                  {parent.name}
+                  <button onClick={() => handleDeleteCategory(parent.id)} className="text-red-500 hover:text-red-700 material-symbols-outlined text-sm">delete</button>
+                </li>
+                {categories.filter(child => child.parentId === parent.id).map(child => (
+                  <li key={child.id} className="flex justify-between items-center text-sm p-2 ml-4 bg-surface-container border border-primary/5 rounded-sm">
+                    ↳ {child.name}
+                    <button onClick={() => handleDeleteCategory(child.id)} className="text-red-500 hover:text-red-700 material-symbols-outlined text-sm">delete</button>
+                  </li>
+                ))}
+              </div>
             ))}
           </ul>
         </section>
@@ -112,7 +161,7 @@ export default function AdminPanel({ products, categories }: { products: Product
                   <div className="font-label-sm text-sm">${p.price} | Stock: {p.stock}</div>
                   <div className="flex gap-2">
                     <button onClick={() => openEditModal(p)} className="text-primary hover:opacity-70 material-symbols-outlined">edit</button>
-                    <button onClick={() => { if(confirm('¿Seguro que deseas eliminarlo?')) deleteProduct(p.id) }} className="text-red-500 hover:text-red-700 material-symbols-outlined">delete</button>
+                    <button onClick={() => handleDeleteProduct(p.id)} className="text-red-500 hover:text-red-700 material-symbols-outlined">delete</button>
                   </div>
                 </div>
               </div>
@@ -138,7 +187,14 @@ export default function AdminPanel({ products, categories }: { products: Product
               
               <select name="categoryId" defaultValue={editingProduct?.categoryId || "none"} className="input-elegant py-2 bg-transparent">
                 <option value="none">Sin Categoría</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                {categories.filter(c => !c.parentId).map(parent => (
+                  <optgroup key={parent.id} label={parent.name}>
+                    <option value={parent.id}>{parent.name} (Principal)</option>
+                    {categories.filter(child => child.parentId === parent.id).map(child => (
+                      <option key={child.id} value={child.id}>- {child.name}</option>
+                    ))}
+                  </optgroup>
+                ))}
               </select>
 
               <div className="flex flex-col gap-1">

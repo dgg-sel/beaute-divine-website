@@ -29,8 +29,36 @@ async function uploadToCloudinary(file: File): Promise<string> {
 
 export async function addCategory(formData: FormData) {
   const name = formData.get("name") as string;
+  const parentIdRaw = formData.get("parentId");
+  
   if (name) {
-    await prisma.category.create({ data: { name } });
+    let finalParentId: string | null = null;
+    
+    if (typeof parentIdRaw === 'string' && parentIdRaw !== 'none' && parentIdRaw !== 'null' && parentIdRaw !== 'undefined' && parentIdRaw.trim() !== '') {
+      // Validate that parent exists to avoid Foreign Key constraint violation
+      const parentExists = await prisma.category.findUnique({ where: { id: parentIdRaw } });
+      if (parentExists) {
+        finalParentId = parentIdRaw;
+      }
+    }
+
+    // Check if category name already exists at the same level
+    const existingCategory = await prisma.category.findFirst({ 
+      where: { 
+        name,
+        parentId: finalParentId 
+      } 
+    });
+    if (existingCategory) {
+      return { error: "La categoría ya existe en este nivel" };
+    }
+
+    await prisma.category.create({ 
+      data: { 
+        name,
+        parentId: finalParentId
+      } 
+    });
     revalidatePath("/admin");
     revalidatePath("/catalogo");
   }

@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -54,10 +54,13 @@ model VerificationToken {
 }
 
 model Category {
-  id        String    @id @default(cuid())
-  name      String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String     @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    Category?  @relation("Subcategories", fields: [parentId], references: [id])
+  children  Category[] @relation("Subcategories")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   products  Product[]
 }
 
@@ -67,10 +70,10 @@ model Product {
   description String
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  image       String   // Cloudinary filename or URL
+  image       String // Cloudinary filename or URL
   price       Float?
-  stock       Int      @default(0)
-  tag         String?  // Ej: Consultar, Exclusivo
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  stock       Int       @default(0)
+  tag         String? // Ej: Consultar, Exclusivo
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

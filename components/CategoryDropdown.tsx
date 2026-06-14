@@ -6,7 +6,7 @@ export default function CategoryDropdown({
   categories, 
   currentCategoryId 
 }: { 
-  categories: { id: string, name: string }[], 
+  categories: { id: string, name: string, parentId?: string | null }[], 
   currentCategoryId?: string 
 }) {
   const router = useRouter();
@@ -20,8 +20,13 @@ export default function CategoryDropdown({
       defaultValue={currentCategoryId ? `/catalogo?categoryId=${currentCategoryId}` : "/catalogo"}
     >
       <option value="/catalogo">Todos</option>
-      {categories.map(cat => (
-        <option key={cat.id} value={`/catalogo?categoryId=${cat.id}`}>{cat.name}</option>
+      {categories.filter(c => !c.parentId).map(parent => (
+        <optgroup key={parent.id} label={parent.name}>
+          <option value={`/catalogo?categoryId=${parent.id}`}>{parent.name} (Ver todo)</option>
+          {categories.filter(child => child.parentId === parent.id).map(child => (
+            <option key={child.id} value={`/catalogo?categoryId=${child.id}`}>- {child.name}</option>
+          ))}
+        </optgroup>
       ))}
     </select>
   );
