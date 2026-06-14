@@ -62,9 +62,15 @@ body {
 }
 
 .reveal, .reveal-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.js-reveal-ready .reveal,
+.js-reveal-ready .reveal-on-scroll {
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.8s ease-out;
 }
 
 .reveal.active, .reveal.is-visible, .reveal-on-scroll.active {
