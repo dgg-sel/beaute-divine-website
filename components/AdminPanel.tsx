@@ -187,14 +187,20 @@ export default function AdminPanel({ products, categories }: { products: Product
               
               <select name="categoryId" defaultValue={editingProduct?.categoryId || "none"} className="input-elegant py-2 bg-transparent">
                 <option value="none">Sin Categoría</option>
-                {categories.filter(c => !c.parentId).map(parent => (
-                  <optgroup key={parent.id} label={parent.name}>
-                    <option value={parent.id}>{parent.name} (Principal)</option>
-                    {categories.filter(child => child.parentId === parent.id).map(child => (
-                      <option key={child.id} value={child.id}>- {child.name}</option>
-                    ))}
-                  </optgroup>
-                ))}
+                {categories.filter(c => !c.parentId).map(parent => {
+                  const children = categories.filter(child => child.parentId === parent.id);
+                  if (children.length === 0) {
+                    return <option key={parent.id} value={parent.id}>{parent.name}</option>;
+                  }
+                  return (
+                    <optgroup key={parent.id} label={parent.name}>
+                      <option value={parent.id}>{parent.name} (Principal)</option>
+                      {children.map(child => (
+                        <option key={child.id} value={child.id}>- {child.name}</option>
+                      ))}
+                    </optgroup>
+                  );
+                })}
               </select>
 
               <div className="flex flex-col gap-1">

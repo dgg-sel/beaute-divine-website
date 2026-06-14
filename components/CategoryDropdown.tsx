@@ -20,14 +20,20 @@ export default function CategoryDropdown({
       defaultValue={currentCategoryId ? `/catalogo?categoryId=${currentCategoryId}` : "/catalogo"}
     >
       <option value="/catalogo">Todos</option>
-      {categories.filter(c => !c.parentId).map(parent => (
-        <optgroup key={parent.id} label={parent.name}>
-          <option value={`/catalogo?categoryId=${parent.id}`}>{parent.name} (Ver todo)</option>
-          {categories.filter(child => child.parentId === parent.id).map(child => (
-            <option key={child.id} value={`/catalogo?categoryId=${child.id}`}>- {child.name}</option>
-          ))}
-        </optgroup>
-      ))}
+      {categories.filter(c => !c.parentId).map(parent => {
+        const children = categories.filter(child => child.parentId === parent.id);
+        if (children.length === 0) {
+          return <option key={parent.id} value={`/catalogo?categoryId=${parent.id}`}>{parent.name}</option>;
+        }
+        return (
+          <optgroup key={parent.id} label={parent.name}>
+            <option value={`/catalogo?categoryId=${parent.id}`}>Ver todo en {parent.name}</option>
+            {children.map(child => (
+              <option key={child.id} value={`/catalogo?categoryId=${child.id}`}>- {child.name}</option>
+            ))}
+          </optgroup>
+        );
+      })}
     </select>
   );
 }

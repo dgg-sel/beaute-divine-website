@@ -2,6 +2,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileNav from '@/components/MobileNav';
+import RevealAnimator from '@/components/RevealAnimator';
 
 export const metadata = {
   title: 'BEAUTÉ DIVINE | Espace de Radiancia Sagrada',
@@ -24,6 +25,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <MobileNav />
+        <RevealAnimator />
       </body>
     </html>
   );
