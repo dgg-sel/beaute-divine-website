@@ -3,8 +3,11 @@ import { useState } from 'react';
 
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
-function buildCloudinaryUrl(publicId: string): string {
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${publicId}`;
+function buildCloudinaryUrl(publicId: string, width = 800): string {
+  // f_auto: formato óptimo según el navegador (WebP, AVIF, etc.)
+  // q_auto: calidad optimizada automáticamente
+  // w_<width>: ancho máximo para no bajar imágenes gigantes
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_${width}/${publicId}`;
 }
 
 export default function ProductImage({ src, alt, className }: { src: string, alt: string, className: string }) {
