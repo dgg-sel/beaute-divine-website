@@ -121,7 +121,7 @@ export default function ContactoPage() {
 
               {/* Map */}
               <div className="relative h-[200px] md:h-full min-h-[200px] w-full bg-surface-variant overflow-hidden rounded-2xl shadow-sm border border-primary/10 group">
-                <iframe src="https://maps.google.com/maps?q=Marcela+Hil%C3%BA+Beauty+%26+Health&t=&z=15&ie=UTF8&iwloc=&output=embed" className="absolute inset-0 w-full h-full grayscale-[50%] contrast-75 hover:grayscale-0 transition-all duration-700" style={{border: 0}} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://maps.google.com/maps?q=Marcela+Hil%C3%BA+Beauty+%26+Health&t=&z=17&ie=UTF8&iwloc=&output=embed" className="absolute inset-0 w-full h-full grayscale-[50%] contrast-75 hover:grayscale-0 transition-all duration-700" style={{border: 0}} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
               </div>
             </div>
 
