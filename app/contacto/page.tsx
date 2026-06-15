@@ -24,7 +24,7 @@ export default function ContactoPage() {
                   <span className="material-symbols-outlined text-primary mt-1">location_on</span>
                   <div className="font-body-md">
                     <p className="font-bold text-primary">Ubicación</p>
-                    <a href="https://maps.google.com/?q=Marcela+Hilú+Beauty+&+Health" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant hover:text-primary transition-colors block">
+                    <a href="https://maps.google.com/maps?q=Marcela+Hil%C3%BA+Beauty+%26+Health" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant hover:text-primary transition-colors block">
                       Av. Santa Fe 782, Acassuso<br/>San Isidro, Buenos Aires
                     </a>
                   </div>
