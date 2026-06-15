@@ -14,7 +14,9 @@ async function uploadToCloudinary(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
-  const uploadPath = `${env.cloudinaryRootFolder}/${env.cloudinaryCatalogFolder}`;
+  const uploadPath = env.cloudinaryCatalogFolder
+    ? `${env.cloudinaryRootFolder}/${env.cloudinaryCatalogFolder}`
+    : env.cloudinaryRootFolder;
 
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload_stream(

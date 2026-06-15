@@ -6,6 +6,13 @@
  *
  * Si falta alguna variable, lanza un error con un mensaje claro que
  * indica exactamente qué hay que configurar en el .env
+ *
+ * NOTA sobre Cloudinary Dynamic Folders:
+ * En cuentas con "Dynamic Folders" activado, mover imágenes en el panel
+ * de Cloudinary NO cambia el public_id. El public_id siempre será
+ * ROOT_FOLDER/filename, independientemente de la carpeta visual en el panel.
+ * CLOUDINARY_CATALOG_FOLDER es opcional: si está vacía, las imágenes se
+ * suben directamente a ROOT_FOLDER/.
  */
 
 function requireEnv(name: string): string {
@@ -20,13 +27,18 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function optionalEnv(name: string): string {
+  return process.env[name]?.trim() ?? "";
+}
+
 export const env = {
   // Cloudinary
   cloudinaryCloudName: requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"),
   cloudinaryApiKey: requireEnv("CLOUDINARY_API_KEY"),
   cloudinaryApiSecret: requireEnv("CLOUDINARY_API_SECRET"),
   cloudinaryRootFolder: requireEnv("CLOUDINARY_ROOT_FOLDER"),
-  cloudinaryCatalogFolder: requireEnv("CLOUDINARY_CATALOG_FOLDER"),
+  // Opcional: si tu cuenta usa Dynamic Folders, el public_id no incluye la subcarpeta.
+  cloudinaryCatalogFolder: optionalEnv("CLOUDINARY_CATALOG_FOLDER"),
 
   // Auth
   nextAuthSecret: requireEnv("NEXTAUTH_SECRET"),
