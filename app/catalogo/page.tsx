@@ -88,7 +88,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
               <article key={product.id} className="bg-surface border border-primary/10 p-6 flex flex-col product-card-hover soft-glow rounded-sm transition-transform duration-300 hover:-translate-y-2">
                 <div className="aspect-square bg-surface-container-low mb-6 overflow-hidden relative group rounded-sm">
                   <ProductImage 
-                    src={product.image.includes('http') ? product.image : `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'tu_cloud_name'}/image/upload/beaute-divine-espace/catalogo/${product.image}`} 
+                    src={product.image} 
                     alt={product.title} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                   />

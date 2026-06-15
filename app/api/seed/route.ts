@@ -17,7 +17,14 @@ export async function GET(request: Request) {
   }
 
   try {
-    const folder = process.env.CLOUDINARY_UPLOAD_FOLDER || 'beaute-divine-espace';
+    const rootFolder = process.env.CLOUDINARY_ROOT_FOLDER;
+    const catalogFolder = process.env.CLOUDINARY_CATALOG_FOLDER;
+
+    if (!rootFolder || !catalogFolder) {
+      return NextResponse.json({ error: "Faltan variables de entorno de Cloudinary" }, { status: 500 });
+    }
+    
+    const folder = `${rootFolder}/${catalogFolder}`;
     
     // 1. Limpiar base de datos
     await prisma.product.deleteMany({});
@@ -36,7 +43,7 @@ export async function GET(request: Request) {
 
     do {
       const result: any = await cloudinary.search
-        .expression(`folder:${folder}/*`) // o folder:${folder}/catalogo/* si estuviera allí
+        .expression(`folder:${folder}/*`)
         .max_results(500)
         .next_cursor(nextCursor)
         .execute();
@@ -48,10 +55,8 @@ export async function GET(request: Request) {
     // 4. Crear productos en la base de datos
     const createdProducts = [];
     for (const resource of allResources) {
-      // Usamos resource.public_id o secure_url dependiendo de cómo lo estemos renderizando.
-      // Actualmente lo guardamos como un filename, o si es absolute url como URL.
-      // Guardaremos la URL absoluta para que ProductImage no se confunda si cambia el folder
-      const imageUrl = resource.secure_url;
+      // Guardamos el public_id como acordado en la nueva arquitectura
+      const imageUrl = resource.public_id;
       
       const p = await prisma.product.create({
         data: {

@@ -139,7 +139,7 @@ export default function AdminPanel({ products, categories }: { products: Product
               {/* Thumbnail */}
               <div className="flex-shrink-0">
                 <ProductImage 
-                  src={p.image.includes('http') ? p.image : `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dcwkpo1j1'}/image/upload/beaute-divine-espace/catalogo/${p.image}`}
+                  src={p.image}
                   alt={p.title} 
                   className="w-24 h-24 object-cover rounded-sm border border-primary/10" 
                 />

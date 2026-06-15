@@ -13,14 +13,23 @@ async function uploadToCloudinary(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
+  const rootFolder = process.env.CLOUDINARY_ROOT_FOLDER;
+  const catalogFolder = process.env.CLOUDINARY_CATALOG_FOLDER;
+
+  if (!rootFolder || !catalogFolder) {
+    throw new Error("Faltan variables de entorno de Cloudinary (CLOUDINARY_ROOT_FOLDER o CLOUDINARY_CATALOG_FOLDER)");
+  }
+
+  const uploadPath = `${rootFolder}/${catalogFolder}`;
+
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload_stream(
-      { folder: process.env.CLOUDINARY_UPLOAD_FOLDER || "beaute-divine-espace" },
+      { folder: uploadPath },
       (error, result) => {
         if (error || !result) {
           reject(error || new Error("Failed to upload to Cloudinary"));
         } else {
-          resolve(result.secure_url);
+          resolve(result.public_id);
         }
       }
     ).end(buffer);
