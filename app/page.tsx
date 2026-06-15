@@ -43,9 +43,11 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-6">
               <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.2em]">Estética Holística</span>
-              <h2 className="font-headline-lg text-headline-lg text-on-background">Más que un tratamiento, una transformación.</h2>
+              <h2 className="font-headline-lg text-headline-lg text-on-background">Tu espacio de belleza y bienestar</h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                En Beauté Divine, creemos que la belleza externa es el reflejo de un equilibrio interno vibrante. Cada sesión está diseñada para nutrir no solo la piel, sino también el espíritu, utilizando técnicas que respetan la fisiología natural de tu cuerpo.
+                Creo que la belleza auténtica nace de la conexión con nosotros mismos, de habitar nuestra esencia con coherencia y de cultivar una relación amorosa con nuestro cuerpo.
+                <br /><br />
+                En Beauté Divine Espace te acompaño a través de tratamientos faciales, corporales y experiencias de bienestar diseñadas para realzar tu belleza natural y armonizar cuerpo y mente.
               </p>
               <div className="flex flex-col gap-4 mt-4">
                 <div className="flex items-center gap-4">
