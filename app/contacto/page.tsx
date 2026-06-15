@@ -9,7 +9,7 @@ export default function ContactoPage() {
           
           {/* Left Column: Title & Info */}
           <div className="lg:col-span-5 flex flex-col gap-8">
-            <div className="reveal">
+            <div className="">
               <h1 className="font-display-lg text-4xl lg:text-5xl text-primary mb-6">Contacto</h1>
               <p className="font-body-lg text-body-lg text-secondary">
                 Encuentra tu centro. Estamos aquí para acompañarte en tu viaje hacia la radiancia sagrada y el bienestar holístico.
@@ -17,7 +17,7 @@ export default function ContactoPage() {
             </div>
 
             {/* Info Cards */}
-            <div className="bg-secondary-container/30 p-8 reveal border border-primary/10 rounded-2xl shadow-sm">
+            <div className="bg-secondary-container/30 p-8 border border-primary/10 rounded-2xl shadow-sm">
               <h3 className="font-headline-md text-2xl text-secondary mb-6">Nuestros Datos</h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -53,14 +53,14 @@ export default function ContactoPage() {
             </div>
             
             {/* Image replaced hero */}
-            <div className="relative h-[240px] w-full rounded-2xl overflow-hidden reveal shadow-md">
+            <div className="relative h-[240px] w-full rounded-2xl overflow-hidden shadow-md">
               <div className="absolute inset-0 bg-cover bg-center" data-alt="Serene spa environment" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjBvtDWzQa8pjYR2qBusDCIPuZLBWZ4sehvMM0WRaP1YCRNVZBLn1U4MkE6qwBMX1mGgprXrp7I1g6ineBXJ6aTl3qj1TsTf5MSc8uD4iqSKIdkxNCUPE-iRxMYioj1FOyl5dOlXuhYx5Ua7hcxg-3dkZl8eWXMksR7tGcjo6HftVjNMGUECx_rK2KU4ZU_v8XiOBPjoheG5JvQ5qejsGc3AJvIqE_tADytM9AwpgreK4QW9TIPth1W8A__RVS6EHU3ZTYCO00kwY')" }}></div>
             </div>
           </div>
 
           {/* Right Column: Form */}
           <div className="lg:col-span-7 flex flex-col gap-8">
-            <div className="bg-white p-8 md:p-10 reveal border border-primary/10 shadow-lg rounded-2xl">
+            <div className="bg-white p-8 md:p-10 border border-primary/10 shadow-lg rounded-2xl">
               <h2 className="font-headline-lg text-3xl text-primary mb-8">Envíanos un Mensaje</h2>
               <form action="https://formsubmit.co/marcelahilu@hotmail.com" method="POST" className="space-y-6" id="contactForm">
                 <input type="hidden" name="_subject" value="Nuevo mensaje de contacto - Beauté Divine" />
@@ -101,7 +101,7 @@ export default function ContactoPage() {
             {/* Map and Horarios below the form on desktop, or side-by-side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Horarios */}
-              <div className="bg-surface-variant/30 p-6 md:p-8 rounded-2xl border border-primary/10 flex flex-col justify-center reveal">
+              <div className="bg-surface-variant/30 p-6 md:p-8 rounded-2xl border border-primary/10 flex flex-col justify-center">
                 <span className="font-label-sm text-label-sm uppercase text-primary mb-2 block">Horarios</span>
                 <div className="space-y-3 font-body-md mt-4">
                   <div className="flex justify-between border-b border-primary/10 pb-2">
@@ -120,7 +120,7 @@ export default function ContactoPage() {
               </div>
 
               {/* Map */}
-              <div className="relative h-[200px] md:h-full min-h-[200px] w-full bg-surface-variant overflow-hidden rounded-2xl reveal shadow-sm border border-primary/10 group">
+              <div className="relative h-[200px] md:h-full min-h-[200px] w-full bg-surface-variant overflow-hidden rounded-2xl shadow-sm border border-primary/10 group">
                 <iframe src="https://maps.google.com/maps?q=Av.+Santa+Fe+782,+Acassuso,+San+Isidro,+Buenos+Aires&t=&z=14&ie=UTF8&iwloc=&output=embed" className="absolute inset-0 w-full h-full grayscale-[50%] contrast-75 hover:grayscale-0 transition-all duration-700" style={{border: 0}} allowFullScreen={true} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
               </div>
             </div>
