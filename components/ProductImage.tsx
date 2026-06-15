@@ -1,6 +1,11 @@
 "use client";
 import { useState } from 'react';
-import { CldImage } from 'next-cloudinary';
+
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+function buildCloudinaryUrl(publicId: string): string {
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${publicId}`;
+}
 
 export default function ProductImage({ src, alt, className }: { src: string, alt: string, className: string }) {
   const [error, setError] = useState(false);
@@ -9,19 +14,9 @@ export default function ProductImage({ src, alt, className }: { src: string, alt
     return <img src="https://via.placeholder.com/400x400/eeeeec/B28612?text=Foto+Pendiente" alt="Placeholder" className={className} />;
   }
 
-  if (src.startsWith('http')) {
-    return <img src={src} alt={alt} className={className} onError={() => setError(true)} />;
-  }
+  // Si ya es una URL completa (http), usarla directamente
+  // Si es un public_id de Cloudinary, construir la URL
+  const imgSrc = src.startsWith('http') ? src : buildCloudinaryUrl(src);
 
-  return (
-    <CldImage 
-      src={src} 
-      alt={alt} 
-      width={800}
-      height={800}
-      className={className} 
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      onError={() => setError(true)} 
-    />
-  );
+  return <img src={imgSrc} alt={alt} className={className} onError={() => setError(true)} />;
 }
