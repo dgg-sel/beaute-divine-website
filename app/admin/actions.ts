@@ -2,25 +2,19 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
+import { env } from "@/lib/env";
 
 cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: env.cloudinaryCloudName,
+  api_key: env.cloudinaryApiKey,
+  api_secret: env.cloudinaryApiSecret,
 });
 
 async function uploadToCloudinary(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
-  const rootFolder = process.env.CLOUDINARY_ROOT_FOLDER;
-  const catalogFolder = process.env.CLOUDINARY_CATALOG_FOLDER;
-
-  if (!rootFolder || !catalogFolder) {
-    throw new Error("Faltan variables de entorno de Cloudinary (CLOUDINARY_ROOT_FOLDER o CLOUDINARY_CATALOG_FOLDER)");
-  }
-
-  const uploadPath = `${rootFolder}/${catalogFolder}`;
+  const uploadPath = `${env.cloudinaryRootFolder}/${env.cloudinaryCatalogFolder}`;
 
   return new Promise((resolve, reject) => {
     cloudinary.uploader.upload_stream(
