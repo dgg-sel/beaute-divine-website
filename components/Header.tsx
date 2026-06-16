@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth';
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
+  const isAdmin = session?.user?.email && adminEmails.includes(session.user.email.toLowerCase());
 
   return (
     <header className="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
@@ -41,6 +43,11 @@ export default async function Header() {
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/contacto">Contacto</Link>
         </div>
         <div className="hidden lg:flex items-center gap-4 shrink-0">
+          {isAdmin && (
+            <Link href="/admin" className="font-body-md text-sm uppercase tracking-widest text-[#D4AF37] hover:opacity-80 transition-opacity duration-300 whitespace-nowrap">
+              Admin
+            </Link>
+          )}
           {session ? (
             <Link href="/perfil" className="font-body-md text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
               Mi Cuenta
