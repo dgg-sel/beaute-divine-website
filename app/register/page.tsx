@@ -7,12 +7,18 @@ import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "", confirmPassword: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -101,6 +107,21 @@ export default function RegisterPage() {
               className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              placeholder="••••••••"
+              minLength={6}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+              Confirmar Contraseña
+            </label>
+            <input
+              type="password"
+              required
+              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               placeholder="••••••••"
               minLength={6}
             />

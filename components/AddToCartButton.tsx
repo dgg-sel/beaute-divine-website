@@ -29,7 +29,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   return (
     <button
       onClick={handleAdd}
-      className={`px-4 py-2 font-label-sm text-[10px] uppercase tracking-widest metallic-edge transition-opacity ${
+      className={`px-3 py-1.5 font-label-sm text-[9px] uppercase tracking-widest metallic-edge transition-opacity ${
         isAdded
           ? "bg-secondary-container text-on-secondary-container"
           : "bg-primary text-on-primary hover:opacity-90"

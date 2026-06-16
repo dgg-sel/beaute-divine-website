@@ -104,8 +104,8 @@ export default function CartDrawer() {
                 </div>
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-medium text-[#4A4238] line-clamp-2">{item.title}</h3>
-                    <p className="text-[#8C8377] text-sm">${item.price.toFixed(2)}</p>
+                    <h3 className="font-medium text-sm text-[#4A4238] line-clamp-2">{item.title}</h3>
+                    <p className="text-[#8C8377] text-sm mt-1">${item.price.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center border border-[#EAE5DF] rounded-lg">

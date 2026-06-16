@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileNav from '@/components/MobileNav';
 import RevealAnimator from '@/components/RevealAnimator';
+import Providers from '@/components/Providers';
 
 export const metadata = {
   title: 'BEAUTÉ DIVINE | Espace de Radiancia Sagrada',
@@ -21,11 +22,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
       </head>
       <body className="pb-20 lg:pb-0 bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
-        <Header />
-        {children}
-        <Footer />
-        <MobileNav />
-        <RevealAnimator />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+          <MobileNav />
+          <RevealAnimator />
+        </Providers>
       </body>
     </html>
   );

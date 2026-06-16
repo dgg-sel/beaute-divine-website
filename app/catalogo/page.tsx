@@ -99,7 +99,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
                 </div>
                 <h3 className="font-headline-md text-xl text-primary mb-2">{product.title}</h3>
                 <p className="font-body-md text-sm text-on-surface-variant flex-grow mb-6">{product.description}</p>
-                <div className="flex justify-between items-center pt-4 border-t border-primary/10">
+                <div className="flex justify-between items-center pt-4 border-t border-primary/10 gap-2">
                   <span className="font-label-sm text-sm text-on-surface tracking-widest">
                     {product.price ? `$${product.price.toFixed(2)}` : (product.tag || 'Consultar')}
                   </span>
