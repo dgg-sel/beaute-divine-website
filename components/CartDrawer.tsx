@@ -156,13 +156,20 @@ export default function CartDrawer() {
                 <button
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
-                  className="w-full bg-[#4A4238] text-white py-4 rounded-xl font-medium hover:bg-[#3A332C] transition-colors disabled:opacity-70 flex justify-center items-center"
+                  className="w-full bg-[#4A4238] text-white py-4 rounded-xl font-medium hover:bg-[#3A332C] transition-colors disabled:opacity-70 flex justify-center items-center mb-3"
                 >
                   {isCheckingOut ? (
                     <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     "Finalizar Compra"
                   )}
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  disabled={isCheckingOut}
+                  className="w-full bg-transparent border border-[#EAE5DF] text-[#4A4238] py-4 rounded-xl font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  Seguir Comprando
                 </button>
               </div>
             )}

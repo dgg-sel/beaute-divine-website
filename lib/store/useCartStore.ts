@@ -17,6 +17,8 @@ interface CartStore {
   clearCart: () => void;
   getTotal: () => number;
   getCartCount: () => number;
+  fetchUserCart: () => Promise<void>;
+  syncCart: () => Promise<void>;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -37,10 +39,12 @@ export const useCartStore = create<CartStore>()(
         } else {
           set({ items: [...currentItems, item] });
         }
+        get().syncCart();
       },
       
       removeItem: (id) => {
         set({ items: get().items.filter((i) => i.id !== id) });
+        get().syncCart();
       },
       
       updateQuantity: (id, quantity) => {
@@ -53,10 +57,12 @@ export const useCartStore = create<CartStore>()(
             i.id === id ? { ...i, quantity } : i
           ),
         });
+        get().syncCart();
       },
       
       clearCart: () => {
         set({ items: [] });
+        get().syncCart();
       },
       
       getTotal: () => {
@@ -65,10 +71,37 @@ export const useCartStore = create<CartStore>()(
       
       getCartCount: () => {
         return get().items.reduce((count, item) => count + item.quantity, 0);
+      },
+
+      fetchUserCart: async () => {
+        try {
+          const res = await fetch("/api/cart");
+          if (res.ok) {
+            const data = await res.json();
+            if (data.items) {
+              set({ items: data.items });
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching cart", error);
+        }
+      },
+
+      syncCart: async () => {
+        try {
+          // Si el usuario no está logueado, la API responderá 401 y no pasa nada.
+          await fetch("/api/cart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: get().items })
+          });
+        } catch (error) {
+          console.error("Error syncing cart", error);
+        }
       }
     }),
     {
-      name: 'cart-storage', // Nombre para localStorage
+      name: 'cart-storage',
     }
   )
 );
