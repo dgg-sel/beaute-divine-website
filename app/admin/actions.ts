@@ -3,6 +3,16 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import { env } from "@/lib/env";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+
+async function requireAdmin() {
+  const session = await getServerSession(authOptions);
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
+  if (!session?.user?.email || !adminEmails.includes(session.user.email.toLowerCase())) {
+    throw new Error("No autorizado");
+  }
+}
 
 cloudinary.config({
   cloud_name: env.cloudinaryCloudName,
@@ -33,6 +43,7 @@ async function uploadToCloudinary(file: File): Promise<string> {
 }
 
 export async function addCategory(formData: FormData) {
+  await requireAdmin();
   const name = formData.get("name") as string;
   const parentIdRaw = formData.get("parentId");
   
@@ -70,20 +81,24 @@ export async function addCategory(formData: FormData) {
 }
 
 export async function deleteCategory(id: string) {
+  await requireAdmin();
   await prisma.category.delete({ where: { id } });
   revalidatePath("/admin");
   revalidatePath("/catalogo");
 }
 
 export async function addProduct(formData: FormData) {
+  await requireAdmin();
   await upsertProduct(null, formData);
 }
 
 export async function editProduct(id: string, formData: FormData) {
+  await requireAdmin();
   await upsertProduct(id, formData);
 }
 
 export async function deleteProduct(id: string) {
+  await requireAdmin();
   await prisma.product.delete({ where: { id } });
   revalidatePath("/admin");
   revalidatePath("/catalogo");

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import ProductImage from "@/components/ProductImage";
+import ImageModal from "@/components/ImageModal";
 import Link from "next/link";
 import CategoryDropdown from "@/components/CategoryDropdown";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -87,11 +87,11 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
             )}
             {products.map((product) => (
               <article key={product.id} className="bg-surface border border-primary/10 p-6 flex flex-col product-card-hover soft-glow rounded-sm transition-transform duration-300 hover:-translate-y-2">
-                <div className="aspect-square bg-surface-container-low mb-6 overflow-hidden relative group rounded-sm">
-                  <ProductImage 
+                <div className="aspect-square bg-surface-container-low mb-6 overflow-hidden relative rounded-sm">
+                  <ImageModal 
                     src={product.image} 
                     alt={product.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    className="w-full h-full object-cover transition-transform duration-700" 
                   />
                   <div className="absolute top-4 left-4 bg-surface/80 luxury-blur px-3 py-1 rounded-full border border-primary/20">
                     <span className="text-[10px] font-label-sm text-primary uppercase tracking-widest">{product.category?.name || 'Sin Categoría'}</span>

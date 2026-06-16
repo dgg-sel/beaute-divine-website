@@ -9,10 +9,10 @@ export default async function Header() {
   return (
     <header className="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
       <nav className="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto">
-        <Link href="/" className="font-headline-md text-headline-md text-primary tracking-tighter hover:opacity-80 transition-all uppercase">
+        <Link href="/" className="font-headline-md text-headline-sm text-primary tracking-tighter hover:opacity-80 transition-all uppercase whitespace-nowrap shrink-0 mr-4">
           BEAUTÉ DIVINE ESPACE
         </Link>
-        <div className="hidden lg:flex items-center gap-8 font-body-md text-body-md uppercase tracking-widest">
+        <div className="hidden lg:flex items-center gap-5 font-body-md text-sm uppercase tracking-widest flex-1 justify-center">
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/quien-soy">Quién Soy</Link>
           <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/fascias">
@@ -40,13 +40,13 @@ export default async function Header() {
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/catalogo">Catálogo</Link>
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/contacto">Contacto</Link>
         </div>
-        <div className="hidden lg:flex items-center gap-6 ml-4">
+        <div className="hidden lg:flex items-center gap-4 shrink-0">
           {session ? (
-            <Link href="/perfil" className="font-body-md text-body-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
+            <Link href="/perfil" className="font-body-md text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
               Mi Cuenta
             </Link>
           ) : (
-            <Link href="/login" className="font-body-md text-body-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
+            <Link href="/login" className="font-body-md text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
               Iniciar Sesión
             </Link>
           )}

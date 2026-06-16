@@ -7,10 +7,11 @@ import AdminPanel from "@/components/AdminPanel";
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
   
-  // TEMPORAL: Bypass de seguridad para que puedas probar el panel sin tener configurado Google Login aún
-  // if (!session) {
-  //   redirect("/api/auth/signin");
-  // }
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
+  
+  if (!session?.user?.email || !adminEmails.includes(session.user.email.toLowerCase())) {
+    redirect("/");
+  }
 
   const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
   const products = await prisma.product.findMany({ 
