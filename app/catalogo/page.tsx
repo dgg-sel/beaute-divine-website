@@ -29,7 +29,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
   });
 
   return (
-    <main className="pt-24 pb-section-padding max-w-container-max mx-auto px-8">
+    <main className="pt-20 pb-section-padding max-w-container-max mx-auto px-8">
       {/* Hero Title Section */}
       <section className="mb-20 text-center md:text-left border-b border-primary/10 pb-12">
         <h1 className="font-display-lg text-headline-lg md:text-display-lg text-primary mb-6">Catálogo de Productos</h1>

@@ -4,7 +4,7 @@ export default function QuienSoyPage() {
   return (
     <main className="min-h-[884px]" data-stitch-vh="min-h-[884px]===min-h-screen">
       {/* Hero Section / Personal Intro */}
-      <section className="max-w-container-max mx-auto px-8 pt-24 pb-section-padding transition-all duration-1000 opacity-100 translate-y-0">
+      <section className="max-w-container-max mx-auto px-8 pt-20 pb-section-padding transition-all duration-1000 opacity-100 translate-y-0">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
           <div className="md:col-span-5 flex flex-col gap-8">
             <div className="relative group">

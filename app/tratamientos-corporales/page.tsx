@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function TratamientosCorporalesPage() {
   return (
-    <main className="pt-32">
+    <main className="pt-20">
       {/* Hero Section */}
       <section className="max-w-container-max mx-auto px-8 mb-16 text-center">
         <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-4 block">Servicios Especializados</span>

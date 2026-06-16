@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function NeuroFascialBalancePage() {
   return (
-    <main className="pt-32">
+    <main className="pt-20">
       {/* Hero Section */}
       <section className="max-w-container-max mx-auto px-8 py-16 text-center">
         <h1 className="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-12 italic">Neuro Fascial Balance</h1>

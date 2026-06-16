@@ -30,7 +30,7 @@ export default function PerfilPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] pt-32 pb-16 px-4">
+    <div className="min-h-screen bg-[#FDFBF7] pt-20 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-light text-[#4A4238] mb-8">Mi Cuenta</h1>
         
