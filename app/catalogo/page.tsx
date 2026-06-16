@@ -87,7 +87,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
             )}
             {products.map((product) => (
               <article key={product.id} className="bg-surface border border-primary/10 p-6 flex flex-col product-card-hover soft-glow rounded-sm transition-transform duration-300 hover:-translate-y-2">
-                <div className="aspect-square bg-surface-container-low mb-6 overflow-hidden relative rounded-sm">
+                <div className="aspect-[3/4] bg-surface-container-low mb-6 overflow-hidden relative rounded-sm">
                   <ImageModal 
                     src={product.image} 
                     alt={product.title} 
