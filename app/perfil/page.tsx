@@ -4,10 +4,12 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LogOut, User } from "lucide-react";
+import { useCartStore } from "@/lib/store/useCartStore";
 
 export default function PerfilPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const clearCart = useCartStore((state) => state.clearCart);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -60,7 +62,10 @@ export default function PerfilPage() {
             
             <div className="pt-8 mt-8 border-t border-[#EAE5DF]">
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => {
+                  clearCart();
+                  signOut({ callbackUrl: "/" });
+                }}
                 className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition-colors"
               >
                 <LogOut className="w-5 h-5" />
