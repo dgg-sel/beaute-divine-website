@@ -21,10 +21,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
       </head>
-      <body className="pb-20 lg:pb-0 bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+      <body className="flex flex-col min-h-screen pb-20 lg:pb-0 bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
         <Providers>
           <Header />
-          {children}
+          <div className="flex-1 flex flex-col">
+            {children}
+          </div>
           <Footer />
           <MobileNav />
           <RevealAnimator />
