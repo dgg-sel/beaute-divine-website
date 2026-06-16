@@ -80,7 +80,7 @@ export default function QuienSoyPage() {
  </div>
  </section>
  {/* Personal Narrative / Quote */}
- <section className="max-w-container-max mx-auto px-8 py-section-padding transition-all duration-1000 opacity-0 translate-y-10">
+ <section className="reveal max-w-container-max mx-auto px-8 py-section-padding">
  <div className="bg-surface-container-lowest p-12 md:p-24 relative overflow-hidden">
  <div className="absolute top-0 right-0 w-64 h-64 opacity-10">
  <img alt="Spa background texture" className="w-full h-full object-cover" data-alt="A macro close-up of a high-end luxury spa setup with smooth stones, a sprig of lavender, and a ceramic bowl of golden oil. The lighting is soft and golden, creating a warm, ethereal glow. The composition is minimalist and elegant, reflecting a serene holistic wellness environment with clean lines and pristine textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_umKJq2fAamRmUFiKBkjdNORAPiEXgx2lL6CLM2bIKtIzeuNSd933FSUwW_8jR5VJWhX131_GqTRw8W_bkBiJNaXCRv6n8Sp-jWjfOZSVcN9wSSr6SalaWpbzwOJtg7qHI4A7P0RyyEx2eXqKL4xXYhXa4hpHvYRynnE6-v7dIlxx0yeULRBgcV4K1PWU40bcLkQzKCHk_OLhf3gRDQPwzegwjUkE9GEZkT81MLLQOG-LSyfyeM9z48PVoPWmlDSyQtdl7krxf3E" />
@@ -98,7 +98,7 @@ export default function QuienSoyPage() {
  </div>
  </section>
  {/* Gallery / Aesthetic Grid */}
- <section className="max-w-container-max mx-auto px-8 pb-section-padding transition-all duration-1000 opacity-0 translate-y-10">
+ <section className="reveal max-w-container-max mx-auto px-8 pb-section-padding">
  <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px]">
  <div className="md:col-span-2 md:row-span-2 overflow-hidden">
  <img alt="Spa atmosphere" className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000" data-alt="A serene spa room bathed in natural sunlight filtering through sheer linen curtains. The interior features warm wood accents, white stone surfaces, and minimalist decor. A single treatment bed is perfectly prepared with plush white towels and a small wooden tray with aromatic herbs. The atmosphere is quiet, airy, and deeply peaceful." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOtJC3U85krHTV7_bfedsxAFFg3NWnLS3km5_Xcb42hl1mGfpmBnE73kKgOxT_7SPrJi9CRNMZTdJOOP0gLzNe-gEnfbMkoDXh2s5WoBX6EyJGuY4vqs3jyELim4-UK8VgwSIE_S6M8vni-PLyIqofbqXn-pdQnJbjYygDqJQc4DEzxEUfj3lguZ4sY0gPUQDM7-4YX4_tVl4NcY4M5j58bIQI8Ie1Q73HLrm6iWy5QnAnmUFw58DJWNVQnmfvvUDNtocoFA_AnSk" />
