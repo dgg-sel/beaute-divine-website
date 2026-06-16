@@ -63,7 +63,7 @@ export default function PerfilPage() {
             <div className="pt-8 mt-8 border-t border-[#EAE5DF]">
               <button
                 onClick={() => {
-                  clearCart();
+                  clearCart(false); // Vacía localmente pero no sobreescribe la base de datos
                   signOut({ callbackUrl: "/" });
                 }}
                 className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition-colors"

@@ -40,13 +40,13 @@ export default async function Header() {
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/catalogo">Catálogo</Link>
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/contacto">Contacto</Link>
         </div>
-        <div className="hidden lg:flex items-center gap-4 ml-4">
+        <div className="hidden lg:flex items-center gap-6 ml-4">
           {session ? (
-            <Link href="/perfil" className="text-sm font-medium text-[#8C8377] hover:text-[#4A4238]">
+            <Link href="/perfil" className="font-body-md text-body-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
               Mi Cuenta
             </Link>
           ) : (
-            <Link href="/login" className="text-sm font-medium text-[#8C8377] hover:text-[#4A4238]">
+            <Link href="/login" className="font-body-md text-body-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 whitespace-nowrap">
               Iniciar Sesión
             </Link>
           )}

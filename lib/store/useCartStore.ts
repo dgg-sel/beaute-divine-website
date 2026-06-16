@@ -14,7 +14,7 @@ interface CartStore {
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
-  clearCart: () => void;
+  clearCart: (sync?: boolean) => void;
   getTotal: () => number;
   getCartCount: () => number;
   fetchUserCart: () => Promise<void>;
@@ -60,9 +60,11 @@ export const useCartStore = create<CartStore>()(
         get().syncCart();
       },
       
-      clearCart: () => {
+      clearCart: (sync = true) => {
         set({ items: [] });
-        get().syncCart();
+        if (sync) {
+          get().syncCart();
+        }
       },
       
       getTotal: () => {
