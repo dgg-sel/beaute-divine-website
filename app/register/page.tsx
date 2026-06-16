@@ -55,8 +55,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-surface flex items-center justify-center p-4 pt-32 pb-20">
-      <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10">
+    <main className="min-h-[calc(100vh-80px)] bg-surface flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10 my-8">
         <div className="text-center mb-8 border-b border-primary/10 pb-6">
           <h1 className="font-display-lg text-headline-lg text-primary mb-2 uppercase tracking-widest">Crear Cuenta</h1>
           <p className="font-body-md text-sm text-on-surface-variant">Sumate a Beauté Divine Espace.</p>
@@ -76,6 +76,7 @@ export default function RegisterPage() {
             <input
               type="text"
               required
+              autoFocus
               className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
