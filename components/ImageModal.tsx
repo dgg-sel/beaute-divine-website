@@ -36,7 +36,7 @@ export default function ImageModal({ src, alt, className }: ImageModalProps) {
         onClick={() => setIsOpen(true)} 
         className="cursor-pointer h-full w-full relative group/modal"
       >
-        <ProductImage src={src} alt={alt} className={className} />
+        <ProductImage src={src} alt={alt} className={className || ""} />
         <div className="absolute inset-0 bg-black/0 group-hover/modal:bg-black/10 transition-colors duration-300 flex items-center justify-center">
           <div className="bg-white/80 p-3 rounded-full opacity-0 group-hover/modal:opacity-100 transform scale-75 group-hover/modal:scale-100 transition-all duration-300 shadow-lg">
             <ZoomIn className="w-6 h-6 text-[#4A4238]" />
