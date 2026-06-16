@@ -17,7 +17,7 @@ export default function Footer() {
           </div>
           <div className="text-on-surface-variant font-body-md text-xs opacity-70 text-center md:text-right">
             © 2026 Beauté Divine Espace. Todos los derechos reservados. <br/>
-            v{packageJson.version} | Desarrollado por DGG
+            v{packageJson.version} | <a href="https://wa.me/5491141771120?text=Me%20encant%C3%B3%20la%20p%C3%A1gina%20de%20Beaut%C3%A9%20Divine%20Espace!!%20Quiero%20saber%20m%C3%A1s..." target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">Desarrollado por DGG</a>
           </div>
         </div>
       </footer>
