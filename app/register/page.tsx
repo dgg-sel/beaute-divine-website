@@ -55,28 +55,28 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-[#EAE5DF]">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-light text-[#4A4238] mb-2">Crear Cuenta</h1>
-          <p className="text-[#8C8377]">Únite a Beauté Divine Espace y comienza tu viaje hacia el bienestar.</p>
+    <main className="min-h-screen bg-surface flex items-center justify-center p-4 pt-32 pb-20">
+      <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10">
+        <div className="text-center mb-8 border-b border-primary/10 pb-6">
+          <h1 className="font-display-lg text-headline-lg text-primary mb-2 uppercase tracking-widest">Crear Cuenta</h1>
+          <p className="font-body-md text-sm text-on-surface-variant">Sumate a Beauté Divine Espace.</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm">
+          <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+            <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
               Nombre Completo
             </label>
             <input
               type="text"
               required
-              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="Tu nombre"
@@ -84,13 +84,13 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+            <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
               Correo Electrónico
             </label>
             <input
               type="email"
               required
-              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="tu@correo.com"
@@ -98,13 +98,13 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+            <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
               Contraseña
             </label>
             <input
               type="password"
               required
-              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
@@ -113,13 +113,13 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+            <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
               Confirmar Contraseña
             </label>
             <input
               type="password"
               required
-              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               placeholder="••••••••"
@@ -130,19 +130,19 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#4A4238] text-white py-3 rounded-xl hover:bg-[#3A332C] transition-colors disabled:opacity-70 disabled:cursor-not-allowed font-medium"
+            className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
           >
-            {loading ? "Registrando..." : "Crear cuenta"}
+            {loading ? "Creando cuenta..." : "Registrarse"}
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm text-[#8C8377]">
+        <div className="mt-8 pt-6 border-t border-primary/10 text-center font-body-md text-sm text-on-surface-variant">
           ¿Ya tenés una cuenta?{" "}
-          <Link href="/login" className="text-[#4A4238] hover:underline font-medium">
-            Iniciá sesión aquí
+          <Link href="/login" className="text-primary hover:text-primary/80 transition-colors font-medium border-b border-primary/30 pb-0.5">
+            Iniciá sesión acá
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

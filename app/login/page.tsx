@@ -37,28 +37,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-[#EAE5DF]">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-light text-[#4A4238] mb-2">Bienvenido</h1>
-          <p className="text-[#8C8377]">Iniciá sesión para continuar en Beauté Divine Espace.</p>
+    <main className="min-h-screen bg-surface flex items-center justify-center p-4 pt-32 pb-20">
+      <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10">
+        <div className="text-center mb-8 border-b border-primary/10 pb-6">
+          <h1 className="font-display-lg text-headline-lg text-primary mb-2 uppercase tracking-widest">Bienvenido</h1>
+          <p className="font-body-md text-sm text-on-surface-variant">Iniciá sesión para continuar en Beauté Divine Espace.</p>
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm">
+          <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+            <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
               Correo Electrónico
             </label>
             <input
               type="email"
               required
-              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="tu@correo.com"
@@ -66,13 +66,13 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#4A4238] mb-2">
+            <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
               Contraseña
             </label>
             <input
               type="password"
               required
-              className="w-full px-4 py-3 rounded-xl border border-[#EAE5DF] focus:ring-2 focus:ring-[#D4C3B3] focus:border-transparent outline-none transition-all bg-[#FDFBF7]"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
@@ -82,23 +82,23 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#4A4238] text-white py-3 rounded-xl hover:bg-[#3A332C] transition-colors disabled:opacity-70 disabled:cursor-not-allowed font-medium"
+            className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
           >
             {loading ? "Ingresando..." : "Iniciar Sesión"}
           </button>
         </form>
 
-        <div className="mt-6 flex items-center justify-center space-x-4">
-          <div className="h-px bg-[#EAE5DF] flex-1"></div>
-          <span className="text-sm text-[#8C8377]">O continuá con</span>
-          <div className="h-px bg-[#EAE5DF] flex-1"></div>
+        <div className="mt-8 flex items-center justify-center space-x-4">
+          <div className="h-px bg-primary/10 flex-1"></div>
+          <span className="font-label-sm text-[10px] uppercase tracking-widest text-on-surface-variant">O continuá con</span>
+          <div className="h-px bg-primary/10 flex-1"></div>
         </div>
 
         <button
           onClick={() => signIn("google", { callbackUrl: "/" })}
-          className="mt-6 w-full flex items-center justify-center space-x-2 bg-white border border-[#EAE5DF] text-[#4A4238] py-3 rounded-xl hover:bg-gray-50 transition-colors"
+          className="mt-6 w-full flex items-center justify-center space-x-3 bg-surface border border-primary/20 text-primary py-3 rounded-sm hover:bg-primary/5 transition-colors font-label-sm text-[10px] uppercase tracking-widest"
         >
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
               fill="#4285F4"
@@ -119,13 +119,13 @@ export default function LoginPage() {
           <span>Google</span>
         </button>
 
-        <div className="mt-8 text-center text-sm text-[#8C8377]">
+        <div className="mt-8 pt-6 border-t border-primary/10 text-center font-body-md text-sm text-on-surface-variant">
           ¿No tenés una cuenta?{" "}
-          <Link href="/register" className="text-[#4A4238] hover:underline font-medium">
+          <Link href="/register" className="text-primary hover:text-primary/80 transition-colors font-medium border-b border-primary/30 pb-0.5">
             Registrate acá
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
