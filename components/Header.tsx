@@ -62,6 +62,11 @@ export default async function Header() {
             Reservar
           </Link>
         </div>
+        
+        {/* Mobile Cart */}
+        <div className="flex lg:hidden items-center ml-auto">
+          <CartDrawer />
+        </div>
       </nav>
     </header>
   );

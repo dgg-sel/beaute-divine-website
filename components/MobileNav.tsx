@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function MobileNav() {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (isMoreOpen) {
@@ -64,8 +66,17 @@ export default function MobileNav() {
             </div>
           </div>
           
-          <Link href="/catalogo" onClick={() => setIsMoreOpen(false)} className="hover:text-primary transition-colors border-b border-primary/10 pb-4">Catálogo</Link>
-          <Link href="/contacto" onClick={() => setIsMoreOpen(false)} className="hover:text-primary transition-colors">Contacto</Link>
+          <div className="pt-2">
+            {session ? (
+              <Link href="/perfil" onClick={() => setIsMoreOpen(false)} className="hover:text-primary transition-colors block border-t border-primary/10 pt-4 text-primary font-bold">
+                Mi Cuenta
+              </Link>
+            ) : (
+              <Link href="/login" onClick={() => setIsMoreOpen(false)} className="hover:text-primary transition-colors block border-t border-primary/10 pt-4 text-primary font-bold">
+                Iniciar Sesión
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </>
