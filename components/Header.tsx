@@ -1,6 +1,11 @@
 import Link from 'next/link';
+import CartDrawer from './CartDrawer';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
-export default function Header() {
+export default async function Header() {
+  const session = await getServerSession(authOptions);
+
   return (
     <header className="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
       <nav className="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto">
@@ -35,9 +40,21 @@ export default function Header() {
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/catalogo">Catálogo</Link>
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/contacto">Contacto</Link>
         </div>
-        <Link href="/contacto" className="hidden lg:inline-block bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center ml-4">
-          Reservar
-        </Link>
+        <div className="hidden lg:flex items-center gap-4 ml-4">
+          {session ? (
+            <Link href="/perfil" className="text-sm font-medium text-[#8C8377] hover:text-[#4A4238]">
+              Mi Cuenta
+            </Link>
+          ) : (
+            <Link href="/login" className="text-sm font-medium text-[#8C8377] hover:text-[#4A4238]">
+              Iniciar Sesión
+            </Link>
+          )}
+          <CartDrawer />
+          <Link href="/contacto" className="bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
+            Reservar
+          </Link>
+        </div>
       </nav>
     </header>
   );

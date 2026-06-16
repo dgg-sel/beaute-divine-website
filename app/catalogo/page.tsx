@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import ProductImage from "@/components/ProductImage";
 import Link from "next/link";
 import CategoryDropdown from "@/components/CategoryDropdown";
+import AddToCartButton from "@/components/AddToCartButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -102,9 +103,13 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
                   <span className="font-label-sm text-sm text-on-surface tracking-widest">
                     {product.price ? `$${product.price.toFixed(2)}` : (product.tag || 'Consultar')}
                   </span>
-                  <button className="bg-primary text-on-primary px-4 py-2 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity">
-                    Saber más
-                  </button>
+                  {product.price ? (
+                    <AddToCartButton product={{ id: product.id, title: product.title, price: product.price, image: product.image }} />
+                  ) : (
+                    <button className="bg-primary text-on-primary px-4 py-2 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity">
+                      Saber más
+                    </button>
+                  )}
                 </div>
               </article>
             ))}
