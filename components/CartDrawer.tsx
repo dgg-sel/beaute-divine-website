@@ -144,15 +144,12 @@ export default function CartDrawer() {
 
             {items.length > 0 && (
               <div className="p-6 border-t border-[#EAE5DF] bg-[#FDFBF7]">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-6">
                   <span className="text-[#8C8377]">Subtotal</span>
                   <span className="text-xl font-medium text-[#4A4238]">
                     ${getTotal().toFixed(2)}
                   </span>
                 </div>
-                <p className="text-xs text-[#8C8377] mb-6">
-                  Impuestos y envío calculados en el siguiente paso.
-                </p>
                 <button
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
