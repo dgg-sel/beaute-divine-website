@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function ContactoPage() {
   return (
-    <main className="bg-surface pt-24 lg:pt-32 pb-20 min-h-screen flex flex-col justify-center">
-      <div className="max-w-container-max mx-auto px-4 md:px-8 w-full">
+    <main className="bg-surface py-12 md:py-16 min-h-[calc(100vh-80px)] flex flex-col justify-center">
+      <div className="max-w-container-max mx-auto px-4 md:px-8 w-full mt-8 md:mt-0">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
