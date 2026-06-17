@@ -3,8 +3,8 @@
 Este archivo contiene reglas y decisiones importantes para que la Inteligencia Artificial tenga el contexto necesario al iniciar un nuevo chat o tarea en este proyecto.
 
 ## 1. Repositorio y Flujo de Git
-- **Rama de Desarrollo:** `main` (Aquí se hacen todos los cambios diarios, código nuevo y pruebas).
-- **Rama de Producción/Deploy:** `master` (El código se sube o se hace merge a esta rama únicamente cuando está listo para publicarse en vivo).
+- **Rama de Desarrollo:** `dev` (Aquí se hacen todos los cambios diarios, código nuevo y pruebas).
+- **Rama de Producción/Deploy:** `main` (El código se sube o se hace merge a esta rama únicamente cuando está listo para publicarse en vivo).
 
 ## 2. Infraestructura
 - **Hosting / Deploy:** El proyecto está vinculado y se despliega usando **Vercel**.

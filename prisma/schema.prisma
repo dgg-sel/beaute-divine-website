@@ -88,6 +88,7 @@ model Order {
   userId        String?
   user          User?       @relation(fields: [userId], references: [id])
   status        String      @default("PENDING") // PENDING, PAID, CANCELLED
+  channel       String      @default("ONLINE") // ONLINE, PRESENCIAL, OTRO
   total         Float
   paymentId     String?     // ID del pago en Mercado Pago
   createdAt     DateTime    @default(now())

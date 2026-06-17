@@ -138,3 +138,52 @@ async function upsertProduct(id: string | null, formData: FormData) {
   revalidatePath("/admin");
   revalidatePath("/catalogo");
 }
+
+export async function createManualUser(formData: FormData) {
+  await requireAdmin();
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  
+  if (!name || !email) return { error: "Nombre y email son requeridos." };
+
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (existingUser) return { error: "Ya existe un usuario con este email." };
+
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      role: "USER"
+    }
+  });
+
+  revalidatePath("/admin");
+}
+
+export async function createManualOrder(userId: string, items: { productId: string, quantity: number, price: number }[], channel: string) {
+  await requireAdmin();
+  
+  if (!userId || !items || items.length === 0) {
+    return { error: "Faltan datos para crear la orden." };
+  }
+
+  const total = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+  await prisma.order.create({
+    data: {
+      userId,
+      status: "PAID",
+      channel,
+      total,
+      items: {
+        create: items.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      }
+    }
+  });
+
+  revalidatePath("/admin");
+}

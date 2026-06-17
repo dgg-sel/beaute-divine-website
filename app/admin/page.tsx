@@ -19,10 +19,24 @@ export default async function AdminPage() {
  orderBy: { createdAt: 'desc' } 
  });
 
+ const users = await prisma.user.findMany({
+   include: {
+     orders: {
+       include: {
+         items: {
+           include: { product: true }
+         }
+       },
+       orderBy: { createdAt: 'desc' }
+     }
+   },
+   orderBy: { name: 'asc' }
+ });
+
  return (
  <div className="max-w-container-max mx-auto px-8 py-section-padding">
  <h1 className="font-headline-lg text-4xl mb-8 text-primary">Panel de Administración</h1>
- <AdminPanel products={products} categories={categories} />
+ <AdminPanel products={products} categories={categories} users={users} />
  </div>
  );
 }

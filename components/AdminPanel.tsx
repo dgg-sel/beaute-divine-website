@@ -4,10 +4,12 @@ import { useRouter } from "next/navigation";
 import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct } from "@/app/admin/actions";
 import type { Product, Category } from "@prisma/client";
 import ProductImage from "@/components/ProductImage";
+import AdminCustomerTab, { UserWithOrders } from "./AdminCustomerTab";
 
 type ProductWithCategory = Product & { category: Category | null };
 
-export default function AdminPanel({ products, categories }: { products: ProductWithCategory[], categories: Category[] }) {
+export default function AdminPanel({ products, categories, users }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[] }) {
+  const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES">("CATALOGO");
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,8 +89,26 @@ export default function AdminPanel({ products, categories }: { products: Product
   };
 
   return (
-    <div className="grid lg:grid-cols-12 gap-12">
-      <div className="lg:col-span-4 flex flex-col gap-8">
+    <div>
+      {/* Tabs Navigation */}
+      <div className="flex gap-4 mb-8 border-b border-primary/20 pb-4">
+        <button 
+          onClick={() => setActiveTab("CATALOGO")}
+          className={`font-label-sm uppercase tracking-widest px-4 py-2 transition-colors ${activeTab === "CATALOGO" ? "bg-primary text-on-primary" : "text-primary hover:bg-primary/10"}`}
+        >
+          Catálogo
+        </button>
+        <button 
+          onClick={() => setActiveTab("CLIENTES")}
+          className={`font-label-sm uppercase tracking-widest px-4 py-2 transition-colors ${activeTab === "CLIENTES" ? "bg-primary text-on-primary" : "text-primary hover:bg-primary/10"}`}
+        >
+          Clientes y Ventas
+        </button>
+      </div>
+
+      {activeTab === "CATALOGO" && (
+        <div className="grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4 flex flex-col gap-8">
         {/* Categories Section */}
         <section className="bg-surface-container-low p-6 rounded-sm soft-glow border border-primary/10">
           <h2 className="font-headline-md text-2xl mb-4 text-primary">Categorías</h2>
@@ -227,6 +247,13 @@ export default function AdminPanel({ products, categories }: { products: Product
             </form>
           </div>
         </div>
+      )}
+      {/* End of Catalogo Tab */}
+      </div>
+      )}
+
+      {activeTab === "CLIENTES" && (
+        <AdminCustomerTab users={users} products={products} />
       )}
     </div>
   );
