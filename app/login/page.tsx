@@ -8,10 +8,11 @@ import Link from "next/link";
 export default function LoginPage() {
  const router = useRouter();
  const [formData, setFormData] = useState({ email: "", password: "" });
- const [error, setError] = useState("");
- const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
- const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
  setLoading(true);
  setError("");
@@ -67,18 +68,30 @@ export default function LoginPage() {
  </div>
 
  <div>
- <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
- Contraseña
- </label>
- <input
- type="password"
- required
- className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
- value={formData.password}
- onChange={(e) => setFormData({ ...formData, password: e.target.value })}
- placeholder="••••••••"
- />
- </div>
+        <label className="block font-label-sm text-xs text-primary mb-2 uppercase tracking-widest">
+          Contraseña
+        </label>
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            required
+            className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface pr-12"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center"
+            tabIndex={-1}
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              {showPassword ? "visibility_off" : "visibility"}
+            </span>
+          </button>
+        </div>
+      </div>
 
  <button
  type="submit"
