@@ -15,6 +15,11 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID || "mock",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "mock",
       allowDangerousEmailAccountLinking: true,
+      authorization: {
+        params: {
+          prompt: "consent select_account",
+        },
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
