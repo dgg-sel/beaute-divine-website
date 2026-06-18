@@ -56,8 +56,8 @@ export default function ContactoPage() {
  </div>
  
  {/* Image replaced hero */}
- <div className="relative h-[240px] w-full rounded-2xl overflow-hidden shadow-md">
- <div className="absolute inset-0 bg-cover bg-center" data-alt="Serene spa environment" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjBvtDWzQa8pjYR2qBusDCIPuZLBWZ4sehvMM0WRaP1YCRNVZBLn1U4MkE6qwBMX1mGgprXrp7I1g6ineBXJ6aTl3qj1TsTf5MSc8uD4iqSKIdkxNCUPE-iRxMYioj1FOyl5dOlXuhYx5Ua7hcxg-3dkZl8eWXMksR7tGcjo6HftVjNMGUECx_rK2KU4ZU_v8XiOBPjoheG5JvQ5qejsGc3AJvIqE_tADytM9AwpgreK4QW9TIPth1W8A__RVS6EHU3ZTYCO00kwY')" }}></div>
+ <div className="relative h-[240px] md:h-[350px] w-full rounded-2xl overflow-hidden shadow-md">
+ <div className="absolute inset-0 bg-cover bg-center" data-alt="Serene spa environment" style={{ backgroundImage: "url('/img/contacto-camilla.jpg')" }}></div>
  </div>
  </div>
 
