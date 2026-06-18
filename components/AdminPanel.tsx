@@ -269,6 +269,16 @@ export default function AdminPanel({ products, categories, users }: { products: 
               
               <input name="tag" defaultValue={editingProduct?.tag || ''} placeholder="Etiqueta (ej: Consultar)" className="input-elegant py-2" />
               
+              <label className="flex items-center gap-2 cursor-pointer mt-2">
+                <input 
+                  type="checkbox" 
+                  name="isImported" 
+                  defaultChecked={editingProduct?.isImported || false} 
+                  className="w-4 h-4 text-primary border-primary/20 rounded focus:ring-primary focus:ring-offset-surface-container"
+                />
+                <span className="text-sm text-on-surface">Marcar como "Producto Importado"</span>
+              </label>
+              
               <div className="flex gap-2 mt-4 pt-4 border-t border-primary/10">
                 <button type="button" onClick={closeModal} className="border border-primary text-primary py-3 px-4 font-label-sm uppercase tracking-widest w-1/3">
                   Cancelar

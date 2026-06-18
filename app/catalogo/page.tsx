@@ -96,6 +96,12 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <div className="absolute top-4 left-4 bg-surface/80 luxury-blur px-3 py-1 rounded-full border border-primary/20">
  <span className="text-[10px] font-label-sm text-primary uppercase tracking-widest">{product.category?.name || 'Sin Categoría'}</span>
  </div>
+ {product.isImported && (
+ <div className="absolute top-4 right-4 bg-surface/80 luxury-blur px-2 py-1 rounded-full border border-primary/20 flex items-center gap-1 shadow-sm" title="Producto Importado">
+ <span className="material-symbols-outlined text-[14px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>flight</span>
+ <span className="text-[10px] font-label-sm text-primary uppercase tracking-widest hidden sm:inline">Importado</span>
+ </div>
+ )}
  </div>
  <h3 className="font-headline-md text-xl text-primary mb-2">{product.title}</h3>
  <p className="font-body-md text-sm text-on-surface-variant flex-grow mb-6">{product.description}</p>

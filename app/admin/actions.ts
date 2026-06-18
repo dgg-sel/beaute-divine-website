@@ -111,6 +111,7 @@ async function upsertProduct(id: string | null, formData: FormData) {
   const price = parseFloat(formData.get("price") as string) || 0;
   const stock = parseInt(formData.get("stock") as string) || 0;
   const tag = formData.get("tag") as string;
+  const isImported = formData.get("isImported") === "on";
 
   let image = formData.get("existingImage") as string || "";
 
@@ -122,6 +123,7 @@ async function upsertProduct(id: string | null, formData: FormData) {
     price,
     stock,
     tag,
+    isImported,
   };
 
   if (id) {

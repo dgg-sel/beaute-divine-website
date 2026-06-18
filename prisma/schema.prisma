@@ -87,6 +87,7 @@ model Product {
   price       Float?
   stock       Int       @default(0)
   tag         String? // Ej: Consultar, Exclusivo
+  isImported  Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   orderItems  OrderItem[]
