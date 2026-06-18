@@ -5,12 +5,14 @@ import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct } f
 import type { Product, Category } from "@prisma/client";
 import ProductImage from "@/components/ProductImage";
 import AdminCustomerTab, { UserWithOrders } from "./AdminCustomerTab";
+import { CldUploadWidget } from "next-cloudinary";
 
 type ProductWithCategory = Product & { category: Category | null };
 
 export default function AdminPanel({ products, categories, users }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[] }) {
   const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES">("CATALOGO");
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
+  const [uploadedImageId, setUploadedImageId] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryError, setCategoryError] = useState<string | null>(null);
@@ -46,11 +48,13 @@ export default function AdminPanel({ products, categories, users }: { products: 
 
   const openNewProductModal = () => {
     setEditingProduct(null);
+    setUploadedImageId("");
     setIsModalOpen(true);
   };
 
   const openEditModal = (p: ProductWithCategory) => {
     setEditingProduct(p);
+    setUploadedImageId(p.image || "");
     setIsModalOpen(true);
   };
 
@@ -73,6 +77,10 @@ export default function AdminPanel({ products, categories, users }: { products: 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!uploadedImageId) {
+      alert("Por favor selecciona una imagen.");
+      return;
+    }
     setIsUploading(true);
     const formData = new FormData(e.currentTarget);
     try {
@@ -224,9 +232,34 @@ export default function AdminPanel({ products, categories, users }: { products: 
               </select>
 
               <div className="flex flex-col gap-1">
-                <label className="text-sm text-on-surface-variant font-label-sm uppercase tracking-widest">{editingProduct ? 'Cambiar Foto (Opcional)' : 'Foto del Producto'}</label>
-                <input name="imageFile" type="file" accept="image/*" required={!editingProduct} className="input-elegant py-2 text-sm" />
-                <input type="hidden" name="existingImage" value={editingProduct?.image || ''} />
+                <label className="text-sm text-on-surface-variant font-label-sm uppercase tracking-widest">
+                  Foto del Producto
+                </label>
+                
+                {uploadedImageId && (
+                  <div className="mb-2 relative w-24 h-24 border border-primary/20 rounded-sm overflow-hidden bg-surface-container-low">
+                    <ProductImage src={uploadedImageId} alt="Preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
+                
+                <CldUploadWidget
+                  signatureEndpoint="/api/cloudinary/sign"
+                  onSuccess={(result) => {
+                    if (typeof result.info === 'object' && result.info !== null) {
+                      setUploadedImageId(result.info.public_id);
+                    }
+                  }}
+                >
+                  {({ open }) => {
+                    return (
+                      <button type="button" onClick={() => open()} className="border border-primary text-primary hover:bg-primary/5 py-2 px-4 font-label-sm uppercase tracking-widest text-sm text-center">
+                        {uploadedImageId ? 'Cambiar Imagen (Cloudinary)' : 'Elegir Imagen (Cloudinary)'}
+                      </button>
+                    );
+                  }}
+                </CldUploadWidget>
+                
+                <input type="hidden" name="existingImage" value={uploadedImageId} />
               </div>
 
               <div className="flex gap-4">

@@ -112,12 +112,7 @@ async function upsertProduct(id: string | null, formData: FormData) {
   const stock = parseInt(formData.get("stock") as string) || 0;
   const tag = formData.get("tag") as string;
 
-  const imageFile = formData.get("imageFile") as File | null;
   let image = formData.get("existingImage") as string || "";
-
-  if (imageFile && imageFile.size > 0) {
-    image = await uploadToCloudinary(imageFile);
-  }
 
   const data = {
     title,
