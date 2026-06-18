@@ -176,7 +176,10 @@ export default function AdminPanel({ products, categories, users }: { products: 
               {/* Details */}
               <div className="flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-bold text-lg leading-tight line-clamp-1" title={p.title}>{p.title}</h3>
+                  <h3 className="font-bold text-lg leading-tight line-clamp-1 flex items-center gap-2" title={p.title}>
+                    {p.title}
+                    {p.isImported && <span className="material-symbols-outlined text-sm text-primary" title="Importado">flight</span>}
+                  </h3>
                 </div>
                 <div className="mb-2">
                   <span className="text-[10px] bg-secondary-container/30 px-2 py-1 rounded-full text-primary whitespace-nowrap">
