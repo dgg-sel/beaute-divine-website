@@ -6,8 +6,13 @@ export default function FascialFitRemodelingPage() {
  {/* Hero Section */}
  <section className="max-w-container-max mx-auto px-8 py-16 text-center">
  <h1 className="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-12 italic">Fascial Fit Remodeling</h1>
- <div className="py-24 max-w-4xl mx-auto flex items-center justify-center">
- <h2 className="font-headline-lg text-4xl md:text-5xl text-primary text-center uppercase tracking-[0.2em] px-4">Próximamente</h2>
+ 
+ <div className="max-w-4xl mx-auto mb-16 rounded-2xl overflow-hidden shadow-lg border border-primary/10">
+   <img src="/img/fascial-fit.jpg" alt="Fascial Fit Remodeling Massage" className="w-full h-auto object-cover md:max-h-[600px]" />
+ </div>
+
+ <div className="py-8 max-w-4xl mx-auto flex items-center justify-center">
+ <h2 className="font-headline-lg text-3xl md:text-5xl text-primary text-center uppercase tracking-[0.2em] px-4">Próximamente</h2>
  </div>
  <div className="mt-12">
  <Link href="/fascias" className="bg-primary text-white px-10 py-4 font-label-sm text-label-sm uppercase hover:opacity-90 transition-all">Volver a Fascias</Link>
