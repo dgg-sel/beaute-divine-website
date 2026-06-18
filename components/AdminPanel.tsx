@@ -5,12 +5,14 @@ import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct } f
 import type { Product, Category } from "@prisma/client";
 import ProductImage from "@/components/ProductImage";
 import AdminCustomerTab, { UserWithOrders } from "./AdminCustomerTab";
+import { CldUploadWidget } from "next-cloudinary";
 
 type ProductWithCategory = Product & { category: Category | null };
 
 export default function AdminPanel({ products, categories, users }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[] }) {
   const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES">("CATALOGO");
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
+  const [uploadedImageId, setUploadedImageId] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryError, setCategoryError] = useState<string | null>(null);
@@ -46,11 +48,13 @@ export default function AdminPanel({ products, categories, users }: { products: 
 
   const openNewProductModal = () => {
     setEditingProduct(null);
+    setUploadedImageId("");
     setIsModalOpen(true);
   };
 
   const openEditModal = (p: ProductWithCategory) => {
     setEditingProduct(p);
+    setUploadedImageId(p.image || "");
     setIsModalOpen(true);
   };
 
@@ -73,19 +77,12 @@ export default function AdminPanel({ products, categories, users }: { products: 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsUploading(true);
-    const formData = new FormData(e.currentTarget);
-    
-    // Front-end validation for image
-    const fileInput = formData.get("imageFile") as File | null;
-    const urlInput = formData.get("imageUrl") as string | null;
-    const existing = formData.get("existingImage") as string | null;
-    
-    if (!editingProduct && (!fileInput || fileInput.size === 0) && (!urlInput || urlInput.trim() === "")) {
-      alert("Por favor selecciona una imagen o pega una URL de Cloudinary.");
-      setIsUploading(false);
+    if (!uploadedImageId) {
+      alert("Por favor selecciona una imagen.");
       return;
     }
+    setIsUploading(true);
+    const formData = new FormData(e.currentTarget);
     try {
       if (editingProduct) {
         await editProduct(editingProduct.id, formData);
@@ -239,18 +236,30 @@ export default function AdminPanel({ products, categories, users }: { products: 
                   Foto del Producto
                 </label>
                 
-                {editingProduct?.image && (
+                {uploadedImageId && (
                   <div className="mb-2 relative w-24 h-24 border border-primary/20 rounded-sm overflow-hidden bg-surface-container-low">
-                    <ProductImage src={editingProduct.image} alt="Preview" className="w-full h-full object-cover" />
+                    <ProductImage src={uploadedImageId} alt="Preview" className="w-full h-full object-cover" />
                   </div>
                 )}
                 
-                <input name="imageFile" type="file" accept="image/*" className="input-elegant py-2 text-sm" />
+                <CldUploadWidget
+                  signatureEndpoint="/api/cloudinary/sign"
+                  onSuccess={(result) => {
+                    if (typeof result.info === 'object' && result.info !== null) {
+                      setUploadedImageId(result.info.public_id);
+                    }
+                  }}
+                >
+                  {({ open }) => {
+                    return (
+                      <button type="button" onClick={() => open()} className="border border-primary text-primary hover:bg-primary/5 py-2 px-4 font-label-sm uppercase tracking-widest text-sm text-center">
+                        {uploadedImageId ? 'Cambiar Imagen (Cloudinary)' : 'Elegir Imagen (Cloudinary)'}
+                      </button>
+                    );
+                  }}
+                </CldUploadWidget>
                 
-                <div className="text-center text-xs text-on-surface-variant py-1">O si ya está en Cloudinary:</div>
-                <input name="imageUrl" type="text" placeholder="Pegar ID o URL de Cloudinary..." className="input-elegant py-2 text-sm" />
-
-                <input type="hidden" name="existingImage" value={editingProduct?.image || ''} />
+                <input type="hidden" name="existingImage" value={uploadedImageId} />
               </div>
 
               <div className="flex gap-4">
