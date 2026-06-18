@@ -253,7 +253,7 @@ export default function AdminPanel({ products, categories, users }: { products: 
                   {({ open }) => {
                     return (
                       <button type="button" onClick={() => open()} className="border border-primary text-primary hover:bg-primary/5 py-2 px-4 font-label-sm uppercase tracking-widest text-sm text-center">
-                        {uploadedImageId ? 'Cambiar Imagen (Cloudinary)' : 'Elegir Imagen (Cloudinary)'}
+                        {uploadedImageId ? 'Cambiar Imagen' : 'Elegir Imagen'}
                       </button>
                     );
                   }}
