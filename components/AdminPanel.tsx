@@ -9,7 +9,7 @@ import { CldUploadWidget } from "next-cloudinary";
 
 type ProductWithCategory = Product & { category: Category | null };
 
-export default function AdminPanel({ products, categories, users }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[] }) {
+export default function AdminPanel({ products, categories, users, uploadFolder }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[], uploadFolder: string }) {
   const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES">("CATALOGO");
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
   const [uploadedImageId, setUploadedImageId] = useState<string>("");
@@ -247,6 +247,12 @@ export default function AdminPanel({ products, categories, users }: { products: 
                 
                 <CldUploadWidget
                   signatureEndpoint="/api/cloudinary/sign"
+                  options={{
+                    folder: uploadFolder,
+                    multiple: false,
+                    maxFiles: 1,
+                    singleUploadAutoClose: true
+                  }}
                   onSuccess={(result) => {
                     if (typeof result.info === 'object' && result.info !== null) {
                       setUploadedImageId(result.info.public_id);

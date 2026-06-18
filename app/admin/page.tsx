@@ -33,10 +33,14 @@ export default async function AdminPage() {
    orderBy: { name: 'asc' }
  });
 
+  const uploadFolder = process.env.CLOUDINARY_CATALOG_FOLDER 
+    ? `${process.env.CLOUDINARY_ROOT_FOLDER}/${process.env.CLOUDINARY_CATALOG_FOLDER}`
+    : process.env.CLOUDINARY_ROOT_FOLDER;
+
  return (
  <div className="max-w-container-max mx-auto px-8 py-section-padding">
  <h1 className="font-headline-lg text-4xl mb-8 text-primary">Panel de Administración</h1>
- <AdminPanel products={products} categories={categories} users={users} />
+ <AdminPanel products={products} categories={categories} users={users} uploadFolder={uploadFolder || "beaute-divine-espace/catalogo"} />
  </div>
  );
 }
