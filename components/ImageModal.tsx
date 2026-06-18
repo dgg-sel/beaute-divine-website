@@ -22,12 +22,19 @@ export default function ImageModal({ src, alt, className }: ImageModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsOpen(false);
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      
+      return () => {
+        document.body.style.overflow = "auto";
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     } else {
       document.body.style.overflow = "auto";
     }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
   }, [isOpen]);
 
   return (
