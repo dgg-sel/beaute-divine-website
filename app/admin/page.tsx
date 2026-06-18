@@ -1,17 +1,17 @@
 import { getServerSession } from "next-auth/next";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { authOptions } from "@/lib/auth";
 import AdminPanel from "@/components/AdminPanel";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function AdminPage() {
  const session = await getServerSession(authOptions);
- 
- const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
- 
- if (!session?.user?.email || !adminEmails.includes(session.user.email.toLowerCase())) {
- redirect("/");
- }
+  
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
+  
+  if (!session?.user?.email || !adminEmails.includes(session.user.email.toLowerCase())) {
+    redirect("/login");
+  }
 
  const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
  const products = await prisma.product.findMany({ 
