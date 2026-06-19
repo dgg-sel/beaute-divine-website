@@ -48,16 +48,24 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  {/* Sidebar Filters */}
  <aside className="lg:col-span-3 space-y-8">
  <div className="border-b border-primary/20 pb-4 mb-6">
- <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Categorías</h2>
+ <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Filtros</h2>
  </div>
  
- <div className="lg:hidden flex flex-col gap-4">
- <CategoryDropdown categories={categories} currentCategoryId={searchParams.categoryId} currentImported={searchParams.imported} />
+ <div className="flex flex-col gap-6">
+ <div>
+ <h3 className="font-label-sm text-sm text-primary uppercase mb-3 tracking-widest">Origen</h3>
  <OriginDropdown currentCategoryId={searchParams.categoryId} currentImported={searchParams.imported} />
+ </div>
+
+ <div className="lg:hidden">
+ <h3 className="font-label-sm text-sm text-primary uppercase mb-3 tracking-widest">Categorías</h3>
+ <CategoryDropdown categories={categories} currentCategoryId={searchParams.categoryId} currentImported={searchParams.imported} />
+ </div>
  </div>
 
  {/* Desktop List */}
  <div className="hidden lg:flex flex-col gap-4 font-body-md border-l border-primary/10 pl-4">
+ <h3 className="font-label-sm text-sm text-primary uppercase mb-2 tracking-widest">Categorías</h3>
  <Link href={searchParams.imported ? `/catalogo?imported=${searchParams.imported}` : `/catalogo`} className={`text-left transition-colors ${!searchParams.categoryId ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
  Todas las categorías
  </Link>
@@ -74,23 +82,6 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  ))}
  </div>
  ))}
- </div>
-
- <div className="border-b border-primary/20 pb-4 mb-6 mt-8 hidden lg:block">
- <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Origen</h2>
- </div>
-
- {/* Desktop Origin Filters */}
- <div className="hidden lg:flex flex-col gap-4 font-body-md border-l border-primary/10 pl-4">
- <Link href={searchParams.categoryId ? `/catalogo?categoryId=${searchParams.categoryId}` : `/catalogo`} className={`text-left transition-colors ${!searchParams.imported || searchParams.imported === 'all' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
- Todos los orígenes
- </Link>
- <Link href={`/catalogo?imported=true${searchParams.categoryId ? `&categoryId=${searchParams.categoryId}` : ''}`} className={`text-left transition-colors ${searchParams.imported === 'true' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
- Importados
- </Link>
- <Link href={`/catalogo?imported=false${searchParams.categoryId ? `&categoryId=${searchParams.categoryId}` : ''}`} className={`text-left transition-colors ${searchParams.imported === 'false' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
- Nacionales
- </Link>
  </div>
 
  {/* Aesthetic Badge */}
