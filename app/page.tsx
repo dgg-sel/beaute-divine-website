@@ -76,7 +76,7 @@ export default function Home() {
  <div className="md:col-span-8 group relative overflow-hidden bg-surface rounded-sm soft-glow border border-primary/10 transition-transform duration-500 hover:-translate-y-2" id="fit">
  <div className="aspect-[16/9] md:aspect-auto md:h-full grid md:grid-cols-2">
  <div className="h-full">
- <img className="w-full h-full object-cover" alt="Fit massage" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt1daTWFViGVlrP-dm26oqq-qRBzJ1Q_Ukm4w74yZfCDN9TMSU4uaDs4A4yJ4tr_gQSmRUKg4qTFSdHs4jKaDr2m_0dfE_ocPEXVbiGY__b-Y-qFpd9fsTwkioyuRMpZehU6WzDrJexp6P1-g5dBEqntu5eqBei25b__1jkUviqdr5cTVe_SugQp3aHxT2SnW-urfJ5Ty73zSUmGRzK6ROupg46c443RmT5ibAFUE3mxwY2h-SH2RUcCJME6igicZCc0K7Jpbk8-4"/>
+ <img className="w-full h-full object-cover" alt="Fit massage" src="/img/landing-fascial-fit.png"/>
  </div>
  <div className="p-12 flex flex-col justify-center gap-4">
  <div className="bg-secondary-container w-fit px-3 py-1 rounded-full text-secondary font-label-sm text-xs">Exclusivo</div>
