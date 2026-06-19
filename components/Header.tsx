@@ -17,17 +17,6 @@ export default async function Header() {
         <div className="hidden lg:flex items-center gap-5 font-body-md text-sm uppercase tracking-widest flex-1 justify-center">
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/quien-soy">Quién Soy</Link>
           <div className="relative group">
-            <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/fascias">
-              Fascias
-              <span className="material-symbols-outlined text-sm">expand_more</span>
-            </Link>
-            <div className="absolute left-0 top-full mt-2 w-64 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
-              <Link href="/facial-sculpt" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Facial Sculpt</Link>
-              <Link href="/fascial-fit-remodeling" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Fascial Fit Remodeling</Link>
-              <Link href="/neuro-fascial-balance" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Neuro Fascial Balance</Link>
-            </div>
-          </div>
-          <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/servicios">
               Servicios
               <span className="material-symbols-outlined text-sm">expand_more</span>
@@ -37,6 +26,17 @@ export default async function Header() {
               <Link href="/tratamientos-faciales" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Tratamientos Faciales</Link>
               <Link href="/beauty-coaching" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Beauty Coaching</Link>
               <Link href="/terapias" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Terapias</Link>
+            </div>
+          </div>
+          <div className="relative group">
+            <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/fascias">
+              Fascias
+              <span className="material-symbols-outlined text-sm">expand_more</span>
+            </Link>
+            <div className="absolute left-0 top-full mt-2 w-64 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
+              <Link href="/facial-sculpt" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Facial Sculpt</Link>
+              <Link href="/fascial-fit-remodeling" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Fascial Fit Remodeling</Link>
+              <Link href="/neuro-fascial-balance" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Neuro Fascial Balance</Link>
             </div>
           </div>
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/catalogo">Catálogo</Link>

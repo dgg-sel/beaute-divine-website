@@ -48,21 +48,21 @@ export default function MobileNav() {
           <Link href="/quien-soy" onClick={() => setIsMoreOpen(false)} className="hover:text-primary transition-colors border-b border-primary/10 pb-4">Quién Soy</Link>
           
           <div className="flex flex-col gap-4 border-b border-primary/10 pb-4">
-            <span className="text-primary font-bold text-xl uppercase tracking-widest text-sm">Fascias</span>
-            <div className="flex flex-col gap-3 pl-4 text-lg font-body-md">
-              <Link href="/facial-sculpt" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Facial Sculpt</Link>
-              <Link href="/fascial-fit-remodeling" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Fascial Fit Remodeling</Link>
-              <Link href="/neuro-fascial-balance" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Neuro Fascial Balance</Link>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 border-b border-primary/10 pb-4">
             <span className="text-primary font-bold text-xl uppercase tracking-widest text-sm">Servicios</span>
             <div className="flex flex-col gap-3 pl-4 text-lg font-body-md">
               <Link href="/tratamientos-corporales" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Tratamientos Corporales</Link>
               <Link href="/tratamientos-faciales" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Tratamientos Faciales</Link>
               <Link href="/beauty-coaching" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Beauty Coaching</Link>
               <Link href="/terapias" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Terapias</Link>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4 border-b border-primary/10 pb-4">
+            <span className="text-primary font-bold text-xl uppercase tracking-widest text-sm">Fascias</span>
+            <div className="flex flex-col gap-3 pl-4 text-lg font-body-md">
+              <Link href="/facial-sculpt" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Facial Sculpt</Link>
+              <Link href="/fascial-fit-remodeling" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Fascial Fit Remodeling</Link>
+              <Link href="/neuro-fascial-balance" onClick={() => setIsMoreOpen(false)} className="text-on-surface-variant hover:text-primary transition-colors block py-2">Neuro Fascial Balance</Link>
             </div>
           </div>
           
