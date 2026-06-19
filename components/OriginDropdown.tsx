@@ -41,7 +41,7 @@ export default function OriginDropdown({
       <button 
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-surface border border-primary/20 text-on-surface-variant py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest text-[11px] outline-none focus:border-primary flex justify-between items-center shadow-sm hover:bg-surface-variant/30 transition-colors"
+        className="w-full bg-surface border border-primary/20 text-on-surface-variant py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest text-xs outline-none focus:border-primary flex justify-between items-center shadow-sm hover:bg-surface-variant/30 transition-colors"
       >
         <span>{currentOptionLabel}</span>
         <span className="material-symbols-outlined text-[20px] transition-transform duration-300" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }}>
