@@ -35,10 +35,7 @@ export default function Home() {
  <div className="grid md:grid-cols-2 gap-24 items-center">
  <div className="relative">
  <div className="aspect-[4/5] bg-secondary-container rounded-sm overflow-hidden soft-glow">
- <img className="w-full h-full object-cover" alt="Wellness studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1ZYXdhgBZEEfcjotM9kXaKtKF5_o2CDk3WzD6SRSN55tgx0HCxJ8Dpu4XDhICaQMNOFhsDPMTFnJODsAmrx-Gh5BPeBsZTMs_xy8J4wPILk2Rhz2qX9n2Y1cpOGnTcbtsWpw594IAAywodywleNwNTrv7cvMEGAJCR_IbELti_BnXwSVNtFFaGfgx1LS5Vx4aLcZbkiTrNOqRHu_aP_SnEzvnVIHfd9bmf3KN9Sgy8I_K4KpHRF7ul8s4FC7L0hhFwLAbih070Rc"/>
- </div>
- <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-tertiary-container/20 backdrop-blur-md border border-primary/20 flex items-center justify-center p-8 text-center">
- <p className="font-headline-md text-primary text-xl">Tu viaje comienza aquí.</p>
+ <img className="w-full h-full object-cover" alt="Wellness studio" src="/img/landing-espacio.png"/>
  </div>
  </div>
  <div className="flex flex-col gap-6">
