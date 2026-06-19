@@ -55,7 +55,7 @@ export default function OriginDropdown({
             {options.map((option) => (
               <li key={option.value}>
                 <button
-                  className={`w-full text-left px-4 py-3 font-label-sm uppercase tracking-widest text-xs transition-colors hover:bg-secondary-container/30 ${currentOptionValue === option.value ? 'text-primary bg-primary/5 font-bold' : 'text-on-surface-variant hover:text-primary'}`}
+                  className={`w-full text-left px-4 py-2.5 font-label-sm uppercase tracking-widest text-[11px] transition-colors hover:bg-secondary-container/30 ${currentOptionValue === option.value ? 'text-primary bg-primary/5 font-bold' : 'text-on-surface-variant hover:text-primary'}`}
                   onClick={() => {
                     setIsOpen(false);
                     router.push(option.value);
