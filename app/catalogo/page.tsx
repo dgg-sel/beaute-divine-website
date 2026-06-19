@@ -86,7 +86,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <p className="col-span-full text-on-surface-variant">No hay productos en esta categoría por el momento.</p>
  )}
  {products.map((product) => (
- <article key={product.id} className="bg-surface border border-primary/10 p-6 flex flex-col product-card-hover soft-glow rounded-sm transition-transform duration-300 hover:-translate-y-2">
+ <article key={product.id} className="bg-surface border border-primary/10 p-6 flex flex-col product-card-hover soft-glow rounded-sm transition-all duration-300 hover:-translate-y-2 active:scale-[0.98] active:shadow-inner">
  <div className="aspect-[3/4] bg-surface-container-low mb-6 overflow-hidden relative rounded-sm">
  <ImageModal 
  src={product.image} 
