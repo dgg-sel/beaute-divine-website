@@ -11,9 +11,6 @@ export default function ContactoPage() {
  <div className="lg:col-span-5 flex flex-col gap-8">
  <div className="">
  <h1 className="font-display-lg text-4xl lg:text-5xl text-primary mb-6">Contacto</h1>
- <p className="font-body-lg text-body-lg text-secondary">
- Encuentra tu centro. Estamos aquí para acompañarte en tu viaje hacia la radiancia sagrada y el bienestar holístico.
- </p>
  </div>
 
  {/* Info Cards */}
