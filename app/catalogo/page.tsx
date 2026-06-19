@@ -34,7 +34,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <section className="mb-20 text-center md:text-left border-b border-primary/10 pb-12">
  <h1 className="font-display-lg text-headline-lg md:text-display-lg text-primary mb-6">Catálogo de Productos</h1>
  <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
- Descubrí nuestra cuidada selección de productos para nutrir tu piel y alma. Fórmulas de alta cosmética y opciones para regalar bienestar.
+ Descubrí una exclusiva selección de productos para enriquecer tu ritual de belleza diario. Fórmulas de alta calidad diseñadas para cuidar tu piel y potenciar tu bienestar.
  </p>
  </section>
 
