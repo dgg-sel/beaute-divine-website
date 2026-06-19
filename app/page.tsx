@@ -46,16 +46,6 @@ export default function Home() {
  <br /><br />
  En Beauté Divine Espace te acompaño a través de tratamientos faciales, corporales y experiencias de bienestar diseñadas para realzar tu belleza natural y armonizar cuerpo y mente.
  </p>
- <div className="flex flex-col gap-4 mt-4">
- <div className="flex items-center gap-4">
- <span className="material-symbols-outlined text-primary">auto_awesome</span>
- <span className="font-body-md font-bold text-on-surface">Ingredientes Orgánicos Seleccionados</span>
- </div>
- <div className="flex items-center gap-4">
- <span className="material-symbols-outlined text-primary">spa</span>
- <span className="font-body-md font-bold text-on-surface">Rituales de Conexión Cuerpo-Mente</span>
- </div>
- </div>
  </div>
  </div>
  </div>
