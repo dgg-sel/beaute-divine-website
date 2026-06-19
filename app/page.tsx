@@ -97,8 +97,8 @@ export default function Home() {
  </div>
  {/* Energy Balance */}
  <div className="md:col-span-4 group bg-surface rounded-sm soft-glow border border-primary/10 p-8 flex flex-col gap-6 hover:bg-secondary-container/30 transition-colors">
- <div className="aspect-video bg-surface-container-high rounded-sm overflow-hidden">
- <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Healing crystals" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-vUuP7IUbrEwCNZCLOTV6gF_iiOzHnia3r430O5gVIu10dgZrIi9L80EXJpGj5sfhFNhTDGvu8jENga1e7Y2gFHOTeuyCjIZZuohm_XHAcdBoZVFRRMFtSqmveONIhljgWav8AnKYYJyQa-yQSsKtxT5_LuhwQOdxUB7SDWaFy42naiFGTfaW9gKKYmF1HIHIvW_ForWRWFlbUz8ijpoI0nRqhPaq7zRV27HKaVQGS8WpyCieoGX-EBZ2CPeqdkft7PhKtsZB-ns"/>
+ <div className="aspect-square bg-surface-container-high rounded-sm overflow-hidden">
+ <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Facial Sculpt" src="/img/landing-facial-sculpt.png"/>
  </div>
  <div>
  <h3 className="font-headline-md text-xl mb-2">Facial Sculpt</h3>
