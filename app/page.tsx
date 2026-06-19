@@ -91,7 +91,7 @@ export default function Home() {
  {/* Facial Rituals */}
  <div className="md:col-span-4 group bg-surface rounded-sm soft-glow border border-primary/10 p-8 flex flex-col gap-6 hover:bg-secondary-container/30 transition-colors">
  <div className="aspect-square bg-surface-container-high rounded-sm overflow-hidden">
- <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Facial treatment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQKWZVloZOQO1n-RaSGbSWUkWPw730bY0dpQ4bMPBM72CyDl0J0CgL8YlpVkzi-OTmZT4QRq3vYu6TpXPzAsm861Qlv66X4PGcDPXpJLovFnwwFU8yvC8lMreTAMcd7IxFQk9eP_SGXZ4JNWJ8JDDC-_tAx2CMcLMlnJirgwo1ZatlWhV9FvGZPunSiF6bjb28gnFDUmECqgoOepYjsgqBUvCOUk0NLAph5GIn09nol9ndsxpjaREJw8hxwvXWIbzs_UZ_SCqW1sc"/>
+ <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Neuro Fascial Balance" src="/img/landing-neuro-fascial.png"/>
  </div>
  <div>
  <h3 className="font-headline-md text-xl mb-2">Neuro Fascial Balance</h3>
