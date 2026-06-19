@@ -99,6 +99,16 @@ export async function editProduct(id: string, formData: FormData) {
 
 export async function deleteProduct(id: string) {
   await requireAdmin();
+  
+  const product = await prisma.product.findUnique({ where: { id } });
+  if (product?.image) {
+    try {
+      await cloudinary.uploader.destroy(product.image);
+    } catch (error) {
+      console.error("Failed to delete image from Cloudinary:", error);
+    }
+  }
+  
   await prisma.product.delete({ where: { id } });
   revalidatePath("/admin");
   revalidatePath("/catalogo");
