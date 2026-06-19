@@ -6,7 +6,7 @@ import RevealAnimator from '@/components/RevealAnimator';
 import Providers from '@/components/Providers';
 
 export const metadata = {
-  title: 'BEAUTÉ DIVINE | Espace de Radiancia Sagrada',
+  title: 'BEAUTÉ DIVINE ESPACE | Belleza Consciente',
   description: 'Una mirada consciente de la belleza.',
 };
 
