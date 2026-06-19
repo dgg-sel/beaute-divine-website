@@ -41,7 +41,7 @@ export default function OriginDropdown({
       <button 
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-surface border border-primary/20 text-primary py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest outline-none focus:border-primary flex justify-between items-center shadow-sm hover:bg-surface-variant/30 transition-colors"
+        className="w-full bg-surface border border-primary/20 text-on-surface-variant py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest outline-none focus:border-primary flex justify-between items-center shadow-sm hover:bg-surface-variant/30 transition-colors"
       >
         <span>{currentOptionLabel}</span>
         <span className="material-symbols-outlined text-[20px] transition-transform duration-300" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }}>
@@ -55,7 +55,7 @@ export default function OriginDropdown({
             {options.map((option) => (
               <li key={option.value}>
                 <button
-                  className={`w-full text-left px-4 py-2.5 font-label-sm uppercase tracking-widest text-[11px] transition-colors hover:bg-secondary-container/30 ${currentOptionValue === option.value ? 'text-primary bg-primary/5 font-bold' : 'text-on-surface-variant hover:text-primary'}`}
+                  className={`w-full text-left px-4 py-2.5 font-label-sm uppercase tracking-widest text-[11px] transition-colors hover:bg-secondary-container/30 ${currentOptionValue === option.value ? 'text-on-surface bg-secondary-container/30 font-bold' : 'text-on-surface-variant hover:text-on-surface'}`}
                   onClick={() => {
                     setIsOpen(false);
                     router.push(option.value);

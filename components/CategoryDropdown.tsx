@@ -53,7 +53,7 @@ export default function CategoryDropdown({
       <button 
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-surface border border-primary/20 text-primary py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest outline-none focus:border-primary flex justify-between items-center shadow-sm hover:bg-surface-variant/30 transition-colors"
+        className="w-full bg-surface border border-primary/20 text-on-surface-variant py-3 px-4 rounded-sm font-label-sm uppercase tracking-widest outline-none focus:border-primary flex justify-between items-center shadow-sm hover:bg-surface-variant/30 transition-colors"
       >
         <span className="truncate mr-2">{currentOptionLabel.replace('Ver todo en ', '')}</span>
         <span className="material-symbols-outlined text-[20px] transition-transform duration-300 shrink-0" style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }}>
@@ -68,8 +68,8 @@ export default function CategoryDropdown({
               <li key={`${option.value}-${option.label}`}>
                 <button
                   className={`w-full text-left py-2.5 font-label-sm uppercase tracking-widest text-[11px] transition-colors hover:bg-secondary-container/30 
-                    ${option.isHeader ? 'px-4 text-primary font-bold bg-primary/5 mt-2 border-t border-primary/10 pt-3' : option.isIndented ? 'px-8 text-on-surface-variant hover:text-primary' : 'px-4 text-on-surface-variant hover:text-primary'}
-                    ${currentOptionValue === option.value && !option.isHeader ? 'text-primary bg-primary/5 font-bold' : ''}
+                    ${option.isHeader ? 'px-4 text-primary font-bold bg-primary/5 mt-2 border-t border-primary/10 pt-3' : option.isIndented ? 'px-8 text-on-surface-variant hover:text-on-surface' : 'px-4 text-on-surface-variant hover:text-on-surface'}
+                    ${currentOptionValue === option.value && !option.isHeader ? 'text-on-surface bg-secondary-container/30 font-bold' : ''}
                   `}
                   onClick={() => {
                     setIsOpen(false);
