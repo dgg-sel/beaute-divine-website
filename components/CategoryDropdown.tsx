@@ -4,12 +4,16 @@ import { useRouter } from "next/navigation";
 
 export default function CategoryDropdown({ 
   categories, 
-  currentCategoryId 
+  currentCategoryId,
+  currentImported
 }: { 
   categories: { id: string, name: string, parentId?: string | null }[], 
-  currentCategoryId?: string 
+  currentCategoryId?: string,
+  currentImported?: string
 }) {
   const router = useRouter();
+  const qsImported = currentImported ? `&imported=${currentImported}` : '';
+  const base = currentImported ? `/catalogo?imported=${currentImported}` : `/catalogo`;
 
   return (
     <select 
@@ -17,19 +21,19 @@ export default function CategoryDropdown({
       onChange={(e) => {
         router.push(e.target.value);
       }}
-      defaultValue={currentCategoryId ? `/catalogo?categoryId=${currentCategoryId}` : "/catalogo"}
+      defaultValue={currentCategoryId ? `/catalogo?categoryId=${currentCategoryId}${qsImported}` : base}
     >
-      <option value="/catalogo">Todos</option>
+      <option value={base}>Todas las categorías</option>
       {categories.filter(c => !c.parentId).map(parent => {
         const children = categories.filter(child => child.parentId === parent.id);
         if (children.length === 0) {
-          return <option key={parent.id} value={`/catalogo?categoryId=${parent.id}`}>{parent.name}</option>;
+          return <option key={parent.id} value={`/catalogo?categoryId=${parent.id}${qsImported}`}>{parent.name}</option>;
         }
         return (
           <optgroup key={parent.id} label={parent.name}>
-            <option value={`/catalogo?categoryId=${parent.id}`}>Ver todo en {parent.name}</option>
+            <option value={`/catalogo?categoryId=${parent.id}${qsImported}`}>Ver todo en {parent.name}</option>
             {children.map(child => (
-              <option key={child.id} value={`/catalogo?categoryId=${child.id}`}>- {child.name}</option>
+              <option key={child.id} value={`/catalogo?categoryId=${child.id}${qsImported}`}>- {child.name}</option>
             ))}
           </optgroup>
         );

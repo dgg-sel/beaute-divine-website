@@ -2,24 +2,28 @@ import { prisma } from "@/lib/prisma";
 import ImageModal from "@/components/ImageModal";
 import Link from "next/link";
 import CategoryDropdown from "@/components/CategoryDropdown";
+import OriginDropdown from "@/components/OriginDropdown";
 import AddToCartButton from "@/components/AddToCartButton";
 
 export const dynamic = 'force-dynamic';
 
-export default async function CatalogoPage({ searchParams }: { searchParams: { categoryId?: string } }) {
+export default async function CatalogoPage({ searchParams }: { searchParams: { categoryId?: string, imported?: string } }) {
  const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
  
  let whereClause: any = {};
 
  if (searchParams.categoryId === 'uncategorized') {
- whereClause = { categoryId: null };
+ whereClause.categoryId = null;
  } else if (searchParams.categoryId) {
  const subCategories = categories.filter(c => c.parentId === searchParams.categoryId);
  const categoryIdsToInclude = [searchParams.categoryId, ...subCategories.map(c => c.id)];
- 
- whereClause = {
- categoryId: { in: categoryIdsToInclude }
- };
+ whereClause.categoryId = { in: categoryIdsToInclude };
+ }
+
+ if (searchParams.imported === 'true') {
+ whereClause.isImported = true;
+ } else if (searchParams.imported === 'false') {
+ whereClause.isImported = false;
  }
 
  const products = await prisma.product.findMany({ 
@@ -47,28 +51,46 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Categorías</h2>
  </div>
  
- <div className="lg:hidden">
- <CategoryDropdown categories={categories} currentCategoryId={searchParams.categoryId} />
+ <div className="lg:hidden flex flex-col gap-4">
+ <CategoryDropdown categories={categories} currentCategoryId={searchParams.categoryId} currentImported={searchParams.imported} />
+ <OriginDropdown currentCategoryId={searchParams.categoryId} currentImported={searchParams.imported} />
  </div>
 
  {/* Desktop List */}
  <div className="hidden lg:flex flex-col gap-4 font-body-md border-l border-primary/10 pl-4">
- <Link href="/catalogo" className={`text-left transition-colors ${!searchParams.categoryId ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
- Todos
+ <Link href={searchParams.imported ? `/catalogo?imported=${searchParams.imported}` : `/catalogo`} className={`text-left transition-colors ${!searchParams.categoryId ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+ Todas las categorías
  </Link>
  
  {categories.filter(c => !c.parentId).map(parent => (
  <div key={parent.id} className="flex flex-col gap-2">
- <Link href={`/catalogo?categoryId=${parent.id}`} className={`text-left transition-colors ${searchParams.categoryId === parent.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+ <Link href={`/catalogo?categoryId=${parent.id}${searchParams.imported ? `&imported=${searchParams.imported}` : ''}`} className={`text-left transition-colors ${searchParams.categoryId === parent.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
  {parent.name}
  </Link>
  {categories.filter(child => child.parentId === parent.id).map(child => (
- <Link key={child.id} href={`/catalogo?categoryId=${child.id}`} className={`text-left transition-colors text-sm ml-4 ${searchParams.categoryId === child.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+ <Link key={child.id} href={`/catalogo?categoryId=${child.id}${searchParams.imported ? `&imported=${searchParams.imported}` : ''}`} className={`text-left transition-colors text-sm ml-4 ${searchParams.categoryId === child.id ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
  ↳ {child.name}
  </Link>
  ))}
  </div>
  ))}
+ </div>
+
+ <div className="border-b border-primary/20 pb-4 mb-6 mt-8 hidden lg:block">
+ <h2 className="font-headline-md text-2xl text-primary uppercase tracking-widest">Origen</h2>
+ </div>
+
+ {/* Desktop Origin Filters */}
+ <div className="hidden lg:flex flex-col gap-4 font-body-md border-l border-primary/10 pl-4">
+ <Link href={searchParams.categoryId ? `/catalogo?categoryId=${searchParams.categoryId}` : `/catalogo`} className={`text-left transition-colors ${!searchParams.imported || searchParams.imported === 'all' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+ Todos los orígenes
+ </Link>
+ <Link href={`/catalogo?imported=true${searchParams.categoryId ? `&categoryId=${searchParams.categoryId}` : ''}`} className={`text-left transition-colors ${searchParams.imported === 'true' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+ Importados
+ </Link>
+ <Link href={`/catalogo?imported=false${searchParams.categoryId ? `&categoryId=${searchParams.categoryId}` : ''}`} className={`text-left transition-colors ${searchParams.imported === 'false' ? 'font-bold text-primary translate-x-1' : 'text-on-surface-variant hover:text-primary hover:translate-x-1'} transition-transform block`}>
+ Nacionales
+ </Link>
  </div>
 
  {/* Aesthetic Badge */}
