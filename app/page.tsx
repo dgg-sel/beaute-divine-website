@@ -82,7 +82,7 @@ export default function Home() {
  </div>
  <div>
  <h3 className="font-headline-md text-xl mb-2">Neuro Fascial Balance</h3>
- <p className="font-body-md text-on-surface-variant text-sm">Una experiencia corporal integrativa que combina masaje muscular, liberación miofascial y mobilizaciones funcionales, logrando movilidad, equilibrio y bienestar general.</p>
+ <p className="font-body-md text-on-surface-variant text-sm">Una experiencia corporal integrativa que combina masaje muscular, liberación miofascial y movilizaciones funcionales, logrando movilidad, equilibrio y bienestar general.</p>
  </div>
  </div>
  {/* Energy Balance */}
