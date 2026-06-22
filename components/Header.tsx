@@ -30,7 +30,7 @@ export default async function Header() {
           </div>
           <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/fascias">
-              Fascias
+              Neurofascial
               <span className="material-symbols-outlined text-sm">expand_more</span>
             </Link>
             <div className="absolute left-0 top-full mt-2 w-64 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
