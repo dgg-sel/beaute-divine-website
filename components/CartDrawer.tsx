@@ -39,7 +39,7 @@ export default function CartDrawer() {
         // Redirigir a Mercado Pago
         window.location.href = data.init_point;
       } else {
-        alert("Ocurrió un error al procesar el pago");
+        alert(data.message || "Ocurrió un error al procesar el pago");
       }
     } catch (error) {
       console.error(error);
@@ -124,7 +124,8 @@ export default function CartDrawer() {
                           </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="p-1 hover:bg-gray-50 text-[#8C8377]"
+                            disabled={item.quantity >= item.stock}
+                            className={`p-1 text-[#8C8377] ${item.quantity >= item.stock ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-50"}`}
                           >
                             <Plus className="w-4 h-4" />
                           </button>

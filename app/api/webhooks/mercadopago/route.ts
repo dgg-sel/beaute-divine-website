@@ -35,12 +35,12 @@ export async function POST(req: Request) {
           // Enviar mails de notificación
           try {
             const { sendEmail } = await import("@/lib/email");
-            const adminEmails = process.env.ADMIN_EMAILS || "dario.geier@gmail.com";
+            const salesEmails = process.env.SALES_EMAILS || "dario.geier@gmail.com";
             const itemsHtml = order.items.map(item => `<li>${item.quantity}x ${item.product.title} - $${item.price}</li>`).join("");
             
-            // Mail al administrador
+            // Mail al administrador / ventas
             await sendEmail({
-              to: adminEmails,
+              to: salesEmails,
               subject: `¡Nueva compra recibida! Orden #${order.id}`,
               html: `
                 <div style="font-family: Arial, sans-serif; padding: 20px;">

@@ -7,6 +7,7 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+  stock: number;
 }
 
 interface CartStore {
@@ -31,13 +32,17 @@ export const useCartStore = create<CartStore>()(
         const existingItem = currentItems.find((i) => i.id === item.id);
         
         if (existingItem) {
-          set({
-            items: currentItems.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-            ),
-          });
+          if (existingItem.quantity + item.quantity <= item.stock) {
+            set({
+              items: currentItems.map((i) =>
+                i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
+              ),
+            });
+          }
         } else {
-          set({ items: [...currentItems, item] });
+          if (item.quantity <= item.stock) {
+            set({ items: [...currentItems, item] });
+          }
         }
         get().syncCart();
       },

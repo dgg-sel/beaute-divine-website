@@ -4,10 +4,14 @@ import Link from "next/link";
 import CategoryDropdown from "@/components/CategoryDropdown";
 import OriginDropdown from "@/components/OriginDropdown";
 import AddToCartButton from "@/components/AddToCartButton";
+import { releaseExpiredReservations } from "@/lib/stock";
 
 export const dynamic = 'force-dynamic';
 
 export default async function CatalogoPage({ searchParams }: { searchParams: { categoryId?: string, imported?: string } }) {
+ // Limpieza perezosa de reservas vencidas
+ await releaseExpiredReservations();
+
  const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
  
  let whereClause: any = {};
@@ -120,7 +124,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  {product.price ? `$${product.price.toFixed(2)}` : (product.tag || 'Consultar')}
  </span>
  {product.price ? (
- <AddToCartButton product={{ id: product.id, title: product.title, price: product.price, image: product.image }} />
+ <AddToCartButton product={{ id: product.id, title: product.title, price: product.price, image: product.image, stock: product.stock }} />
  ) : (
  <Link href="/contacto" className="bg-primary text-on-primary px-4 py-2 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity">
  Saber más

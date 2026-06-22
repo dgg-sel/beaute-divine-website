@@ -22,25 +22,54 @@ export async function POST(req: Request) {
       );
     }
 
-    // Calcular el total verificando precios desde la DB
-    // Para simplificar, confiaremos en el precio del carrito temporalmente
-    // En producción se deben buscar los productos en Prisma y calcular
+    // Limpieza perezosa: liberar stock de órdenes viejas
+    const { releaseExpiredReservations } = await import("@/lib/stock");
+    await releaseExpiredReservations();
+
     const total = items.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
 
-    // Crear la orden en la BD
-    const order = await prisma.order.create({
-      data: {
-        total,
-        userId: (session?.user as any)?.id || null,
-        items: {
-          create: items.map((item: any) => ({
-            productId: item.id,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-        },
-      },
-    });
+    // Crear la orden en la BD y descontar stock atómicamente
+    let order;
+    try {
+      order = await prisma.$transaction(async (tx) => {
+        // 1. Verificamos stock
+        for (const item of items) {
+          const product = await tx.product.findUnique({ where: { id: item.id } });
+          if (!product || product.stock < item.quantity) {
+            throw new Error(`Sin stock suficiente para ${item.title}`);
+          }
+        }
+
+        // 2. Restamos stock (Reserva)
+        for (const item of items) {
+          await tx.product.update({
+            where: { id: item.id },
+            data: { stock: { decrement: item.quantity } }
+          });
+        }
+
+        // 3. Creamos orden
+        return await tx.order.create({
+          data: {
+            total,
+            userId: (session?.user as any)?.id || null,
+            items: {
+              create: items.map((item: any) => ({
+                productId: item.id,
+                quantity: item.quantity,
+                price: item.price,
+              })),
+            },
+          },
+        });
+      });
+    } catch (error: any) {
+      console.error("Error validando stock:", error);
+      return NextResponse.json(
+        { message: error.message || "Error al verificar stock" },
+        { status: 400 }
+      );
+    }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
