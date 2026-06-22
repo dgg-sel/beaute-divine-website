@@ -11,7 +11,7 @@ export default function Footer() {
           </div>
           <div className="flex flex-wrap justify-center gap-8 font-label-sm text-label-sm uppercase tracking-widest">
             <a className="text-on-surface-variant hover:text-primary transition-colors" href="https://youtube.com/@beautedivineespace" target="_blank" rel="noreferrer">YouTube</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="https://instagram.com/beautedivine" target="_blank" rel="noreferrer">Instagram</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors" href="https://instagram.com/beautedivine.espace" target="_blank" rel="noreferrer">Instagram</a>
           </div>
           <div className="text-on-surface-variant font-body-md text-xs opacity-70 text-center md:text-right">
             © 2026 Beauté Divine Espace. Todos los derechos reservados. <br/>
