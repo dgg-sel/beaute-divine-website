@@ -8,16 +8,15 @@ export default function FasciasPage() {
  <img className="w-full h-full object-cover" data-alt="A serene high-end spa treatment room with soft sunlight streaming through linen curtains. The atmosphere is ethereal and calming, featuring a minimalist massage table, soft gold accents on the walls, and a palette of warm off-whites and light wood tones. The focus is on luxury and professional holistic wellness in a modern Argentine setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSR_ThDa3izW0_2tcfejvho2vMpxSIEE5vPvKzwNu6oMSV1ad1EuUnHx_7kkXF69GXxX8Yi7Kl_tQB443DfvsoKznXlDeobmNGWEzzB8R6MwWrVlUdJ7V1EwrpC2qun2AEjx3YQ_iTLhBjepWIgcJqXQHBZyFTstjrWD_SAThTlnzZ13qCD5VZN8JiX3SrzaBEk_UZl5_veEp0o_f5qRG99awYGVmOM9wOEHN2ulSNnFCcKcTLuUHwhtjWqrRtEkj9GtN8EuDmkko" />
  <div className="absolute inset-0 hero-gradient"></div>
  </div>
- <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
- <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-6 block opacity-0 translate-y-4 animate-[fadeInUp_1s_ease_forwards]">Exclusividad en Argentina</span>
- <h1 className="font-display-lg text-display-lg text-on-surface mb-8 opacity-0 translate-y-4 animate-[fadeInUp_1s_0.2s_ease_forwards]">NEUROFASCIAL</h1>
- <p className="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto opacity-0 translate-y-4 animate-[fadeInUp_1s_0.4s_ease_forwards]">
- Tratamientos de nueva generación que integran trabajo miofascial, biomecánica, osteopatía y kinesiología para abordar el cuerpo y el rostro desde su estructura, favoreciendo el equilibrio, la postura, la movilidad y la armonía natural de los tejidos.
- </p>
- <div className="flex flex-col sm:flex-row gap-6 justify-center opacity-0 translate-y-4 animate-[fadeInUp_1s_0.6s_ease_forwards]">
- <Link className="bg-primary text-on-primary px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest hover:opacity-90 transition-all" href="#booking">Reservar Sesión</Link>
- <Link className="border border-primary text-primary px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest hover:bg-primary/5 transition-all" href="#method">Descubrir Técnica</Link>
- </div>
+  <div className="relative z-10 text-center px-6 max-w-4xl mx-auto w-full overflow-hidden">
+    <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-6 block opacity-0 translate-y-4 animate-[fadeInUp_1s_ease_forwards]">Exclusividad en Argentina</span>
+    <h1 className="font-headline-lg text-5xl md:text-display-lg text-on-surface mb-8 opacity-0 translate-y-4 animate-[fadeInUp_1s_0.2s_ease_forwards] break-words">Neurofascial</h1>
+    <p className="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto opacity-0 translate-y-4 animate-[fadeInUp_1s_0.4s_ease_forwards]">
+      Tratamientos de nueva generación que integran trabajo miofascial, biomecánica, osteopatía y kinesiología para abordar el cuerpo y el rostro desde su estructura, favoreciendo el equilibrio, la postura, la movilidad y la armonía natural de los tejidos.
+    </p>
+    <div className="flex flex-col sm:flex-row gap-6 justify-center opacity-0 translate-y-4 animate-[fadeInUp_1s_0.6s_ease_forwards] w-full max-w-xs mx-auto sm:max-w-none">
+      <Link className="bg-primary text-on-primary px-10 py-5 font-label-sm text-label-sm uppercase tracking-widest hover:opacity-90 transition-all w-full sm:w-auto" href="#booking">Reservar Sesión</Link>
+    </div>
  </div>
  </header>
 
