@@ -54,7 +54,7 @@ export default function MobileNav() {
           <Link href="/quien-soy" className="hover:text-primary transition-colors border-b border-primary/10 pb-4">Quién Soy</Link>
           
           <div className="flex flex-col gap-4 border-b border-primary/10 pb-4">
-            <span className="text-primary font-bold text-xl uppercase tracking-widest text-sm">Servicios</span>
+            <Link href="/servicios" className="text-primary font-bold text-xl uppercase tracking-widest text-sm hover:opacity-80 transition-opacity block w-full text-left">Servicios</Link>
             <div className="flex flex-col gap-3 pl-4 text-lg font-body-md">
               <Link href="/tratamientos-corporales" className="text-on-surface-variant hover:text-primary transition-colors block py-2">Tratamientos Corporales</Link>
               <Link href="/tratamientos-faciales" className="text-on-surface-variant hover:text-primary transition-colors block py-2">Tratamientos Faciales</Link>
@@ -64,7 +64,7 @@ export default function MobileNav() {
           </div>
 
           <div className="flex flex-col gap-4 border-b border-primary/10 pb-4">
-            <span className="text-primary font-bold text-xl uppercase tracking-widest text-sm">Fascias</span>
+            <Link href="/fascias" className="text-primary font-bold text-xl uppercase tracking-widest text-sm hover:opacity-80 transition-opacity block w-full text-left">Fascias</Link>
             <div className="flex flex-col gap-3 pl-4 text-lg font-body-md">
               <Link href="/facial-sculpt" className="text-on-surface-variant hover:text-primary transition-colors block py-2">Facial Sculpt</Link>
               <Link href="/fascial-fit-remodeling" className="text-on-surface-variant hover:text-primary transition-colors block py-2">Fascial Fit Remodeling</Link>
