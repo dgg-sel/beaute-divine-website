@@ -20,13 +20,60 @@ export async function POST(req: Request) {
         const orderId = paymentData.external_reference;
 
         if (orderId) {
-          await prisma.order.update({
+          const order = await prisma.order.update({
             where: { id: orderId },
             data: {
               status: "PAID",
               paymentId: paymentData.id?.toString(),
             },
+            include: {
+              user: true,
+              items: { include: { product: true } }
+            }
           });
+
+          // Enviar mails de notificación
+          try {
+            const { sendEmail } = await import("@/lib/email");
+            const adminEmails = process.env.ADMIN_EMAILS || "dario.geier@gmail.com";
+            const itemsHtml = order.items.map(item => `<li>${item.quantity}x ${item.product.title} - $${item.price}</li>`).join("");
+            
+            // Mail al administrador
+            await sendEmail({
+              to: adminEmails,
+              subject: `¡Nueva compra recibida! Orden #${order.id}`,
+              html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                  <h2 style="color: #c49e62;">¡Nueva Compra Confirmada!</h2>
+                  <p>Se ha registrado un nuevo pago exitoso a través de Mercado Pago.</p>
+                  ${order.user?.name ? `<p><strong>Cliente:</strong> ${order.user.name} (${order.user.email})</p>` : ""}
+                  <h3>Detalle de la orden:</h3>
+                  <ul>${itemsHtml}</ul>
+                  <p><strong>Total:</strong> $${order.total}</p>
+                </div>
+              `
+            });
+
+            // Mail al cliente (si está registrado)
+            if (order.user?.email) {
+              await sendEmail({
+                to: order.user.email,
+                subject: `Tu compra en Beauté Divine Espace fue confirmada`,
+                html: `
+                  <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #c49e62;">¡Gracias por tu compra!</h2>
+                    <p>Tu pago se ha procesado con éxito y estamos preparando tu pedido.</p>
+                    <h3>Resumen de tu pedido:</h3>
+                    <ul>${itemsHtml}</ul>
+                    <p><strong>Total pagado:</strong> $${order.total}</p>
+                    <p>Nos pondremos en contacto contigo a la brevedad.</p>
+                  </div>
+                `
+              });
+            }
+          } catch (error) {
+            console.error("Error enviando email de confirmación:", error);
+          }
         }
       }
     }
