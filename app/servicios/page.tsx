@@ -6,9 +6,12 @@ export default function ServiciosPage() {
  {/* Hero Section */}
  <section className="max-w-container-max mx-auto px-8 mb-24 text-center">
  <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-4 block">Nuestras Experiencias</span>
- <h1 className="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-6 italic">Rituales de Belleza Sagrada</h1>
+ <h1 className="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-6 italic">Un espacio pensado para cuidarte</h1>
+ <p className="max-w-2xl mx-auto font-body-lg text-body-lg text-on-surface-variant mb-4">
+ Beauté Divine Espace nace del deseo de ofrecer una atención cercana, personalizada y profesional, donde cada tratamiento se adapta a vos y a tus necesidades.
+ </p>
  <p className="max-w-2xl mx-auto font-body-lg text-body-lg text-on-surface-variant">
- Descubra una curación de tratamientos diseñados para armonizar su ser exterior con su paz interior. Un santuario donde la estética moderna se encuentra con el bienestar holístico.
+ Un refugio de calma y cuidado, donde cada detalle está pensado para brindarte bienestar, acompañarte y hacer de cada visita, una experiencia creada especialmente para vos.
  </p>
  </section>
  {/* Services Bento Grid */}
