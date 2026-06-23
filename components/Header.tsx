@@ -14,7 +14,7 @@ export default async function Header() {
         <Link href="/" className="font-headline-md text-headline-sm text-primary tracking-tighter hover:opacity-80 transition-all uppercase whitespace-nowrap shrink-0 mr-4">
           BEAUTÉ DIVINE ESPACE
         </Link>
-        <div className="hidden lg:flex items-center gap-5 font-body-md text-sm uppercase tracking-widest flex-1 justify-center">
+        <div className="hidden lg:flex items-center gap-10 font-body-md text-sm uppercase tracking-widest flex-1 justify-center">
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/quien-soy">Quién Soy</Link>
           <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/servicios">
