@@ -120,9 +120,16 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <h3 className="font-headline-md text-xl text-primary mb-2">{product.title}</h3>
  <p className="font-body-md text-sm text-on-surface-variant flex-grow mb-6">{product.description}</p>
  <div className="flex justify-between items-center pt-4 border-t border-primary/10 gap-2">
+ <div className="flex flex-col">
  <span className="font-label-sm text-sm text-on-surface tracking-widest">
  {product.price ? `$${product.price.toFixed(2)}` : (product.tag || 'Consultar')}
  </span>
+ {product.price ? (
+ <span className="text-[10px] text-on-surface-variant/70 mt-0.5">
+ ${(product.price / 1.21).toFixed(2)} sin impuestos
+ </span>
+ ) : null}
+ </div>
  {product.price ? (
  <AddToCartButton product={{ id: product.id, title: product.title, price: product.price, image: product.image, stock: product.stock }} />
  ) : (
