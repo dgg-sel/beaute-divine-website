@@ -59,7 +59,7 @@ export default function ServiceCard({ title, shortDescription, longDescription }
 
       {isModalOpen && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           onClick={() => setIsModalOpen(false)}
         >
           <div 
@@ -80,12 +80,12 @@ export default function ServiceCard({ title, shortDescription, longDescription }
               </div>
             </div>
             <div className="p-6 md:p-8 border-t border-primary/10 bg-surface-container-low flex justify-end">
-               <Link 
-                  href="/contacto" 
+               <button 
+                  onClick={() => setIsModalOpen(false)}
                   className="bg-primary text-white font-label-sm text-[10px] uppercase tracking-widest px-6 py-3 hover:opacity-90 transition-opacity"
                >
-                 Consultar
-               </Link>
+                 Cerrar
+               </button>
             </div>
           </div>
         </div>
