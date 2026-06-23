@@ -7,9 +7,11 @@ interface ServiceCardProps {
   title: string;
   shortDescription: string;
   longDescription: React.ReactNode;
+  imageSrc?: string;
+  id?: string;
 }
 
-export default function ServiceCard({ title, shortDescription, longDescription }: ServiceCardProps) {
+export default function ServiceCard({ title, shortDescription, longDescription, imageSrc, id }: ServiceCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Close modal on ESC key
@@ -38,7 +40,12 @@ export default function ServiceCard({ title, shortDescription, longDescription }
 
   return (
     <>
-      <div className="bg-surface-container-low gold-border p-8 service-card flex flex-col h-full">
+      <div id={id} className="bg-surface-container-low gold-border p-8 service-card flex flex-col h-full scroll-mt-32">
+        {imageSrc && (
+          <div className="mb-6 -mx-4 -mt-4 overflow-hidden shadow-md">
+            <img src={imageSrc} alt={title} className="w-full h-48 object-cover hover:scale-105 transition-transform duration-700" />
+          </div>
+        )}
         <h3 className="font-headline-md text-headline-md mb-4 text-primary">{title}</h3>
         <p className="font-body-md text-body-md text-on-surface-variant grow">{shortDescription}</p>
         <div className="flex items-center justify-between mt-8 border-t border-primary/10 pt-4">
