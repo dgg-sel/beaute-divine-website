@@ -10,11 +10,11 @@ export default async function Header() {
 
   return (
     <header className="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
-      <nav className="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto gap-12">
-        <Link href="/" className="font-headline-md text-headline-sm text-primary tracking-tighter hover:opacity-80 transition-all uppercase whitespace-nowrap shrink-0">
+      <nav className="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto gap-4">
+        <Link href="/" className="font-headline-md text-xl text-primary tracking-tighter hover:opacity-80 transition-all uppercase whitespace-nowrap shrink-0">
           BEAUTÉ DIVINE ESPACE
         </Link>
-        <div className="hidden lg:flex items-center gap-10 font-body-md text-sm uppercase tracking-widest flex-1 justify-center">
+        <div className="hidden lg:flex items-center gap-6 font-body-md text-[13px] uppercase tracking-widest flex-1 justify-center">
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/quien-soy">Quién Soy</Link>
           <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/servicios">
