@@ -87,9 +87,16 @@ export default function TratamientosCorporalesPage() {
  </div>
  </div>
 
- <div className="bg-surface-container-low gold-border p-8 service-card flex flex-col">
+ <div className="bg-surface-container-low gold-border p-8 service-card flex flex-col md:col-span-2">
  <h3 className="font-headline-md text-headline-md mb-4 text-primary">Day Spa</h3>
- <p className="font-body-md text-body-md text-on-surface-variant grow">Una experiencia completa de relajación, cuidado y bienestar.</p>
+ <div className="font-body-md text-body-md text-on-surface-variant grow space-y-4">
+   <p className="font-bold text-primary">Una experiencia integral de bienestar, recuperación corporal y revitalización facial</p>
+   <p>Day Spa es una experiencia diseñada para quienes desean regalarse un momento de cuidado profundo, combinando bienestar corporal y revitalización facial en una misma sesión.</p>
+   <p>La experiencia incluye un masaje descontracturante corporal completo para liberar tensiones musculares, una sesión de presoterapia secuencial que favorece la circulación y la sensación de ligereza en las piernas, y un masaje facial rejuvenecedor orientado a revitalizar la expresión, mejorar la luminosidad de la piel y favorecer una apariencia más descansada.</p>
+   <p>La combinación de estas técnicas permite disfrutar de una experiencia completa de relajación, recuperación corporal y cuidado facial, favoreciendo una sensación integral de bienestar.</p>
+   <p>Más que un tratamiento, Day Spa es una invitación a hacer una pausa, reconectar con uno mismo y dedicar un tiempo de calidad al cuidado personal.</p>
+   <p>Ideal para quienes desean desconectar del estrés cotidiano, recuperar energía y disfrutar de una experiencia completa de bienestar y autocuidado.</p>
+ </div>
  <div className="flex items-center justify-between mt-8 border-t border-primary/10 pt-4">
  <Link href="/contacto" className="font-label-sm text-[10px] uppercase text-on-surface-variant tracking-widest hover:text-primary transition-colors">Consultar</Link>
  </div>
