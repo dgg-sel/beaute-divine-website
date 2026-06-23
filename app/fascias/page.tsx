@@ -117,7 +117,7 @@ export default function FasciasPage() {
  Solicitar Turno
  </button>
  </form>
- <p className="font-label-sm text-label-sm text-on-surface-variant opacity-60">Ubicado en Palermo Soho, Buenos Aires.</p>
+ <p className="font-label-sm text-label-sm text-on-surface-variant opacity-60">Ubicado en Acassuso, San Isidro.</p>
  </div>
  </section>
  </main>
