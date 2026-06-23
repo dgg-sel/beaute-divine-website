@@ -100,7 +100,7 @@ export default function FasciasPage() {
  <div className="max-w-2xl mx-auto">
  <h2 className="font-headline-lg text-headline-lg mb-6">Comienza tu transformación hoy.</h2>
  <p className="font-body-md text-body-md text-on-surface-variant mb-12">
- Reserva tu cita para una evaluación personalizada y descubre los beneficios de nuestros tratamientos.
+ Reservá tu turno para una evaluación personalizada y descubrí los beneficios de nuestros tratamientos.
  </p>
  <form action="https://formsubmit.co/marcelahilu@hotmail.com" method="POST" className="space-y-8 text-left max-w-md mx-auto mb-12">
  <input type="hidden" name="_subject" value="Nuevo mensaje de contacto - Beauté Divine" />
