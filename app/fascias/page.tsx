@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import neurofascialImg from '@/img/Neurofascial.jpeg';
 
 export default function FasciasPage() {
  return (
  <main>
  <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
  <div className="absolute inset-0 z-0">
- <img className="w-full h-full object-cover" data-alt="A serene high-end spa treatment room with soft sunlight streaming through linen curtains. The atmosphere is ethereal and calming, featuring a minimalist massage table, soft gold accents on the walls, and a palette of warm off-whites and light wood tones. The focus is on luxury and professional holistic wellness in a modern Argentine setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSR_ThDa3izW0_2tcfejvho2vMpxSIEE5vPvKzwNu6oMSV1ad1EuUnHx_7kkXF69GXxX8Yi7Kl_tQB443DfvsoKznXlDeobmNGWEzzB8R6MwWrVlUdJ7V1EwrpC2qun2AEjx3YQ_iTLhBjepWIgcJqXQHBZyFTstjrWD_SAThTlnzZ13qCD5VZN8JiX3SrzaBEk_UZl5_veEp0o_f5qRG99awYGVmOM9wOEHN2ulSNnFCcKcTLuUHwhtjWqrRtEkj9GtN8EuDmkko" />
+ <img className="w-full h-full object-cover" data-alt="A serene high-end spa treatment room with soft sunlight streaming through linen curtains. The atmosphere is ethereal and calming, featuring a minimalist massage table, soft gold accents on the walls, and a palette of warm off-whites and light wood tones. The focus is on luxury and professional holistic wellness in a modern Argentine setting." src={neurofascialImg.src} />
  <div className="absolute inset-0 hero-gradient"></div>
  </div>
   <div className="relative z-10 text-center px-6 max-w-4xl mx-auto w-full overflow-hidden">
