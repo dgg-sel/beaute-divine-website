@@ -102,21 +102,9 @@ export default function FasciasPage() {
  <p className="font-body-md text-body-md text-on-surface-variant mb-12">
  Reservá tu turno para una evaluación personalizada y descubrí los beneficios de nuestros tratamientos.
  </p>
- <form action="https://formsubmit.co/marcelahilu@hotmail.com" method="POST" className="space-y-8 text-left max-w-md mx-auto mb-12">
- <input type="hidden" name="_subject" value="Nuevo mensaje de contacto - Beauté Divine" />
- <input type="hidden" name="_template" value="table" />
- <div>
- <label className="font-label-sm text-label-sm text-primary mb-2 block">Nombre Completo</label>
- <input className="w-full bg-transparent border-t-0 border-x-0 border-b border-primary/40 focus:ring-0 focus:border-primary transition-colors py-3 px-0 placeholder:text-on-surface-variant/40" placeholder="Ej: Martina Rossi" type="text" />
- </div>
- <div>
- <label className="font-label-sm text-label-sm text-primary mb-2 block">Email de Contacto</label>
- <input className="w-full bg-transparent border-t-0 border-x-0 border-b border-primary/40 focus:ring-0 focus:border-primary transition-colors py-3 px-0 placeholder:text-on-surface-variant/40" placeholder="martina@ejemplo.com" type="email" name="email" />
- </div>
- <button className="w-full bg-primary text-on-primary py-5 font-label-sm text-label-sm uppercase tracking-[0.2em] hover:bg-primary/90 transition-all mt-4" type="submit">
+ <a href="https://wa.me/5491144133627?text=Hola!%20Quiero%20reservar%20un%20turno%20para%20Neurofascial." target="_blank" rel="noopener noreferrer" className="block w-full max-w-sm mx-auto bg-primary text-on-primary py-5 font-label-sm text-label-sm uppercase tracking-[0.2em] hover:bg-primary/90 transition-all mb-12">
  Solicitar Turno
- </button>
- </form>
+ </a>
  <p className="font-label-sm text-label-sm text-on-surface-variant opacity-60">Ubicado en Acassuso, San Isidro.</p>
  </div>
  </section>
