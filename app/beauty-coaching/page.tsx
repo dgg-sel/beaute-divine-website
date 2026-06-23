@@ -15,9 +15,15 @@ export default function BeautyCoachingPage() {
  {/* Services Grid */}
  <section className="max-w-container-max mx-auto px-8 mb-section-padding">
  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
- <div className="bg-surface-container-low gold-border p-8 service-card flex flex-col">
- <h3 className="font-headline-md text-headline-md mb-4 text-primary">Beauty Coaching</h3>
- <p className="font-body-md text-body-md text-on-surface-variant grow">Diagnóstico, rutina personalizada y guía profesional para tu piel.</p>
+ <div className="bg-surface-container-low gold-border p-8 service-card flex flex-col md:col-span-2">
+ <h3 className="font-headline-md text-headline-md mb-4 text-primary">BEAUTY COACHING</h3>
+ <div className="font-body-md text-body-md text-on-surface-variant grow space-y-4">
+   <p>Beauty Coaching es una experiencia de asesoramiento personalizado diseñada para ayudarte a comprender las necesidades reales de tu piel y aprender a cuidarla de manera consciente, efectiva y sostenible.</p>
+   <p>A través de una evaluación integral, analizaremos el estado de tu piel, tus hábitos, estilo de vida y objetivos para diseñar una rutina completamente adaptada a vos.</p>
+   <p>Durante la sesión recibirás orientación profesional sobre el tipo y estado de tu piel, la rutina ideal de cuidado, los activos cosméticos más adecuados para tus necesidades, la correcta selección y aplicación de productos, y los hábitos que favorecen su salud y belleza. Además, revisaremos los productos que ya utilizás para optimizar tu rutina y potenciar sus resultados.</p>
+   <p>El objetivo no es que compres más productos, sino que aprendas a elegir mejor, cuidar tu piel con mayor criterio y construir una rutina que realmente funcione para vos.</p>
+   <p className="font-bold">Duración: 60 a 90 minutos<br/>Modalidad: Presencial u online</p>
+ </div>
  <div className="flex items-center justify-between mt-8 border-t border-primary/10 pt-4">
  <Link href="/contacto" className="font-label-sm text-[10px] uppercase text-on-surface-variant tracking-widest hover:text-primary transition-colors">Consultar</Link>
  </div>
