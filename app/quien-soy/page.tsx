@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import marcelaImg from '@/img/Marcela en el bosque.jpeg';
 
 export default function QuienSoyPage() {
  return (
@@ -9,7 +10,7 @@ export default function QuienSoyPage() {
  <div className="md:col-span-5 flex flex-col gap-8">
  <div className="relative group">
  <div className="absolute -inset-4 border border-primary/20 transition-all duration-500 group-hover:inset-0"></div>
- <img alt="Portrait de la fondatrice" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 soft-gold-glow relative z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAYCadEW7HV-Pvcyr5RybZZBiovyslRZ46cNrwjckErRc_yLnkorxRN3Kxs5g1rxfMatGS5fYXcaiwW4geJouFReteyQYVIuOqP_no9dvIpZVL6XO5JbAfpVrPyY9hOyawgTn6E7p9azQ-SqmJ97ef2seKfmsaEp2vGi-_GVIOHui7RhYTb-ewwert-sqjpuGcLTN8mD0sPaRW01ClVjmA7ioT-Ppl9s6FXHaTA2br7Wn5O3chU2qOMz0nPAYJzepMeFBgzJBn-Gs" />
+ <img alt="Portrait de la fondatrice" className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 soft-gold-glow relative z-10" src={marcelaImg.src} />
  <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-primary-container/10 -z-0"></div>
  </div>
  <div className="grid grid-cols-1 gap-8 mt-4">
