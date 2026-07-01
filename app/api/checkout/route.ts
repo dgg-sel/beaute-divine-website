@@ -82,7 +82,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
     // Armar ítems para la preferencia de MP
     const mpItems: any[] = items.map((item: any) => ({

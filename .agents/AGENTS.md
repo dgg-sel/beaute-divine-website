@@ -122,7 +122,7 @@ Los envíos tienen un **costo fijo configurado por variable de entorno**.
 ### 💳 PAGOS — Mercado Pago
 - SDK: `mercadopago` v3.
 - Flujo: Preferencia → Redirect a Checkout Pro → Webhook confirma pago.
-- Variables: `MP_ACCESS_TOKEN` (obligatoria), `NEXT_PUBLIC_BASE_URL` (para back_urls y notification_url).
+- Variables: `MP_ACCESS_TOKEN` (obligatoria), `NEXTAUTH_URL` (para back_urls y notification_url).
 - Webhook: `POST /api/webhooks/mercadopago`.
 - Al confirmar (`status === "approved"`): actualiza `Order` a `PAID` y envía emails al admin y al cliente.
 - Email admin: definido en `SALES_EMAILS` (puede ser múltiples, separados por coma).
@@ -204,8 +204,7 @@ prisma/
 |---|---|---|
 | `DATABASE_URL` | ✅ | Postgres URL (dev: SQLite, prod: Neon) |
 | `NEXTAUTH_SECRET` | ✅ | Secret para JWT |
-| `NEXTAUTH_URL` | ✅ | URL base del sitio |
-| `NEXT_PUBLIC_BASE_URL` | ✅ | URL pública para back_urls de MP |
+| `NEXTAUTH_URL` | ✅ | URL pública para back_urls de MP y base del sitio |
 | `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | ✅ | Cloud name de Cloudinary |
 | `CLOUDINARY_API_KEY` | ✅ | API Key Cloudinary |
 | `CLOUDINARY_API_SECRET` | ✅ | API Secret Cloudinary |

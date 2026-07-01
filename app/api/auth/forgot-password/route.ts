@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       },
     });
 
-    const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
+    const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
 
     const mailOptions = {
       from: `"Beauté Divine Espace" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
