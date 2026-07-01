@@ -34,7 +34,7 @@ function optionalEnv(name: string): string {
 export const env = {
   // Cloudinary
   cloudinaryCloudName: requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"),
-  cloudinaryApiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || requireEnv("CLOUDINARY_API_KEY"),
+  cloudinaryApiKey: requireEnv("CLOUDINARY_API_KEY"),
   cloudinaryApiSecret: requireEnv("CLOUDINARY_API_SECRET"),
   cloudinaryRootFolder: requireEnv("CLOUDINARY_ROOT_FOLDER"),
   // Opcional: si tu cuenta usa Dynamic Folders, el public_id no incluye la subcarpeta.
