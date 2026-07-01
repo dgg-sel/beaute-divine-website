@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import imgCorp from '@/img/Tratamientos Corporales.jpeg';
+import imgFacial from '@/img/Tratamientos Faciales.jpeg';
+import imgTerapias from '@/img/Terapias.jpeg';
 
 export default function ServiciosPage() {
  return (
@@ -6,9 +9,12 @@ export default function ServiciosPage() {
  {/* Hero Section */}
  <section className="max-w-container-max mx-auto px-8 mb-24 text-center">
  <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-4 block">Nuestras Experiencias</span>
- <h1 className="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-6 italic">Rituales de Belleza Sagrada</h1>
+ <h1 className="font-headline-lg text-headline-lg md:text-display-lg text-on-surface mb-6 italic">Un espacio pensado para cuidarte</h1>
+ <p className="max-w-2xl mx-auto font-body-lg text-body-lg text-on-surface-variant mb-4">
+ Beauté Divine Espace nace del deseo de ofrecer una atención cercana, personalizada y profesional, donde cada tratamiento se adapta a vos y a tus necesidades.
+ </p>
  <p className="max-w-2xl mx-auto font-body-lg text-body-lg text-on-surface-variant">
- Descubra una curación de tratamientos diseñados para armonizar su ser exterior con su paz interior. Un santuario donde la estética moderna se encuentra con el bienestar holístico.
+ Un refugio de calma y cuidado, donde cada detalle está pensado para brindarte bienestar, acompañarte y hacer de cada visita, una experiencia creada especialmente para vos.
  </p>
  </section>
  {/* Services Bento Grid */}
@@ -17,7 +23,7 @@ export default function ServiciosPage() {
  {/* Card 1: Tratamientos Corporales */}
  <Link href="/tratamientos-corporales" className="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
  <div className="aspect-video mb-6 overflow-hidden">
- <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCldpHOlSF7D2lKs5wNNfNwtlpES5OKxWg9uVJO1ANYy3HU8qgbb5x2dtPpB_QZSxER4nPocOz5Dh51zJwlFr_PFumOmCbk2VuxnWY8wUPrVHu-AXk_hrM8vzRUchvrjot2sC54GU2LtYsf7uiOP3e4eR2PvFxlCemNUTqNG0w5tlIhZrfSB3AQnDInld2XIinbnl55mcNXSPSj6CzkmrQAfrRr9XsdVeUPYccXoek6SEZ7PmqsX3H94HrBUVf4z8ylP2FsFIeqfYg" alt="Tratamientos Corporales" />
+ <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={imgCorp.src} alt="Tratamientos Corporales" />
  </div>
  <h3 className="font-headline-md text-headline-md mb-4 text-primary">Tratamientos Corporales</h3>
  <p className="font-body-md text-body-md text-on-surface-variant mb-8 grow">Masajes descontracturantes, drenaje linfático, Day Spa y más experiencias para aliviar, relajar y remodelar tu cuerpo.</p>
@@ -30,7 +36,7 @@ export default function ServiciosPage() {
  {/* Card 2: Tratamientos Faciales */}
  <Link href="/tratamientos-faciales" className="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
  <div className="aspect-video mb-6 overflow-hidden">
- <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiXFITE8vL3AVu4-sthOehTURWgkZnU14PZKzS31pH4wkzXtUz6F94Erlu0r8cHvby2Ei0HkHiiZdDwV4Djlj-veWR0NtOmSf7KuIGcxJyZXL8nHZhXwZzuXzsSCl35He85rs8_t2NQWvm7mLCQbPc3PJTN7TcW3JahPwBX2HZcE5OFkdkvJU1CHQLgsPSuu1vVxxq5E-1KWqSXrT2UBUvO5ZEtJcNPoIAfj4xITUm4dkWKrXjRN6Jm7e2_FD7GKd9quzAOcyuVwo" alt="Tratamientos Faciales" />
+ <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={imgFacial.src} alt="Tratamientos Faciales" />
  </div>
  <h3 className="font-headline-md text-headline-md mb-4 text-primary">Tratamientos Faciales</h3>
  <p className="font-body-md text-body-md text-on-surface-variant mb-8 grow">Limpiezas profundas, Facial Sculpt, peelings y tratamientos específicos para purificar e iluminar tu rostro.</p>
@@ -56,7 +62,7 @@ export default function ServiciosPage() {
  {/* Card 4: Terapias */}
  <Link href="/terapias" className="group relative overflow-hidden bg-surface-container-low gold-border p-8 flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
  <div className="aspect-video mb-6 overflow-hidden">
- <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-vUuP7IUbrEwCNZCLOTV6gF_iiOzHnia3r430O5gVIu10dgZrIi9L80EXJpGj5sfhFNhTDGvu8jENga1e7Y2gFHOTeuyCjIZZuohm_XHAcdBoZVFRRMFtSqmveONIhljgWav8AnKYYJyQa-yQSsKtxT5_LuhwQOdxUB7SDWaFy42naiFGTfaW9gKKYmF1HIHIvW_ForWRWFlbUz8ijpoI0nRqhPaq7zRV27HKaVQGS8WpyCieoGX-EBZ2CPeqdkft7PhKtsZB-ns" alt="Terapias" />
+ <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={imgTerapias.src} alt="Terapias" />
  </div>
  <h3 className="font-headline-md text-headline-md mb-4 text-primary">Terapias</h3>
  <p className="font-body-md text-body-md text-on-surface-variant mb-8 grow">Sound Healing, Saint-Touche, Registros Akáshicos y Tameana para armonizar tu cuerpo, mente y emociones.</p>

@@ -4,10 +4,14 @@ import Link from "next/link";
 import CategoryDropdown from "@/components/CategoryDropdown";
 import OriginDropdown from "@/components/OriginDropdown";
 import AddToCartButton from "@/components/AddToCartButton";
+import { releaseExpiredReservations } from "@/lib/stock";
 
 export const dynamic = 'force-dynamic';
 
 export default async function CatalogoPage({ searchParams }: { searchParams: { categoryId?: string, imported?: string } }) {
+ // Limpieza perezosa de reservas vencidas
+ await releaseExpiredReservations();
+
  const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
  
  let whereClause: any = {};
@@ -116,11 +120,18 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <h3 className="font-headline-md text-xl text-primary mb-2">{product.title}</h3>
  <p className="font-body-md text-sm text-on-surface-variant flex-grow mb-6">{product.description}</p>
  <div className="flex justify-between items-center pt-4 border-t border-primary/10 gap-2">
+ <div className="flex flex-col">
  <span className="font-label-sm text-sm text-on-surface tracking-widest">
  {product.price ? `$${product.price.toFixed(2)}` : (product.tag || 'Consultar')}
  </span>
  {product.price ? (
- <AddToCartButton product={{ id: product.id, title: product.title, price: product.price, image: product.image }} />
+ <span className="text-[10px] text-on-surface-variant/70 mt-0.5">
+ ${(product.price / 1.21).toFixed(2)} sin impuestos
+ </span>
+ ) : null}
+ </div>
+ {product.price ? (
+ <AddToCartButton product={{ id: product.id, title: product.title, price: product.price, image: product.image, stock: product.stock }} />
  ) : (
  <Link href="/contacto" className="bg-primary text-on-primary px-4 py-2 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity">
  Saber más

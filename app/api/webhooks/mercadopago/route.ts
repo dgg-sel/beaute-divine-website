@@ -100,6 +100,7 @@ export async function POST(req: Request) {
                     <p style="margin-top: 16px;">Nos pondremos en contacto con vos a la brevedad para coordinar el envío.</p>
                   </div>
                 `,
+
               });
             }
           } catch (error) {

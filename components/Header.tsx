@@ -10,11 +10,11 @@ export default async function Header() {
 
   return (
     <header className="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
-      <nav className="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto">
-        <Link href="/" className="font-headline-md text-headline-sm text-primary tracking-tighter hover:opacity-80 transition-all uppercase whitespace-nowrap shrink-0 mr-4">
+      <nav className="flex justify-between items-center w-full px-8 py-4 max-w-container-max mx-auto gap-4">
+        <Link href="/" className="font-headline-md text-xl text-primary tracking-tighter hover:opacity-80 transition-all uppercase whitespace-nowrap shrink-0">
           BEAUTÉ DIVINE ESPACE
         </Link>
-        <div className="hidden lg:flex items-center gap-5 font-body-md text-sm uppercase tracking-widest flex-1 justify-center">
+        <div className="hidden lg:flex items-center gap-6 font-body-md text-[13px] uppercase tracking-widest flex-1 justify-center">
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/quien-soy">Quién Soy</Link>
           <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/servicios">
@@ -30,13 +30,13 @@ export default async function Header() {
           </div>
           <div className="relative group">
             <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300 flex items-center gap-1 whitespace-nowrap" href="/fascias">
-              Fascias
+              Neurofascial
               <span className="material-symbols-outlined text-sm">expand_more</span>
             </Link>
             <div className="absolute left-0 top-full mt-2 w-64 bg-surface border border-primary/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 flex flex-col font-body-md normal-case tracking-normal">
-              <Link href="/facial-sculpt" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Facial Sculpt</Link>
-              <Link href="/fascial-fit-remodeling" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Fascial Fit Remodeling</Link>
-              <Link href="/neuro-fascial-balance" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Neuro Fascial Balance</Link>
+              <Link href="/fascias#facial-sculpt" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Facial Sculpt</Link>
+              <Link href="/fascias#fascial-fit-remodeling" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors border-b border-primary/5">Fascial Fit Remodeling</Link>
+              <Link href="/fascias#neuro-fascial-balance" className="px-4 py-3 text-sm text-on-surface-variant hover:bg-secondary-container/20 hover:text-primary transition-colors">Neuro Fascial Balance</Link>
             </div>
           </div>
           <Link className="text-on-surface-variant hover:text-primary transition-colors duration-300" href="/catalogo">Catálogo</Link>

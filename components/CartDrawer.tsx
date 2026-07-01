@@ -88,6 +88,7 @@ export default function CartDrawer() {
                       <div>
                         <h3 className="font-medium text-sm text-[#4A4238] line-clamp-2">{item.title}</h3>
                         <p className="text-[#8C8377] text-sm mt-1">${item.price.toFixed(2)}</p>
+                        <p className="text-[10px] text-[#8C8377]/70 mt-0.5">${(item.price / 1.21).toFixed(2)} sin impuestos</p>
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center border border-[#EAE5DF] rounded-lg">
@@ -102,7 +103,8 @@ export default function CartDrawer() {
                           </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="p-1 hover:bg-gray-50 text-[#8C8377]"
+                            disabled={item.quantity >= item.stock}
+                            className={`p-1 text-[#8C8377] ${item.quantity >= item.stock ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-50"}`}
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -122,11 +124,15 @@ export default function CartDrawer() {
 
             {items.length > 0 && (
               <div className="p-6 border-t border-[#EAE5DF] bg-[#FDFBF7]">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-2">
                   <span className="text-[#8C8377]">Subtotal</span>
                   <span className="text-xl font-medium text-[#4A4238]">
                     ${getTotal().toFixed(2)}
                   </span>
+                </div>
+                <div className="flex items-center justify-between mb-6 text-sm text-[#8C8377]/70">
+                  <span>Sin impuestos</span>
+                  <span>${(getTotal() / 1.21).toFixed(2)}</span>
                 </div>
                 <button
                   onClick={handleCheckout}
