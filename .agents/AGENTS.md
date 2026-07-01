@@ -115,7 +115,7 @@ Los envíos tienen un **costo fijo configurado por variable de entorno**.
 - **Variable de entorno:** `SHIPPING_COST` (en ARS, entero). Ejemplo: `SHIPPING_COST=2500`.
 - El costo se agrega como ítem adicional en la preferencia de Mercado Pago: `{ id: "ENVIO", title: "Envío", quantity: 1, unit_price: shippingCost }`.
 - El `total` de la `Order` en DB **incluye** el costo de envío.
-- En la UI, el envío se muestra como **línea separada** (nunca mezclado con productos).
+- En la UI (a través del Server Component `app/checkout/page.tsx` que lee la variable del backend y la pasa como prop), el envío se muestra como **línea separada** (nunca mezclado con productos).
 - Si `SHIPPING_COST=0` o la variable no está definida → no se agrega ítem de envío (envío gratis).
 - Si en el futuro se agregan zonas de envío, se implementará como tabla `ShippingZone` en DB. Por ahora, es costo fijo.
 
