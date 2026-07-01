@@ -10,7 +10,6 @@ import ProductImage from "@/components/ProductImage";
 export default function CartDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const router = useRouter();
 
   const { items, removeItem, updateQuantity, getTotal, getCartCount } = useCartStore();
@@ -22,32 +21,11 @@ export default function CartDrawer() {
 
   if (!mounted) return null;
 
-  const handleCheckout = async () => {
-    setIsCheckingOut(true);
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items }),
-      });
-
-      const data = await res.json();
-      
-      if (res.ok && data.init_point) {
-        // Redirigir a Mercado Pago
-        window.location.href = data.init_point;
-      } else {
-        alert("Ocurrió un error al procesar el pago");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Error de conexión");
-    } finally {
-      setIsCheckingOut(false);
-    }
+  const handleCheckout = () => {
+    setIsOpen(false);
+    router.push("/checkout");
   };
+
 
   return (
     <>
@@ -152,19 +130,13 @@ export default function CartDrawer() {
                 </div>
                 <button
                   onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                  className="w-full bg-[#4A4238] text-white py-4 rounded-xl font-medium hover:bg-[#3A332C] transition-colors disabled:opacity-70 flex justify-center items-center mb-3"
+                  className="w-full bg-[#4A4238] text-white py-4 rounded-xl font-medium hover:bg-[#3A332C] transition-colors flex justify-center items-center mb-3"
                 >
-                  {isCheckingOut ? (
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    "Finalizar Compra"
-                  )}
+                  Finalizar Compra
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  disabled={isCheckingOut}
-                  className="w-full bg-transparent border border-[#EAE5DF] text-[#4A4238] py-4 rounded-xl font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  className="w-full bg-transparent border border-[#EAE5DF] text-[#4A4238] py-4 rounded-xl font-medium hover:bg-gray-50 transition-colors"
                 >
                   Seguir Comprando
                 </button>

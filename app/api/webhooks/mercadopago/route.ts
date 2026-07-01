@@ -20,13 +20,91 @@ export async function POST(req: Request) {
         const orderId = paymentData.external_reference;
 
         if (orderId) {
-          await prisma.order.update({
+          const order = await prisma.order.update({
             where: { id: orderId },
             data: {
               status: "PAID",
               paymentId: paymentData.id?.toString(),
             },
+            include: {
+              user: true,
+              items: { include: { product: true } },
+            },
           });
+
+          // Determinar nombre y email del destinatario cliente
+          const clienteName = order.customerName || order.user?.name || null;
+          const clienteEmail = order.customerEmail || order.user?.email || null;
+
+          // Construir desglose de ítems
+          const subtotal = order.items.reduce(
+            (acc, item) => acc + item.price * item.quantity,
+            0
+          );
+          const itemsHtml = order.items
+            .map(
+              (item) =>
+                `<li>${item.quantity}x ${item.product.title} — $${(item.price * item.quantity).toFixed(2)}</li>`
+            )
+            .join("");
+
+          const shippingRow =
+            order.shippingCost > 0
+              ? `<p><strong>Envío:</strong> $${order.shippingCost.toFixed(2)}</p>`
+              : `<p><strong>Envío:</strong> Gratis</p>`;
+
+          const addressRow = order.shippingAddress
+            ? `<p><strong>Dirección de envío:</strong> ${order.shippingAddress}</p>`
+            : "";
+
+          // Enviar mails de notificación
+          try {
+            const { sendEmail } = await import("@/lib/email");
+            const salesEmails =
+              process.env.SALES_EMAILS || "dario.geier@gmail.com";
+
+            // Mail al administrador / ventas
+            await sendEmail({
+              to: salesEmails,
+              subject: `¡Nueva compra recibida! Orden #${order.id}`,
+              html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                  <h2 style="color: #c49e62;">¡Nueva Compra Confirmada!</h2>
+                  <p>Se ha registrado un nuevo pago exitoso a través de Mercado Pago.</p>
+                  ${clienteName ? `<p><strong>Cliente:</strong> ${clienteName}${clienteEmail ? ` (${clienteEmail})` : ""}</p>` : ""}
+                  <h3>Detalle de la orden:</h3>
+                  <ul>${itemsHtml}</ul>
+                  <p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>
+                  ${shippingRow}
+                  <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
+                  ${addressRow}
+                </div>
+              `,
+            });
+
+            // Mail al cliente (si tenemos su email)
+            if (clienteEmail) {
+              await sendEmail({
+                to: clienteEmail,
+                subject: `Tu compra en Beauté Divine Espace fue confirmada`,
+                html: `
+                  <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #c49e62;">¡Gracias por tu compra${clienteName ? `, ${clienteName}` : ""}!</h2>
+                    <p>Tu pago se ha procesado con éxito y estamos preparando tu pedido.</p>
+                    <h3>Resumen de tu pedido:</h3>
+                    <ul>${itemsHtml}</ul>
+                    <p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>
+                    ${shippingRow}
+                    <p><strong>Total pagado:</strong> $${order.total.toFixed(2)}</p>
+                    ${addressRow}
+                    <p style="margin-top: 16px;">Nos pondremos en contacto con vos a la brevedad para coordinar el envío.</p>
+                  </div>
+                `,
+              });
+            }
+          } catch (error) {
+            console.error("Error enviando email de confirmación:", error);
+          }
         }
       }
     }

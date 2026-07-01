@@ -95,16 +95,20 @@ model Product {
 }
 
 model Order {
-  id            String      @id @default(cuid())
-  userId        String?
-  user          User?       @relation(fields: [userId], references: [id])
-  status        String      @default("PENDING") // PENDING, PAID, CANCELLED
-  channel       String      @default("ONLINE") // ONLINE, PRESENCIAL, OTRO
-  total         Float
-  paymentId     String?     // ID del pago en Mercado Pago
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  items         OrderItem[]
+  id              String      @id @default(cuid())
+  userId          String?
+  user            User?       @relation(fields: [userId], references: [id])
+  status          String      @default("PENDING") // PENDING, PAID, CANCELLED
+  channel         String      @default("ONLINE") // ONLINE, PRESENCIAL, OTRO
+  total           Float
+  shippingCost    Float       @default(0)
+  shippingAddress String?
+  customerName    String?
+  customerEmail   String?
+  paymentId       String?     // ID del pago en Mercado Pago
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
 }
 
 model OrderItem {

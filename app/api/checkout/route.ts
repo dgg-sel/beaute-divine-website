@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     const body = await req.json();
-    const { items } = body;
+    const { items, shippingAddress, customerName, customerEmail } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json(
@@ -22,39 +22,93 @@ export async function POST(req: Request) {
       );
     }
 
-    // Calcular el total verificando precios desde la DB
-    // Para simplificar, confiaremos en el precio del carrito temporalmente
-    // En producción se deben buscar los productos en Prisma y calcular
-    const total = items.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0);
+    // Limpieza perezosa: liberar stock de órdenes viejas
+    const { releaseExpiredReservations } = await import("@/lib/stock");
+    await releaseExpiredReservations();
 
-    // Crear la orden en la BD
-    const order = await prisma.order.create({
-      data: {
-        total,
-        userId: (session?.user as any)?.id || null,
-        items: {
-          create: items.map((item: any) => ({
-            productId: item.id,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-        },
-      },
-    });
+    // Costo fijo de envío desde variable de entorno
+    const shippingCost = parseFloat(process.env.SHIPPING_COST || "0");
+
+    const subtotal = items.reduce(
+      (acc: number, item: any) => acc + item.price * item.quantity,
+      0
+    );
+    const total = subtotal + shippingCost;
+
+    // Crear la orden en la BD y descontar stock atómicamente
+    let order;
+    try {
+      order = await prisma.$transaction(async (tx) => {
+        // 1. Verificamos stock
+        for (const item of items) {
+          const product = await tx.product.findUnique({ where: { id: item.id } });
+          if (!product || product.stock < item.quantity) {
+            throw new Error(`Sin stock suficiente para ${item.title}`);
+          }
+        }
+
+        // 2. Restamos stock (Reserva)
+        for (const item of items) {
+          await tx.product.update({
+            where: { id: item.id },
+            data: { stock: { decrement: item.quantity } },
+          });
+        }
+
+        // 3. Creamos orden con datos de envío y cliente
+        return await tx.order.create({
+          data: {
+            total,
+            shippingCost,
+            shippingAddress: shippingAddress || null,
+            customerName: customerName || null,
+            customerEmail: customerEmail || null,
+            userId: (session?.user as any)?.id || null,
+            items: {
+              create: items.map((item: any) => ({
+                productId: item.id,
+                quantity: item.quantity,
+                price: item.price,
+              })),
+            },
+          },
+        });
+      });
+    } catch (error: any) {
+      console.error("Error validando stock:", error);
+      return NextResponse.json(
+        { message: error.message || "Error al verificar stock" },
+        { status: 400 }
+      );
+    }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
+    // Armar ítems para la preferencia de MP
+    const mpItems: any[] = items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      quantity: item.quantity,
+      unit_price: item.price,
+      currency_id: "ARS",
+    }));
+
+    // Agregar ítem de envío si el costo es mayor a 0
+    if (shippingCost > 0) {
+      mpItems.push({
+        id: "ENVIO",
+        title: "Envío",
+        quantity: 1,
+        unit_price: shippingCost,
+        currency_id: "ARS",
+      });
+    }
+
     const preference = new Preference(client);
-    
+
     const response = await preference.create({
       body: {
-        items: items.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          quantity: item.quantity,
-          unit_price: item.price,
-          currency_id: "ARS",
-        })),
+        items: mpItems,
         back_urls: {
           success: `${baseUrl}/checkout/success?orderId=${order.id}`,
           failure: `${baseUrl}/checkout/failure?orderId=${order.id}`,
