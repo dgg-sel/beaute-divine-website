@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
@@ -35,45 +34,32 @@ export async function POST(req: Request) {
       },
     });
 
-    // Send email using nodemailer
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com",
-      port: Number(process.env.SMTP_PORT) || 465,
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-
     const resetUrl = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
 
-    const mailOptions = {
-      from: `"Beauté Divine Espace" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
-      to: emailLower,
-      subject: "Restablece tu contraseña - Beauté Divine Espace",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-w-md; margin: 0 auto; padding: 20px; color: #333;">
-          <h2 style="color: #6C543A; text-transform: uppercase; letter-spacing: 2px;">Restablecer Contraseña</h2>
-          <p>Hola${user.name ? ` ${user.name}` : ""},</p>
-          <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en Beauté Divine Espace.</p>
-          <p>Haz clic en el siguiente enlace para crear una nueva contraseña. Este enlace es válido por 1 hora:</p>
-          <div style="margin: 30px 0;">
-            <a href="${resetUrl}" style="background-color: #6C543A; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 12px;">
-              Restablecer mi contraseña
-            </a>
-          </div>
-          <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
-          <p style="margin-top: 40px; font-size: 12px; color: #999;">
-            Saludos,<br>
-            El equipo de Beauté Divine Espace
-          </p>
-        </div>
-      `,
-    };
-
     try {
-      await transporter.sendMail(mailOptions);
+      const { sendEmail } = await import("@/lib/email");
+      await sendEmail({
+        to: emailLower,
+        subject: "Restablece tu contraseña - Beauté Divine Espace",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-w-md; margin: 0 auto; padding: 20px; color: #333;">
+            <h2 style="color: #6C543A; text-transform: uppercase; letter-spacing: 2px;">Restablecer Contraseña</h2>
+            <p>Hola${user.name ? ` ${user.name}` : ""},</p>
+            <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en Beauté Divine Espace.</p>
+            <p>Haz clic en el siguiente enlace para crear una nueva contraseña. Este enlace es válido por 1 hora:</p>
+            <div style="margin: 30px 0;">
+              <a href="${resetUrl}" style="background-color: #6C543A; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 12px;">
+                Restablecer mi contraseña
+              </a>
+            </div>
+            <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
+            <p style="margin-top: 40px; font-size: 12px; color: #999;">
+              Saludos,<br>
+              El equipo de Beauté Divine Espace
+            </p>
+          </div>
+        `,
+      });
     } catch (emailError) {
       console.error("Error enviando correo:", emailError);
       return NextResponse.json({ message: "Error al enviar el correo de recuperación. Por favor, asegúrate de que el servicio de correo esté configurado." }, { status: 500 });
