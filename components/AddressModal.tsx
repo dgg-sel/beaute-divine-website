@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 export default function AddressModal({
   isOpen,
   onClose,
@@ -21,13 +20,42 @@ export default function AddressModal({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  
+  const [provinces, setProvinces] = useState<any[]>([]);
+  const [cities, setCities] = useState<any[]>([]);
+  const [loadingCities, setLoadingCities] = useState(false);
 
-  const provinces = [
-    "Buenos Aires", "CABA", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes",
-    "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza",
-    "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis",
-    "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego", "Tucumán"
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      fetch("https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre&max=100")
+        .then(res => res.json())
+        .then(data => {
+          if (data.provincias) {
+            const sorted = data.provincias.sort((a: any, b: any) => a.nombre.localeCompare(b.nombre));
+            setProvinces(sorted);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (formData.province) {
+      setLoadingCities(true);
+      fetch(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${encodeURIComponent(formData.province)}&campos=id,nombre&max=1000`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.localidades) {
+            const sorted = data.localidades.sort((a: any, b: any) => a.nombre.localeCompare(b.nombre));
+            setCities(sorted);
+          }
+        })
+        .catch(console.error)
+        .finally(() => setLoadingCities(false));
+    } else {
+      setCities([]);
+    }
+  }, [formData.province]);
 
   if (!isOpen) return null;
 
@@ -98,14 +126,17 @@ export default function AddressModal({
             </div>
             <div className="col-span-2">
               <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">Provincia *</label>
-              <select required value={formData.province} onChange={e => setFormData({ ...formData, province: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                <option value="">Selecciona</option>
-                {provinces.map(p => <option key={p} value={p}>{p}</option>)}
+              <select required value={formData.province} onChange={e => setFormData({ ...formData, province: e.target.value, city: "" })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+                <option value="">Selecciona Provincia</option>
+                {provinces.map(p => <option key={p.id} value={p.nombre}>{p.nombre}</option>)}
               </select>
             </div>
             <div className="col-span-2 md:col-span-1">
               <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">Ciudad *</label>
-              <input required type="text" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+              <select required value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} disabled={!formData.province || loadingCities} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all disabled:opacity-50">
+                <option value="">{loadingCities ? "Cargando..." : "Selecciona Ciudad"}</option>
+                {cities.map(c => <option key={c.id} value={c.nombre}>{c.nombre}</option>)}
+              </select>
             </div>
             <div>
               <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">C.P. *</label>
