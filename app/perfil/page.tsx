@@ -34,7 +34,7 @@ export default function PerfilPage() {
  <div className="max-w-3xl mx-auto">
  <h1 className="font-display-lg text-headline-lg text-primary mb-8 text-center md:text-left">Mi Cuenta</h1>
  
- <div className="bg-surface-container-low rounded-sm soft-glow border border-primary/10 p-8">
+ <div className="bg-surface-container-low rounded-2xl soft-glow border border-primary/10 p-8">
  <div className="flex items-center gap-6 mb-8 pb-8 border-b border-primary/10">
  <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center border border-primary/20">
  <User className="w-8 h-8 text-primary" />
@@ -49,11 +49,11 @@ export default function PerfilPage() {
  <div>
  <h3 className="font-headline-md text-xl text-primary mb-4 uppercase tracking-widest">Información Personal</h3>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <div className="bg-surface p-5 rounded-sm border border-primary/10">
+ <div className="bg-surface p-5 rounded-xl border border-primary/10">
  <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-2">Nombre</p>
  <p className="font-body-md text-on-surface">{session.user?.name || "-"}</p>
  </div>
- <div className="bg-surface p-5 rounded-sm border border-primary/10">
+ <div className="bg-surface p-5 rounded-xl border border-primary/10">
  <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-2">Email</p>
  <p className="font-body-md text-on-surface">{session.user?.email}</p>
  </div>

@@ -198,7 +198,7 @@ export default function CheckoutClient({
           <h1 className="font-headline-md text-headline-md text-on-surface">Checkout</h1>
         </div>
 
-        <section className="bg-surface-container-low p-8 rounded-lg border border-outline-variant">
+        <section className="bg-surface-container-low p-8 rounded-2xl border border-outline-variant">
           <h2 className="font-headline-md text-2xl text-on-surface mb-6">Datos de Envío</h2>
           
           {userId && userAddresses && userAddresses.length > 0 && (
@@ -250,17 +250,17 @@ export default function CheckoutClient({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
               <div className="space-y-2 md:col-span-2">
                 <label className="font-label-sm text-label-sm uppercase text-on-surface">Calle *</label>
-                <input required type="text" value={formData.street} onChange={e => setFormData({...formData, street: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
+                <input required type="text" value={formData.street} onChange={e => setFormData({...formData, street: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
               </div>
               
               <div className="space-y-2">
                 <label className="font-label-sm text-label-sm uppercase text-on-surface">Número *</label>
-                <input required type="text" value={formData.number} onChange={e => setFormData({...formData, number: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
+                <input required type="text" value={formData.number} onChange={e => setFormData({...formData, number: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
               </div>
 
               <div className="space-y-2">
                 <label className="font-label-sm text-label-sm uppercase text-on-surface">Piso / Depto</label>
-                <input type="text" value={formData.apartment} onChange={e => setFormData({...formData, apartment: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
+                <input type="text" value={formData.apartment} onChange={e => setFormData({...formData, apartment: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
               </div>
 
               <div className="space-y-2">
@@ -269,7 +269,7 @@ export default function CheckoutClient({
                   required 
                   value={formData.province} 
                   onChange={e => setFormData({...formData, province: e.target.value, city: ""})} 
-                  className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors"
                 >
                   <option value="">Selecciona una provincia</option>
                   {provinces.map(p => (
@@ -285,7 +285,7 @@ export default function CheckoutClient({
                   value={formData.city} 
                   onChange={e => setFormData({...formData, city: e.target.value})} 
                   disabled={!formData.province || loadingCities}
-                  className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
+                  className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
                 >
                   <option value="">{loadingCities ? "Cargando..." : "Selecciona una ciudad"}</option>
                   {cities.map((c, idx) => (
@@ -296,12 +296,12 @@ export default function CheckoutClient({
 
               <div className="space-y-2">
                 <label className="font-label-sm text-label-sm uppercase text-on-surface">Código Postal *</label>
-                <input required type="text" value={formData.zipCode} onChange={e => setFormData({...formData, zipCode: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
+                <input required type="text" value={formData.zipCode} onChange={e => setFormData({...formData, zipCode: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
               </div>
 
               <div className="space-y-2">
                 <label className="font-label-sm text-label-sm uppercase text-on-surface">Teléfono (Opcional)</label>
-                <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
+                <input type="text" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
               </div>
 
               {userId && (
@@ -322,13 +322,13 @@ export default function CheckoutClient({
       </div>
 
       <div className="lg:col-span-5">
-        <div className="bg-surface-container-low p-8 rounded-lg border border-outline-variant sticky top-32">
+        <div className="bg-surface-container-low p-8 rounded-2xl border border-outline-variant sticky top-32">
           <h2 className="font-headline-md text-2xl text-on-surface mb-6">Resumen del Pedido</h2>
           
           <div className="space-y-4 mb-6 max-h-[350px] overflow-y-auto pr-2">
             {items.map(item => (
               <div key={item.id} className="flex items-center space-x-4">
-                <div className="w-16 h-16 bg-surface rounded-md overflow-hidden flex-shrink-0 border border-outline-variant">
+                <div className="w-16 h-16 bg-surface rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant">
                   <ProductImage src={item.image || "/logo.jpg"} alt={item.title} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">

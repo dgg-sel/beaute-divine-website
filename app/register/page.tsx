@@ -58,14 +58,14 @@ export default function RegisterPage() {
 
  return (
  <main className="bg-surface flex items-center justify-center p-4">
- <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10 my-8">
+ <div className="max-w-md w-full bg-surface-container p-8 rounded-2xl soft-glow border border-primary/10 my-8">
  <div className="text-center mb-8 border-b border-primary/10 pb-6">
  <h1 className="font-display-lg text-headline-lg text-primary mb-2 uppercase tracking-widest">Crear Cuenta</h1>
  <p className="font-body-md text-sm text-on-surface-variant">Sumate a Beauté Divine Espace.</p>
  </div>
 
  {error && (
- <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
+ <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-red-200">
  {error}
  </div>
  )}
@@ -79,7 +79,7 @@ export default function RegisterPage() {
  type="text"
  required
  autoFocus
- className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
+ className="w-full px-4 py-3 bg-surface border border-primary/20 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
  value={formData.name}
  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
  placeholder="Tu nombre"
@@ -93,7 +93,7 @@ export default function RegisterPage() {
  <input
  type="email"
  required
- className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
+ className="w-full px-4 py-3 bg-surface border border-primary/20 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
  value={formData.email}
  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
  placeholder="tu@correo.com"
@@ -157,7 +157,7 @@ export default function RegisterPage() {
  <button
  type="submit"
  disabled={loading}
- className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
+ className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest rounded-lg metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
  >
  {loading ? "Creando cuenta..." : "Registrarse"}
  </button>

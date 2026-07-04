@@ -60,7 +60,7 @@ function ResetPasswordForm() {
   if (!token) {
     return (
       <div className="text-center">
-        <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
+        <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-red-200">
           Enlace de recuperación inválido o incompleto.
         </div>
         <Link href="/forgot-password" className="text-primary hover:text-primary/80 transition-colors font-medium border-b border-primary/30 pb-0.5">
@@ -82,14 +82,14 @@ function ResetPasswordForm() {
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
+        <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-red-200">
           {error}
         </div>
       )}
 
       {message ? (
         <div className="text-center">
-          <div className="bg-green-50 text-green-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-green-200">
+          <div className="bg-green-50 text-green-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-green-200">
             {message}
           </div>
           <p className="text-sm text-on-surface-variant italic">Redirigiendo al inicio de sesión...</p>
@@ -153,7 +153,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
+            className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest rounded-lg metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
           >
             {loading ? "Guardando..." : "Restablecer contraseña"}
           </button>
@@ -166,7 +166,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <main className="bg-surface flex flex-col items-center justify-center p-4 min-h-[70vh]">
-      <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10 my-8">
+      <div className="max-w-md w-full bg-surface-container p-8 rounded-2xl soft-glow border border-primary/10 my-8">
         <Suspense fallback={<div className="text-center py-8">Cargando...</div>}>
           <ResetPasswordForm />
         </Suspense>

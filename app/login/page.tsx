@@ -39,14 +39,14 @@ export default function LoginPage() {
 
  return (
  <main className="bg-surface flex items-center justify-center p-4">
- <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10 my-8">
+ <div className="max-w-md w-full bg-surface-container p-8 rounded-2xl soft-glow border border-primary/10 my-8">
  <div className="text-center mb-8 border-b border-primary/10 pb-6">
  <h1 className="font-display-lg text-headline-lg text-primary mb-2 uppercase tracking-widest">Bienvenido</h1>
  <p className="font-body-md text-sm text-on-surface-variant">Iniciá sesión para continuar en Beauté Divine Espace.</p>
  </div>
 
  {error && (
- <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
+ <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-red-200">
  {error}
  </div>
  )}
@@ -60,7 +60,7 @@ export default function LoginPage() {
  type="email"
  required
  autoFocus
- className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
+ className="w-full px-4 py-3 bg-surface border border-primary/20 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
  value={formData.email}
  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
  placeholder="tu@correo.com"
@@ -80,7 +80,7 @@ export default function LoginPage() {
           <input
             type={showPassword ? "text" : "password"}
             required
-            className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface pr-12"
+            className="w-full px-4 py-3 bg-surface border border-primary/20 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface pr-12"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             placeholder="••••••••"
@@ -101,7 +101,7 @@ export default function LoginPage() {
  <button
  type="submit"
  disabled={loading}
- className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
+ className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest rounded-lg metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
  >
  {loading ? "Ingresando..." : "Iniciar Sesión"}
  </button>
@@ -115,7 +115,7 @@ export default function LoginPage() {
 
  <button
  onClick={() => signIn("google", { callbackUrl: "/" })}
- className="mt-6 w-full flex items-center justify-center space-x-3 bg-surface border border-primary/20 text-primary py-3 rounded-sm hover:bg-primary/5 transition-colors font-label-sm text-[10px] uppercase tracking-widest"
+ className="mt-6 w-full flex items-center justify-center space-x-3 bg-surface border border-primary/20 text-primary py-3 rounded-lg hover:bg-primary/5 transition-colors font-label-sm text-[10px] uppercase tracking-widest"
  >
  <svg className="w-4 h-4" viewBox="0 0 24 24">
  <path

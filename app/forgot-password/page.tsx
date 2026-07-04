@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <main className="bg-surface flex flex-col items-center justify-center p-4 min-h-[70vh]">
-      <div className="max-w-md w-full bg-surface-container p-8 rounded-sm soft-glow border border-primary/10 my-8">
+      <div className="max-w-md w-full bg-surface-container p-8 rounded-2xl soft-glow border border-primary/10 my-8">
         <div className="text-center mb-8 border-b border-primary/10 pb-6">
           <h1 className="font-display-lg text-headline-lg text-primary mb-2 uppercase tracking-widest text-2xl">
             Recuperar Contraseña
@@ -50,13 +50,13 @@ export default function ForgotPasswordPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 text-red-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-red-200">
+          <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-red-200">
             {error}
           </div>
         )}
 
         {message && (
-          <div className="bg-green-50 text-green-600 p-4 rounded-sm mb-6 text-sm font-body-md border border-green-200">
+          <div className="bg-green-50 text-green-600 p-4 rounded-lg mb-6 text-sm font-body-md border border-green-200">
             {message}
           </div>
         )}
@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
               type="email"
               required
               autoFocus
-              className="w-full px-4 py-3 bg-surface border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
+              className="w-full px-4 py-3 bg-surface border border-primary/20 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@correo.com"
@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
+            className="w-full bg-primary text-on-primary py-3 font-label-sm text-[10px] uppercase tracking-widest rounded-lg metallic-edge hover:opacity-90 transition-opacity disabled:opacity-70 mt-4"
           >
             {loading ? "Enviando enlace..." : "Enviar enlace de recuperación"}
           </button>
