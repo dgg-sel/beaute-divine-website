@@ -53,8 +53,18 @@ export async function POST(req: Request) {
               ? `<p><strong>Envío:</strong> $${order.shippingCost.toFixed(2)}</p>`
               : `<p><strong>Envío:</strong> Gratis</p>`;
 
-          const addressRow = order.shippingAddress
-            ? `<p><strong>Dirección de envío:</strong> ${order.shippingAddress}</p>`
+          const addressParts = [
+            order.shippingStreet ? `${order.shippingStreet} ${order.shippingNumber || ''}`.trim() : null,
+            order.shippingApartment ? `Piso/Depto: ${order.shippingApartment}` : null,
+            order.shippingCity,
+            order.shippingProvince,
+            order.shippingZipCode ? `CP: ${order.shippingZipCode}` : null,
+          ].filter(Boolean);
+          
+          const addressFormatted = addressParts.join(" - ");
+
+          const addressRow = addressFormatted
+            ? `<p><strong>Dirección de envío:</strong> ${addressFormatted}</p>`
             : "";
 
           // Enviar mails de notificación

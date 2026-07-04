@@ -13,7 +13,17 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     const body = await req.json();
-    const { items, shippingAddress, customerName, customerEmail } = body;
+    const { 
+      items, 
+      shippingStreet, 
+      shippingNumber, 
+      shippingApartment, 
+      shippingCity, 
+      shippingProvince, 
+      shippingZipCode, 
+      customerName, 
+      customerEmail 
+    } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json(
@@ -60,7 +70,12 @@ export async function POST(req: Request) {
           data: {
             total,
             shippingCost,
-            shippingAddress: shippingAddress || null,
+            shippingStreet: shippingStreet || null,
+            shippingNumber: shippingNumber || null,
+            shippingApartment: shippingApartment || null,
+            shippingCity: shippingCity || null,
+            shippingProvince: shippingProvince || null,
+            shippingZipCode: shippingZipCode || null,
             customerName: customerName || null,
             customerEmail: customerEmail || null,
             userId: (session?.user as any)?.id || null,
@@ -109,6 +124,10 @@ export async function POST(req: Request) {
     const response = await preference.create({
       body: {
         items: mpItems,
+        payer: (customerEmail || customerName) ? {
+          ...(customerEmail ? { email: customerEmail } : {}),
+          ...(customerName ? { name: customerName } : {}),
+        } : undefined,
         back_urls: {
           success: `${baseUrl}/checkout/success?orderId=${order.id}`,
           failure: `${baseUrl}/checkout/failure?orderId=${order.id}`,
@@ -125,8 +144,11 @@ export async function POST(req: Request) {
       init_point: response.init_point,
       sandbox_init_point: response.sandbox_init_point,
     });
-  } catch (error) {
-    console.error("Error creating checkout preference:", error);
+  } catch (error: any) {
+    console.error("Error creating checkout preference:", error?.message || error);
+    if (error?.response) {
+      console.error("MP Response Error:", JSON.stringify(error.response, null, 2));
+    }
     return NextResponse.json(
       { message: "Error interno del servidor" },
       { status: 500 }

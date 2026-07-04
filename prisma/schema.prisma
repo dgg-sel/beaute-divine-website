@@ -103,7 +103,12 @@ model Order {
   channel         String      @default("ONLINE") // ONLINE, PRESENCIAL, OTRO
   total           Float
   shippingCost    Float       @default(0)
-  shippingAddress String?
+  shippingStreet  String?
+  shippingNumber  String?
+  shippingApartment String?
+  shippingCity    String?
+  shippingProvince String?
+  shippingZipCode String?
   customerName    String?
   customerEmail   String?
   paymentId       String?     // ID del pago en Mercado Pago
