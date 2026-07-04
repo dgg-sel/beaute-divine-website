@@ -19,8 +19,8 @@ export default function PerfilPage() {
 
  if (status === "loading") {
  return (
- <div className="bg-[#FDFBF7] flex items-center justify-center">
- <div className="w-8 h-8 border-4 border-[#4A4238] border-t-transparent rounded-full animate-spin"></div>
+ <div className="bg-surface flex items-center justify-center min-h-[50vh]">
+ <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
  </div>
  );
  }
@@ -30,45 +30,45 @@ export default function PerfilPage() {
  }
 
  return (
- <div className="bg-[#FDFBF7] pt-20 pb-16 px-4">
+ <div className="bg-surface pt-20 pb-16 px-4 min-h-screen">
  <div className="max-w-3xl mx-auto">
- <h1 className="text-4xl font-light text-[#4A4238] mb-8">Mi Cuenta</h1>
+ <h1 className="font-display-lg text-headline-lg text-primary mb-8 text-center md:text-left">Mi Cuenta</h1>
  
- <div className="bg-white rounded-2xl shadow-sm border border-[#EAE5DF] p-8">
- <div className="flex items-center gap-6 mb-8 pb-8 border-b border-[#EAE5DF]">
- <div className="w-20 h-20 bg-[#FDFBF7] rounded-full flex items-center justify-center border border-[#EAE5DF]">
- <User className="w-8 h-8 text-[#8C8377]" />
+ <div className="bg-surface-container-low rounded-sm soft-glow border border-primary/10 p-8">
+ <div className="flex items-center gap-6 mb-8 pb-8 border-b border-primary/10">
+ <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center border border-primary/20">
+ <User className="w-8 h-8 text-primary" />
  </div>
  <div>
- <h2 className="text-2xl font-medium text-[#4A4238]">{session.user?.name || "Usuario"}</h2>
- <p className="text-[#8C8377] mt-1">{session.user?.email}</p>
+ <h2 className="font-headline-md text-2xl text-on-surface">{session.user?.name || "Usuario"}</h2>
+ <p className="font-body-md text-on-surface-variant mt-1">{session.user?.email}</p>
  </div>
  </div>
 
  <div className="space-y-6">
  <div>
- <h3 className="text-lg font-medium text-[#4A4238] mb-4">Información Personal</h3>
+ <h3 className="font-headline-md text-xl text-primary mb-4 uppercase tracking-widest">Información Personal</h3>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
- <div className="bg-[#FDFBF7] p-4 rounded-xl border border-[#EAE5DF]">
- <p className="text-xs text-[#8C8377] uppercase tracking-wider mb-1">Nombre</p>
- <p className="text-[#4A4238] font-medium">{session.user?.name || "-"}</p>
+ <div className="bg-surface p-5 rounded-sm border border-primary/10">
+ <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-2">Nombre</p>
+ <p className="font-body-md text-on-surface">{session.user?.name || "-"}</p>
  </div>
- <div className="bg-[#FDFBF7] p-4 rounded-xl border border-[#EAE5DF]">
- <p className="text-xs text-[#8C8377] uppercase tracking-wider mb-1">Email</p>
- <p className="text-[#4A4238] font-medium">{session.user?.email}</p>
+ <div className="bg-surface p-5 rounded-sm border border-primary/10">
+ <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-2">Email</p>
+ <p className="font-body-md text-on-surface">{session.user?.email}</p>
  </div>
  </div>
  </div>
  
- <div className="pt-8 mt-8 border-t border-[#EAE5DF]">
+ <div className="pt-8 mt-8 border-t border-primary/10">
  <button
  onClick={() => {
  clearCart(false); // Vacía localmente pero no sobreescribe la base de datos
  signOut({ callbackUrl: "/" });
  }}
- className="flex items-center gap-2 text-red-600 hover:text-red-700 font-medium transition-colors"
+ className="flex items-center gap-2 text-error hover:text-error/80 font-label-sm text-[10px] uppercase tracking-widest transition-colors"
  >
- <LogOut className="w-5 h-5" />
+ <LogOut className="w-4 h-4" />
  Cerrar Sesión
  </button>
  </div>
