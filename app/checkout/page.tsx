@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+
 import CheckoutClient from "./CheckoutClient";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
@@ -22,13 +22,10 @@ export default async function CheckoutPage() {
   const shippingCost = parseFloat(process.env.SHIPPING_COST || "0");
 
   return (
-    <>
-      <Header />
-      <main className="pt-32 pb-[64px] bg-[#FDFBF7] min-h-screen">
-        <div className="max-w-[1200px] mx-auto px-4 md:px-16">
-          <CheckoutClient userAddresses={userAddresses} userId={(session?.user as any)?.id} shippingCost={shippingCost} />
-        </div>
-      </main>
-    </>
+    <main className="pt-32 pb-[64px] bg-surface min-h-screen">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-16">
+        <CheckoutClient userAddresses={userAddresses} userId={(session?.user as any)?.id} shippingCost={shippingCost} />
+      </div>
+    </main>
   );
 }
