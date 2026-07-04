@@ -33,9 +33,9 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { street, number, apartment, city, province, zipCode, phone } = body;
+    const { name, street, number, apartment, city, province, zipCode, phone } = body;
 
-    if (!street || !number || !city || !province || !zipCode) {
+    if (!name || !street || !number || !city || !province || !zipCode) {
       return NextResponse.json(
         { message: "Faltan campos obligatorios" },
         { status: 400 }
@@ -45,6 +45,7 @@ export async function POST(req: Request) {
     const address = await prisma.userAddress.create({
       data: {
         userId: (session.user as any).id,
+        name,
         street,
         number,
         apartment: apartment || null,

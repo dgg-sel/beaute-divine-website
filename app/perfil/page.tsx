@@ -129,6 +129,7 @@ export default function PerfilPage() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
+                      <p className="font-headline-sm text-primary mb-1">{addr.name}</p>
                       <p className="font-body-md text-on-surface font-medium">
                         {addr.street} {addr.number} {addr.apartment ? `Dpto ${addr.apartment}` : ""}
                       </p>

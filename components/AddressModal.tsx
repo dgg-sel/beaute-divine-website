@@ -10,6 +10,7 @@ export default function AddressModal({
   onSuccess: (address: any) => void;
 }) {
   const [formData, setFormData] = useState({
+    name: "",
     street: "",
     number: "",
     apartment: "",
@@ -45,7 +46,7 @@ export default function AddressModal({
         const data = await res.json();
         onSuccess(data.address);
         setFormData({
-          street: "", number: "", apartment: "", city: "", province: "", zipCode: "", phone: "",
+          name: "", street: "", number: "", apartment: "", city: "", province: "", zipCode: "", phone: "",
         });
         onClose();
       } else {
@@ -61,7 +62,7 @@ export default function AddressModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-surface-container w-full max-w-lg rounded-2xl p-6 md:p-8 shadow-xl border border-primary/10 relative">
+      <div className="bg-surface-container w-full max-w-lg rounded-2xl p-6 md:p-8 shadow-xl border border-primary/10 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors"
@@ -79,6 +80,10 @@ export default function AddressModal({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2">
+              <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">Nombre de la dirección *</label>
+              <input required type="text" placeholder="Ej: Casa, Trabajo..." value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            </div>
             <div className="col-span-2 md:col-span-1">
               <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">Calle *</label>
               <input required type="text" value={formData.street} onChange={e => setFormData({ ...formData, street: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />

@@ -25,6 +25,7 @@ export default function CheckoutClient({
   const [loadingCities, setLoadingCities] = useState(false);
 
   const [formData, setFormData] = useState({
+    name: "",
     street: "",
     number: "",
     apartment: "",
@@ -78,6 +79,7 @@ export default function CheckoutClient({
       const addr = userAddresses[selectedAddressIndex];
       setFormData(prev => ({
         ...prev,
+        name: addr.name || "",
         street: addr.street || "",
         number: addr.number || "",
         apartment: addr.apartment || "",
@@ -90,6 +92,7 @@ export default function CheckoutClient({
     } else {
       setFormData(prev => ({
         ...prev,
+        name: "",
         street: "",
         number: "",
         apartment: "",
@@ -132,6 +135,7 @@ export default function CheckoutClient({
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+              name: formData.name || "Mi Dirección",
               street: formData.street,
               number: formData.number,
               apartment: formData.apartment,
@@ -206,27 +210,26 @@ export default function CheckoutClient({
               <h3 className="font-label-sm text-label-sm uppercase text-on-surface-variant">Mis Direcciones Guardadas</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {userAddresses.map((addr, idx) => (
-                  <label 
-                    key={addr.id} 
-                    className={`flex flex-col p-4 border rounded-lg cursor-pointer transition-colors relative ${selectedAddressIndex === idx ? 'border-primary bg-primary/5' : 'border-outline-variant bg-surface hover:border-primary/50'}`}
+                  <div 
+                    key={addr.id}
+                    onClick={() => setSelectedAddressIndex(idx)}
+                    className={`cursor-pointer p-4 rounded-xl border transition-colors ${selectedAddressIndex === idx ? 'border-primary bg-primary/5' : 'border-outline-variant bg-surface hover:border-primary/50'}`}
                   >
-                    <input 
-                      type="radio" 
-                      name="addressSelector" 
-                      className="absolute opacity-0"
-                      checked={selectedAddressIndex === idx}
-                      onChange={() => setSelectedAddressIndex(idx)}
-                    />
-                    <div className="flex items-center space-x-2 text-on-surface mb-2">
-                      <MapPin size={18} className={selectedAddressIndex === idx ? "text-primary" : "text-on-surface-variant"} />
-                      <span className="font-body-md font-bold text-sm">
-                        {addr.street} {addr.number}
-                      </span>
+                    <div className="flex items-start gap-3">
+                      <div className={`mt-1 w-4 h-4 rounded-full border flex-shrink-0 flex items-center justify-center ${selectedAddressIndex === idx ? 'border-primary' : 'border-outline-variant'}`}>
+                        {selectedAddressIndex === idx && <div className="w-2 h-2 bg-primary rounded-full" />}
+                      </div>
+                      <div>
+                        <p className="font-headline-sm text-primary mb-1">{addr.name}</p>
+                        <p className="font-body-md text-on-surface">
+                          {addr.street} {addr.number} {addr.apartment ? `Dpto ${addr.apartment}` : ""}
+                        </p>
+                        <p className="font-body-md text-sm text-on-surface-variant">
+                          {addr.city}, {addr.province} ({addr.zipCode})
+                        </p>
+                      </div>
                     </div>
-                    <p className="font-body-md text-xs text-on-surface-variant pl-6 leading-relaxed">
-                      {addr.apartment && `Dpto: ${addr.apartment} - `}{addr.city},<br/>{addr.province} (CP: {addr.zipCode})
-                    </p>
-                  </label>
+                  </div>
                 ))}
                 
                 <label 
@@ -305,15 +308,31 @@ export default function CheckoutClient({
               </div>
 
               {userId && (
-                <div className="mt-4 md:col-span-2 flex items-center">
-                  <input 
-                    type="checkbox" 
-                    id="saveAddress" 
-                    checked={formData.saveAddress} 
-                    onChange={e => setFormData({...formData, saveAddress: e.target.checked})} 
-                    className="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary"
-                  />
-                  <label htmlFor="saveAddress" className="ml-2 font-body-md text-sm text-on-surface-variant">Guardar esta dirección para mis próximas compras</label>
+                <div className="mt-4 md:col-span-2 space-y-4">
+                  <div className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      id="saveAddress" 
+                      checked={formData.saveAddress} 
+                      onChange={e => setFormData({...formData, saveAddress: e.target.checked})} 
+                      className="w-4 h-4 text-primary border-outline-variant rounded focus:ring-primary"
+                    />
+                    <label htmlFor="saveAddress" className="ml-2 font-body-md text-sm text-on-surface-variant">Guardar esta dirección para mis próximas compras</label>
+                  </div>
+                  
+                  {formData.saveAddress && (
+                    <div className="space-y-2 animate-fade-in">
+                      <label className="font-label-sm text-label-sm uppercase text-on-surface">Nombre de la dirección *</label>
+                      <input 
+                        required 
+                        type="text" 
+                        placeholder="Ej: Casa, Trabajo..."
+                        value={formData.name || ""} 
+                        onChange={e => setFormData({...formData, name: e.target.value})} 
+                        className="w-full md:w-1/2 bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" 
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
