@@ -7,7 +7,7 @@ export default async function Header() {
   const session = await getServerSession(authOptions);
   const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
   const isAdmin = session?.user?.email && adminEmails.includes(session.user.email.toLowerCase());
-  const shippingCost = parseFloat(process.env.SHIPPING_COST || "0");
+
 
   return (
     <header className="docked full-width top-0 sticky z-[110] bg-surface/80 luxury-blur border-b border-primary/10 transition-all duration-300">
@@ -58,7 +58,7 @@ export default async function Header() {
               Iniciar Sesión
             </Link>
           )}
-          <CartDrawer shippingCost={shippingCost} />
+          <CartDrawer />
           <Link href="/contacto" className="bg-primary text-on-primary px-8 py-3 font-label-sm text-label-sm uppercase tracking-widest metallic-edge hover:opacity-90 active:scale-95 transition-all text-center">
             Reservar
           </Link>
@@ -66,7 +66,7 @@ export default async function Header() {
         
         {/* Mobile Cart */}
         <div className="flex lg:hidden items-center ml-auto">
-          <CartDrawer shippingCost={shippingCost} />
+          <CartDrawer />
         </div>
       </nav>
     </header>

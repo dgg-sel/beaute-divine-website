@@ -26,7 +26,7 @@ export default async function CheckoutPage() {
       <Header />
       <main className="pt-32 pb-[64px] bg-[#FDFBF7] min-h-screen">
         <div className="max-w-[1200px] mx-auto px-4 md:px-16">
-          <CheckoutClient userAddresses={userAddresses} userId={session?.user?.id} shippingCost={shippingCost} />
+          <CheckoutClient userAddresses={userAddresses} userId={(session?.user as any)?.id} shippingCost={shippingCost} />
         </div>
       </main>
     </>
