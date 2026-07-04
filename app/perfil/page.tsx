@@ -63,7 +63,7 @@ export default function PerfilPage() {
   }
 
   return (
-    <div className="bg-surface pt-[100px] pb-12 px-4 min-h-screen">
+    <div className="bg-surface pt-16 pb-12 px-4 min-h-screen">
       <div className="max-w-3xl mx-auto space-y-6">
         <h1 className="font-display-lg text-headline-lg text-primary text-center md:text-left mb-2">Mi Cuenta</h1>
 
