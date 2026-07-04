@@ -63,32 +63,32 @@ export default function PerfilPage() {
   }
 
   return (
-    <div className="bg-surface pt-20 pb-16 px-4 min-h-screen">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <h1 className="font-display-lg text-headline-lg text-primary text-center md:text-left">Mi Cuenta</h1>
+    <div className="bg-surface pt-[100px] pb-12 px-4 min-h-screen">
+      <div className="max-w-3xl mx-auto space-y-6">
+        <h1 className="font-display-lg text-headline-lg text-primary text-center md:text-left mb-2">Mi Cuenta</h1>
 
         {/* Sección Personal */}
-        <div className="bg-surface-container-low rounded-2xl soft-glow border border-primary/10 p-8">
-          <div className="flex items-center gap-6 mb-8 pb-8 border-b border-primary/10">
-            <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center border border-primary/20">
-              <User className="w-8 h-8 text-primary" />
+        <div className="bg-surface-container-low rounded-xl soft-glow border border-primary/10 p-5 md:p-6">
+          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-primary/10">
+            <div className="w-16 h-16 bg-surface rounded-full flex items-center justify-center border border-primary/20">
+              <User className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-headline-md text-2xl text-on-surface">{session.user?.name || "Usuario"}</h2>
-              <p className="font-body-md text-on-surface-variant mt-1">{session.user?.email}</p>
+              <h2 className="font-headline-md text-xl text-on-surface">{session.user?.name || "Usuario"}</h2>
+              <p className="font-body-md text-sm text-on-surface-variant mt-0.5">{session.user?.email}</p>
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div>
-              <h3 className="font-headline-md text-xl text-primary mb-4 uppercase tracking-widest">Información Personal</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-surface p-5 rounded-xl border border-primary/10">
-                  <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-2">Nombre</p>
+              <h3 className="font-headline-md text-lg text-primary mb-3 uppercase tracking-widest">Información Personal</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-surface p-4 rounded-lg border border-primary/10">
+                  <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-1">Nombre</p>
                   <p className="font-body-md text-on-surface">{session.user?.name || "-"}</p>
                 </div>
-                <div className="bg-surface p-5 rounded-xl border border-primary/10">
-                  <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-2">Email</p>
+                <div className="bg-surface p-4 rounded-lg border border-primary/10">
+                  <p className="font-label-sm text-[10px] text-primary uppercase tracking-widest mb-1">Email</p>
                   <p className="font-body-md text-on-surface">{session.user?.email}</p>
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default function PerfilPage() {
         </div>
 
         {/* Sección Direcciones */}
-        <div className="bg-surface-container-low rounded-2xl soft-glow border border-primary/10 p-8">
+        <div className="bg-surface-container-low rounded-xl soft-glow border border-primary/10 p-5 md:p-6">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-headline-md text-xl text-primary uppercase tracking-widest">Mis Direcciones</h3>
             <button
@@ -118,7 +118,7 @@ export default function PerfilPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {addresses.map((addr) => (
-                <div key={addr.id} className="bg-surface p-5 rounded-xl border border-primary/10 relative group">
+                <div key={addr.id} className="bg-surface p-4 rounded-lg border border-primary/10 relative group">
                   <button 
                     onClick={() => handleDeleteAddress(addr.id)}
                     className="absolute top-4 right-4 text-on-surface-variant hover:text-error transition-colors opacity-0 group-hover:opacity-100"
