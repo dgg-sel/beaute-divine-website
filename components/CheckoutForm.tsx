@@ -22,6 +22,11 @@ export default function CheckoutForm({ shippingCost }: CheckoutFormProps) {
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   
+  // Direcciones guardadas
+  const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string>("new");
+  const [saveAddress, setSaveAddress] = useState(false);
+
   // Dirección granular
   const [shippingStreet, setShippingStreet] = useState("");
   const [shippingNumber, setShippingNumber] = useState("");
@@ -54,11 +59,21 @@ export default function CheckoutForm({ shippingCost }: CheckoutFormProps) {
       .catch(err => console.error("Error cargando provincias", err));
   }, []);
 
-  // Prellenar nombre/email si el usuario está logueado
+  // Prellenar nombre/email si el usuario está logueado y cargar direcciones
   useEffect(() => {
     if (session?.user) {
       setCustomerName(session.user.name || "");
       setCustomerEmail(session.user.email || "");
+
+      fetch("/api/user/addresses")
+        .then(res => res.json())
+        .then(data => {
+          if (data.addresses && data.addresses.length > 0) {
+            setSavedAddresses(data.addresses);
+            setSelectedAddressId(data.addresses[0].id);
+          }
+        })
+        .catch(err => console.error("Error fetching addresses", err));
     }
   }, [session]);
 
@@ -105,14 +120,59 @@ export default function CheckoutForm({ shippingCost }: CheckoutFormProps) {
   const handlePagar = async () => {
     setError(null);
 
-    if (!shippingStreet.trim() || !shippingNumber.trim() || !selectedCityName || !selectedProvinceName || !shippingZipCode.trim()) {
-      setError("Por favor completá los campos obligatorios de la dirección.");
-      return;
-    }
-    
-    if (!session && (!customerName.trim() || !customerEmail.trim())) {
-      setError("Por favor ingresá tu nombre y email para recibir la confirmación.");
-      return;
+    let checkoutData: any = {};
+
+    if (selectedAddressId !== "new") {
+      const addr = savedAddresses.find(a => a.id === selectedAddressId);
+      if (!addr) {
+        setError("Error al seleccionar la dirección guardada.");
+        return;
+      }
+      checkoutData = {
+        items,
+        shippingStreet: addr.street,
+        shippingNumber: addr.number,
+        shippingApartment: addr.apartment || "",
+        shippingCity: addr.city,
+        shippingProvince: addr.province,
+        shippingZipCode: addr.zipCode,
+        customerName: customerName.trim() || null,
+        customerEmail: customerEmail.trim() || session?.user?.email || null,
+      };
+    } else {
+      if (!shippingStreet.trim() || !shippingNumber.trim() || !selectedCityName || !selectedProvinceName || !shippingZipCode.trim()) {
+        setError("Por favor completá los campos obligatorios de la dirección.");
+        return;
+      }
+      
+      if (!session && (!customerName.trim() || !customerEmail.trim())) {
+        setError("Por favor ingresá tu nombre y email para recibir la confirmación.");
+        return;
+      }
+
+      checkoutData = {
+        items,
+        shippingStreet: shippingStreet.trim(),
+        shippingNumber: shippingNumber.trim(),
+        shippingApartment: shippingApartment.trim(),
+        shippingCity: selectedCityName,
+        shippingProvince: selectedProvinceName,
+        shippingZipCode: shippingZipCode.trim(),
+        customerName: customerName.trim() || null,
+        customerEmail: customerEmail.trim() || session?.user?.email || null,
+      };
+
+      if (session && saveAddress) {
+        try {
+          await fetch("/api/user/addresses", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(checkoutData)
+          });
+        } catch(err) {
+          console.error("Error al guardar la nueva dirección", err);
+        }
+      }
     }
 
     setIsProcessing(true);
@@ -120,17 +180,7 @@ export default function CheckoutForm({ shippingCost }: CheckoutFormProps) {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items,
-          shippingStreet: shippingStreet.trim(),
-          shippingNumber: shippingNumber.trim(),
-          shippingApartment: shippingApartment.trim(),
-          shippingCity: selectedCityName,
-          shippingProvince: selectedProvinceName,
-          shippingZipCode: shippingZipCode.trim(),
-          customerName: customerName.trim() || null,
-          customerEmail: customerEmail.trim() || session?.user?.email || null,
-        }),
+        body: JSON.stringify(checkoutData),
       });
 
       const data = await res.json();
@@ -193,86 +243,137 @@ export default function CheckoutForm({ shippingCost }: CheckoutFormProps) {
               Dirección de envío
             </h2>
           </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            <div className="col-span-2">
-              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Provincia *</label>
-              <select
-                value={selectedProvinceId}
-                onChange={handleProvinceChange}
-                className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
-              >
-                <option value="">Selecciona tu provincia...</option>
-                {provinces.map((prov) => (
-                  <option key={prov.id} value={prov.id}>
-                    {prov.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="col-span-2">
-              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Ciudad *</label>
-              <select
-                value={selectedCityId}
-                onChange={handleCityChange}
-                disabled={!selectedProvinceId}
-                className={`w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] transition-colors ${
-                  !selectedProvinceId ? 'bg-gray-100 cursor-not-allowed text-[#C5BFB8]' : 'bg-[#FDFBF7]'
-                }`}
-              >
-                <option value="">
-                  {!selectedProvinceId ? 'Primero selecciona una provincia' : 'Selecciona tu ciudad...'}
-                </option>
-                {cities.map((city) => (
-                  <option key={city.id} value={city.id}>
-                    {city.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
 
-            <div className="col-span-2">
-              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Calle *</label>
-              <input
-                type="text"
-                value={shippingStreet}
-                onChange={(e) => setShippingStreet(e.target.value)}
-                placeholder="Ej: Av. Corrientes"
-                className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
-              />
+          {session && savedAddresses.length > 0 && (
+            <div className="mb-4">
+              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-2">
+                Mis Direcciones Guardadas
+              </label>
+              <div className="space-y-2">
+                {savedAddresses.map((addr) => (
+                  <label key={addr.id} className={`flex items-start p-3 border rounded-xl cursor-pointer transition-colors ${selectedAddressId === addr.id ? 'border-[#c49e62] bg-[#FDFBF7]' : 'border-[#EAE5DF] bg-white'}`}>
+                    <input 
+                      type="radio" 
+                      name="address" 
+                      className="mt-1 mr-3 text-[#c49e62] focus:ring-[#c49e62]"
+                      checked={selectedAddressId === addr.id}
+                      onChange={() => setSelectedAddressId(addr.id)}
+                    />
+                    <div>
+                      <p className="text-sm text-[#4A4238] font-medium">{addr.street} {addr.number} {addr.apartment && `Depto ${addr.apartment}`}</p>
+                      <p className="text-xs text-[#8C8377]">{addr.city}, {addr.province} (CP: {addr.zipCode})</p>
+                    </div>
+                  </label>
+                ))}
+                <label className={`flex items-center p-3 border rounded-xl cursor-pointer transition-colors ${selectedAddressId === 'new' ? 'border-[#c49e62] bg-[#FDFBF7]' : 'border-[#EAE5DF] bg-white'}`}>
+                  <input 
+                    type="radio" 
+                    name="address" 
+                    className="mr-3 text-[#c49e62] focus:ring-[#c49e62]"
+                    checked={selectedAddressId === 'new'}
+                    onChange={() => setSelectedAddressId('new')}
+                  />
+                  <span className="text-sm text-[#4A4238] font-medium">Usar otra dirección</span>
+                </label>
+              </div>
             </div>
-            <div>
-              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Número *</label>
-              <input
-                type="text"
-                value={shippingNumber}
-                onChange={(e) => setShippingNumber(e.target.value)}
-                placeholder="1234"
-                className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
-              />
+          )}
+          
+          {selectedAddressId === "new" && (
+            <div className="grid grid-cols-2 gap-3 mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="col-span-2">
+                <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Provincia *</label>
+                <select
+                  value={selectedProvinceId}
+                  onChange={handleProvinceChange}
+                  className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
+                >
+                  <option value="">Selecciona tu provincia...</option>
+                  {provinces.map((prov) => (
+                    <option key={prov.id} value={prov.id}>
+                      {prov.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="col-span-2">
+                <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Ciudad *</label>
+                <select
+                  value={selectedCityId}
+                  onChange={handleCityChange}
+                  disabled={!selectedProvinceId}
+                  className={`w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] transition-colors ${
+                    !selectedProvinceId ? 'bg-gray-100 cursor-not-allowed text-[#C5BFB8]' : 'bg-[#FDFBF7]'
+                  }`}
+                >
+                  <option value="">
+                    {!selectedProvinceId ? 'Primero selecciona una provincia' : 'Selecciona tu ciudad...'}
+                  </option>
+                  {cities.map((city) => (
+                    <option key={city.id} value={city.id}>
+                      {city.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-span-2">
+                <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Calle *</label>
+                <input
+                  type="text"
+                  value={shippingStreet}
+                  onChange={(e) => setShippingStreet(e.target.value)}
+                  placeholder="Ej: Av. Corrientes"
+                  className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Número *</label>
+                <input
+                  type="text"
+                  value={shippingNumber}
+                  onChange={(e) => setShippingNumber(e.target.value)}
+                  placeholder="1234"
+                  className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Piso/Dpto</label>
+                <input
+                  type="text"
+                  value={shippingApartment}
+                  onChange={(e) => setShippingApartment(e.target.value)}
+                  placeholder="3B"
+                  className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">CP *</label>
+                <input
+                  type="text"
+                  value={shippingZipCode}
+                  onChange={(e) => setShippingZipCode(e.target.value)}
+                  placeholder="1043"
+                  className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
+                />
+              </div>
+              
+              {session && (
+                <div className="col-span-2 mt-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      className="rounded text-[#c49e62] focus:ring-[#c49e62]"
+                      checked={saveAddress}
+                      onChange={(e) => setSaveAddress(e.target.checked)}
+                    />
+                    <span className="text-sm text-[#4A4238]">Guardar esta dirección para mis próximas compras</span>
+                  </label>
+                </div>
+              )}
             </div>
-            <div>
-              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">Piso/Dpto</label>
-              <input
-                type="text"
-                value={shippingApartment}
-                onChange={(e) => setShippingApartment(e.target.value)}
-                placeholder="3B"
-                className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
-              />
-            </div>
-            <div className="col-span-2">
-              <label className="block text-xs uppercase tracking-widest text-[#8C8377] mb-1.5">CP *</label>
-              <input
-                type="text"
-                value={shippingZipCode}
-                onChange={(e) => setShippingZipCode(e.target.value)}
-                placeholder="1043"
-                className="w-full border border-[#EAE5DF] rounded-lg px-3 py-2.5 text-sm text-[#4A4238] focus:outline-none focus:border-[#c49e62] bg-[#FDFBF7]"
-              />
-            </div>
-          </div>
+          )}
         </section>
 
       </div>

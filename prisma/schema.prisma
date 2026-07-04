@@ -45,6 +45,7 @@ model User {
   role          String    @default("USER") // ADMIN or USER
   accounts      Account[]
   sessions      Session[]
+  addresses     UserAddress[]
   orders        Order[]
   cart          Cart?
 }
@@ -144,6 +145,21 @@ model CartItem {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   price     Float    // Opcional, pero util para snapshots de precio
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserAddress {
+  id        String   @id @default(cuid())
+  userId    String
+  street    String
+  number    String
+  apartment String?
+  city      String
+  province  String
+  zipCode   String
+  phone     String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
