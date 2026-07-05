@@ -92,17 +92,17 @@ function ReviewCard({ review }: { review: Review }) {
   }, [review.content]);
 
   return (
-    <div className="h-full p-6 md:p-8 bg-white border border-zinc-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col relative overflow-hidden">
-      <Quote className="absolute top-6 right-6 w-8 h-8 text-zinc-100" />
+    <div className="h-full p-5 md:p-6 bg-white border border-zinc-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow flex flex-col relative overflow-hidden">
+      <Quote className="absolute top-4 right-4 w-8 h-8 text-zinc-100" />
       
-      <div className="flex items-center gap-1 text-amber-500 mb-4 z-10">
+      <div className="flex items-center gap-1 text-amber-500 mb-3 z-10">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} className={`w-4 h-4 ${i < (review.rating || 5) ? 'fill-current' : 'text-zinc-200'}`} />
         ))}
       </div>
       
       <div 
-        className="prose prose-sm text-zinc-600 flex-1 mb-6 z-10"
+        className="prose prose-sm text-zinc-600 flex-1 mb-4 z-10 line-clamp-5"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
       
