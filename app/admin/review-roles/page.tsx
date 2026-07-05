@@ -14,11 +14,7 @@ export default async function AdminReviewRolesPage() {
     <main className="pt-32 pb-16 bg-surface min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <div className="flex flex-wrap gap-6 mb-8 border-b border-zinc-200 pb-4">
-          <Link href="/admin" className="font-label-sm text-sm uppercase tracking-widest text-zinc-500 hover:text-amber-600 transition-colors">Catálogo y Clientes</Link>
-          <Link href="/admin/reviews" className="font-label-sm text-sm uppercase tracking-widest text-zinc-500 hover:text-amber-600 transition-colors">Reseñas</Link>
-          <Link href="/admin/review-roles" className="font-label-sm text-sm uppercase tracking-widest text-amber-600 font-bold">Roles de Reseñas</Link>
-        </div>
+        {/* Tabs removed */}
         
         <div className="flex items-center gap-4 mb-8">
           <Link href="/admin/reviews" className="p-2 bg-white border border-zinc-200 rounded-full hover:bg-zinc-50 transition-colors">

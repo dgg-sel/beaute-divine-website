@@ -17,7 +17,6 @@ export default async function AdminReviewsPage() {
       <div className="flex flex-wrap gap-6 mb-8 border-b border-zinc-200 pb-4">
         <Link href="/admin" className="font-label-sm text-sm uppercase tracking-widest text-zinc-500 hover:text-amber-600 transition-colors">Catálogo y Clientes</Link>
         <Link href="/admin/reviews" className="font-label-sm text-sm uppercase tracking-widest text-amber-600 font-bold">Reseñas</Link>
-        <Link href="/admin/review-roles" className="font-label-sm text-sm uppercase tracking-widest text-zinc-500 hover:text-amber-600 transition-colors">Roles de Reseñas</Link>
       </div>
       <div className="flex items-center justify-between mb-8">
         <div>
