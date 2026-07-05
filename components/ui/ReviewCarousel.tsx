@@ -24,7 +24,7 @@ interface ReviewCarouselProps {
 
 export function ReviewCarousel({ reviews, autoPlay = true, speed = 5000 }: ReviewCarouselProps) {
   const plugins = React.useMemo(() => {
-    return autoPlay ? [AutoScroll({ speed: speed / 5000 || 1, stopOnInteraction: true, stopOnMouseEnter: true })] : [];
+    return autoPlay ? [AutoScroll({ speed: speed / 5000 || 1, stopOnInteraction: false, stopOnMouseEnter: true })] : [];
   }, [autoPlay, speed]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
