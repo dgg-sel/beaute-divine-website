@@ -3,7 +3,7 @@ import { getReviews } from '@/app/actions/review-actions';
 import { ReviewCarousel } from '@/components/ui/ReviewCarousel';
 
 export default async function Home() {
-  let reviews = [];
+  let reviews: any[] = [];
   let errorMsg = null;
   try {
     reviews = await getReviews(true);
