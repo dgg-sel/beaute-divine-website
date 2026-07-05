@@ -6,6 +6,25 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { ReviewImageUpload } from "@/components/ui/ReviewImageUpload";
 
+async function saveReview(isNew: boolean, id: string, formData: FormData) {
+  "use server";
+  const data = {
+    authorName: formData.get("authorName") as string,
+    authorRole: formData.get("authorRole") as string,
+    authorImage: formData.get("authorImage") as string,
+    content: formData.get("content") as string,
+    rating: parseInt(formData.get("rating") as string) || 5,
+    isActive: formData.get("isActive") === "on",
+  };
+
+  if (isNew) {
+    await createReview(data);
+  } else {
+    await updateReview(id, data);
+  }
+  redirect("/admin/reviews");
+}
+
 export default async function ReviewEditPage({ params }: { params: { id: string } }) {
   const isNew = params.id === "new";
   const [review, roles] = await Promise.all([
@@ -15,24 +34,7 @@ export default async function ReviewEditPage({ params }: { params: { id: string 
 
   if (!isNew && !review) return notFound();
 
-  async function handleSave(formData: FormData) {
-    "use server";
-    const data = {
-      authorName: formData.get("authorName") as string,
-      authorRole: formData.get("authorRole") as string,
-      authorImage: formData.get("authorImage") as string,
-      content: formData.get("content") as string,
-      rating: parseInt(formData.get("rating") as string) || 5,
-      isActive: formData.get("isActive") === "on",
-    };
-
-    if (isNew) {
-      await createReview(data);
-    } else {
-      await updateReview(params.id, data);
-    }
-    redirect("/admin/reviews");
-  }
+  const handleSave = saveReview.bind(null, isNew, params.id);
 
   return (
     <main className="pt-32 pb-16 bg-surface min-h-screen">
