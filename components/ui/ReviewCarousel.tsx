@@ -107,12 +107,8 @@ function ReviewCard({ review }: { review: Review }) {
       />
       
       <div className="flex items-center gap-3 mt-auto z-10">
-        {review.authorImage ? (
+        {review.authorImage && (
           <img src={review.authorImage} alt={review.authorName} className="w-12 h-12 rounded-full object-cover bg-zinc-100 border border-zinc-200" />
-        ) : (
-          <div className="w-12 h-12 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-500 font-bold text-lg">
-            {review.authorName.charAt(0).toUpperCase()}
-          </div>
         )}
         <div>
           <p className="font-semibold text-zinc-900 leading-tight">{review.authorName}</p>
