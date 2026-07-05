@@ -3,7 +3,13 @@ import { getReviews } from '@/app/actions/review-actions';
 import { ReviewCarousel } from '@/components/ui/ReviewCarousel';
 
 export default async function Home() {
-  const reviews = await getReviews(true);
+  let reviews = [];
+  let errorMsg = null;
+  try {
+    reviews = await getReviews(true);
+  } catch (e: any) {
+    errorMsg = e.message || String(e);
+  }
 
   return (
  <main>
@@ -11,6 +17,11 @@ export default async function Home() {
  <section className="relative min-h-[90vh] flex items-center overflow-hidden">
  <div className="absolute inset-0">
  <img alt="Serene wellness professional background" className="w-full h-full object-cover object-[center_10%] opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAYCadEW7HV-Pvcyr5RybZZBiovyslRZ46cNrwjckErRc_yLnkorxRN3Kxs5g1rxfMatGS5fYXcaiwW4geJouFReteyQYVIuOqP_no9dvIpZVL6XO5JbAfpVrPyY9hOyawgTn6E7p9azQ-SqmJ97ef2seKfmsaEp2vGi-_GVIOHui7RhYTb-ewwert-sqjpuGcLTN8mD0sPaRW01ClVjmA7ioT-Ppl9s6FXHaTA2br7Wn5O3chU2qOMz0nPAYJzepMeFBgzJBn-Gs"/>
+ {errorMsg && (
+   <div className="bg-red-500 text-white p-4 text-center z-50 relative">
+     ERROR: {errorMsg}
+   </div>
+ )}
  <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/40 to-transparent"></div>
  </div>
  <div className="container-max mx-auto px-8 relative grid md:grid-cols-2 gap-12 items-center">
