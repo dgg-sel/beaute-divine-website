@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 
-export default function MobileNav() {
+export default function MobileNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -73,8 +73,13 @@ export default function MobileNav() {
           </div>
           
           <div className="pt-2">
+            {isAdmin && (
+              <Link href="/admin" className="hover:text-amber-600 transition-colors block border-t border-primary/10 py-4 text-amber-500 font-bold">
+                Panel Admin
+              </Link>
+            )}
             {session ? (
-              <Link href="/perfil" className="hover:text-primary transition-colors block border-t border-primary/10 pt-4 text-primary font-bold">
+              <Link href="/perfil" className={`hover:text-primary transition-colors block border-t border-primary/10 pt-4 text-primary font-bold ${isAdmin ? 'border-t-0 pt-0' : ''}`}>
                 Mi Cuenta
               </Link>
             ) : (

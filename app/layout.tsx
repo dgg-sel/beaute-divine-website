@@ -10,11 +10,18 @@ export const metadata = {
   description: 'Una mirada consciente de la belleza.',
 };
 
-export default function RootLayout({
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim().toLowerCase()) || [];
+  const isAdmin = session?.user?.email ? adminEmails.includes(session.user.email.toLowerCase()) : false;
+
   return (
     <html lang="es" className="scroll-smooth">
       <head>
@@ -28,7 +35,7 @@ export default function RootLayout({
             {children}
           </div>
           <Footer />
-          <MobileNav />
+          <MobileNav isAdmin={isAdmin} />
           <RevealAnimator />
         </Providers>
       </body>
