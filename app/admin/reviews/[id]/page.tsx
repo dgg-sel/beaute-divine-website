@@ -68,7 +68,10 @@ export default async function ReviewEditPage({ params }: { params: { id: string 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-zinc-700">Servicio / Rol (Opcional)</label>
-                <Link href="/admin/review-roles" className="text-xs font-medium text-amber-600 hover:underline">
+                <Link 
+                  href={`/admin/review-roles?returnTo=/admin/reviews/${params.id}`} 
+                  className="inline-flex items-center px-3 py-1.5 text-xs font-medium bg-[#4A4238] hover:bg-[#c49e62] text-white rounded-md transition-colors"
+                >
                   Administrar Roles
                 </Link>
               </div>

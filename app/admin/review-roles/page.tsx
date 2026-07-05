@@ -7,8 +7,13 @@ import { RoleForm } from "@/components/ui/RoleForm";
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminReviewRolesPage() {
+export default async function AdminReviewRolesPage({
+  searchParams
+}: {
+  searchParams: { returnTo?: string }
+}) {
   const roles = await getReviewRoles();
+  const backUrl = searchParams.returnTo || "/admin/reviews";
 
   return (
     <main className="pt-32 pb-16 bg-surface min-h-screen">
@@ -17,7 +22,7 @@ export default async function AdminReviewRolesPage() {
         {/* Tabs removed */}
         
         <div className="flex items-center gap-4 mb-8">
-          <Link href="/admin/reviews" className="p-2 bg-white border border-zinc-200 rounded-full hover:bg-zinc-50 transition-colors">
+          <Link href={backUrl} className="p-2 bg-white border border-zinc-200 rounded-full hover:bg-zinc-50 transition-colors">
             <ArrowLeft className="w-5 h-5 text-zinc-500" />
           </Link>
           <div>
