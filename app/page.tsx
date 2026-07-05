@@ -1,7 +1,11 @@
 import Link from 'next/link';
+import { getReviews } from '@/app/actions/review-actions';
+import { ReviewCarousel } from '@/components/ui/ReviewCarousel';
 
-export default function Home() {
- return (
+export default async function Home() {
+  const reviews = await getReviews(true);
+
+  return (
  <main>
  {/* Hero Section */}
  <section className="relative min-h-[90vh] flex items-center overflow-hidden">
@@ -138,6 +142,20 @@ export default function Home() {
  </div>
  </div>
  </section>
+
+ {/* Testimonials Section */}
+ {reviews.length > 0 && (
+   <section className="py-section-padding bg-surface-container-low" id="testimonials">
+     <div className="max-w-container-max mx-auto px-8">
+       <div className="text-center mb-12">
+         <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.2em]">Testimonios</span>
+         <h2 className="font-headline-lg text-headline-lg mt-4 mb-4 text-on-background">Lo que dicen nuestras clientas</h2>
+         <div className="w-24 h-px bg-primary mx-auto opacity-40"></div>
+       </div>
+       <ReviewCarousel reviews={reviews} />
+     </div>
+   </section>
+ )}
 
  <section className="relative py-section-padding overflow-hidden" id="contact">
  <div className="absolute inset-0 bg-secondary-container/20 z-0">
