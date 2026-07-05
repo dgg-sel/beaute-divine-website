@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import AutoScroll from "embla-carousel-auto-scroll";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { remark } from "remark";
 import html from "remark-html";
@@ -24,7 +24,7 @@ interface ReviewCarouselProps {
 
 export function ReviewCarousel({ reviews, autoPlay = true, speed = 5000 }: ReviewCarouselProps) {
   const plugins = React.useMemo(() => {
-    return autoPlay ? [Autoplay({ delay: speed, stopOnInteraction: true })] : [];
+    return autoPlay ? [AutoScroll({ speed: speed / 5000 || 1, stopOnInteraction: true, stopOnMouseEnter: true })] : [];
   }, [autoPlay, speed]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(

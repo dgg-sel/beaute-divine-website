@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import AdminPanel from "@/components/AdminPanel";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function AdminPage() {
  const session = await getServerSession(authOptions);
@@ -39,7 +40,12 @@ export default async function AdminPage() {
 
  return (
  <div className="max-w-container-max mx-auto px-8 py-section-padding">
- <h1 className="font-headline-lg text-4xl mb-8 text-primary">Panel de Administración</h1>
+ <h1 className="font-headline-lg text-4xl mb-6 text-primary">Panel de Administración</h1>
+ <div className="flex flex-wrap gap-6 mb-8 border-b border-primary/20 pb-4">
+   <Link href="/admin" className="font-label-sm text-sm uppercase tracking-widest text-primary font-bold">Catálogo y Clientes</Link>
+   <Link href="/admin/reviews" className="font-label-sm text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Reseñas</Link>
+   <Link href="/admin/review-roles" className="font-label-sm text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Roles de Reseñas</Link>
+ </div>
  <AdminPanel products={products} categories={categories} users={users} uploadFolder={uploadFolder || "beaute-divine-espace/catalogo"} />
  </div>
  );

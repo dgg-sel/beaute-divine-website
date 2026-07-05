@@ -14,6 +14,11 @@ export default async function AdminReviewsPage() {
   return (
     <main className="pt-32 pb-16 bg-surface min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-wrap gap-6 mb-8 border-b border-zinc-200 pb-4">
+        <Link href="/admin" className="font-label-sm text-sm uppercase tracking-widest text-zinc-500 hover:text-amber-600 transition-colors">Catálogo y Clientes</Link>
+        <Link href="/admin/reviews" className="font-label-sm text-sm uppercase tracking-widest text-amber-600 font-bold">Reseñas</Link>
+        <Link href="/admin/review-roles" className="font-label-sm text-sm uppercase tracking-widest text-zinc-500 hover:text-amber-600 transition-colors">Roles de Reseñas</Link>
+      </div>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">
