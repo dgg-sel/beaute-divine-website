@@ -48,8 +48,9 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
     try {
       await updateSetting("SHIPPING_COST", cost);
       alert("Costo de envío actualizado correctamente.");
-    } catch (err) {
-      alert("Hubo un error al guardar la configuración.");
+    } catch (err: any) {
+      console.error(err);
+      alert("Hubo un error al guardar la configuración: " + (err.message || err));
     } finally {
       setIsSavingSettings(false);
     }

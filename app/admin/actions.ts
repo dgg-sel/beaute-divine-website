@@ -196,15 +196,20 @@ export async function createManualOrder(userId: string, items: { productId: stri
 }
 
 export async function updateSetting(key: string, value: string) {
-  await requireAdmin();
-  
-  await prisma.appSetting.upsert({
-    where: { key },
-    update: { value },
-    create: { key, value }
-  });
+  try {
+    await requireAdmin();
+    
+    await prisma.appSetting.upsert({
+      where: { key },
+      update: { value },
+      create: { key, value }
+    });
 
-  revalidatePath("/admin");
-  revalidatePath("/checkout");
-  revalidatePath("/api/checkout");
+    revalidatePath("/admin");
+    revalidatePath("/checkout");
+    revalidatePath("/api/checkout");
+  } catch (error: any) {
+    console.error("Error en updateSetting:", error);
+    throw new Error(error.message || "Error interno al actualizar la configuración");
+  }
 }
