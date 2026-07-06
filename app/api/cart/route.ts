@@ -32,7 +32,8 @@ export async function GET(req: Request) {
       title: item.product.title,
       price: item.price,
       image: item.product.image,
-      quantity: item.quantity
+      quantity: item.quantity,
+      stock: item.product.stock
     }));
 
     return NextResponse.json({ items });
@@ -59,29 +60,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Usuario no encontrado" }, { status: 404 });
     }
 
-    // Upsert cart
-    const cart = await prisma.cart.upsert({
-      where: { userId: user.id },
-      create: { userId: user.id },
-      update: {}
-    });
-
-    // Delete existing items
-    await prisma.cartItem.deleteMany({
-      where: { cartId: cart.id }
-    });
-
-    // Insert new items
-    if (items && items.length > 0) {
-      await prisma.cartItem.createMany({
-        data: items.map((item: any) => ({
-          cartId: cart.id,
-          productId: item.id,
-          quantity: item.quantity,
-          price: item.price
-        }))
+    // Ejecutar atómicamente para prevenir condición de carrera en requests concurrentes
+    await prisma.$transaction(async (tx) => {
+      // Upsert cart
+      const cart = await tx.cart.upsert({
+        where: { userId: user.id },
+        create: { userId: user.id },
+        update: {}
       });
-    }
+
+      // Delete existing items
+      await tx.cartItem.deleteMany({
+        where: { cartId: cart.id }
+      });
+
+      // Insert new items
+      if (items && items.length > 0) {
+        await tx.cartItem.createMany({
+          data: items.map((item: any) => ({
+            cartId: cart.id,
+            productId: item.id,
+            quantity: item.quantity,
+            price: item.price
+          }))
+        });
+      }
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
