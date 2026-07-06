@@ -10,11 +10,11 @@ export default function CheckoutSuccessPage() {
 
  useEffect(() => {
  // Vaciar el carrito cuando el pago es exitoso
- clearCart();
+ clearCart(true);
  }, [clearCart]);
 
  return (
- <div className="bg-[#FDFBF7] flex flex-col items-center justify-center p-4">
+ <div className="bg-[#FDFBF7] flex flex-col items-center justify-center p-4 min-h-[60vh]">
  <div className="bg-white p-8 rounded-2xl shadow-sm border border-[#EAE5DF] max-w-md w-full text-center">
  <div className="flex justify-center mb-6">
  <CheckCircle className="w-20 h-20 text-green-500" />
@@ -24,10 +24,10 @@ export default function CheckoutSuccessPage() {
  Tu orden ha sido procesada correctamente. Te hemos enviado un correo con los detalles de tu compra.
  </p>
  <Link
- href="/"
+ href="/catalogo"
  className="inline-block w-full bg-[#4A4238] text-white py-3 rounded-xl font-medium hover:bg-[#3A332C] transition-colors"
  >
- Volver al Inicio
+ Volver al Catálogo
  </Link>
  </div>
  </div>

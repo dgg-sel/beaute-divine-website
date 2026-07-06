@@ -20,12 +20,14 @@ interface CartStore {
   getCartCount: () => number;
   fetchUserCart: () => Promise<void>;
   syncCart: () => Promise<void>;
+  isCleared: boolean;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      isCleared: false,
       
       addItem: (item) => {
         const currentItems = get().items;
@@ -37,11 +39,12 @@ export const useCartStore = create<CartStore>()(
               items: currentItems.map((i) =>
                 i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
               ),
+              isCleared: false
             });
           }
         } else {
           if (item.quantity <= item.stock) {
-            set({ items: [...currentItems, item] });
+            set({ items: [...currentItems, item], isCleared: false });
           }
         }
         get().syncCart();
@@ -66,7 +69,7 @@ export const useCartStore = create<CartStore>()(
       },
       
       clearCart: (sync = true) => {
-        set({ items: [] });
+        set({ items: [], isCleared: true });
         if (sync) {
           get().syncCart();
         }
@@ -81,11 +84,12 @@ export const useCartStore = create<CartStore>()(
       },
 
       fetchUserCart: async () => {
+        if (get().isCleared) return;
         try {
           const res = await fetch("/api/cart");
           if (res.ok) {
             const data = await res.json();
-            if (data.items) {
+            if (data.items && !get().isCleared) {
               set({ items: data.items });
             }
           }
@@ -109,6 +113,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'cart-storage',
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

@@ -32,6 +32,14 @@ export async function POST(req: Request) {
             },
           });
 
+          // Si el usuario estaba logueado, vaciamos su carrito en la BD ahora que pagó
+          if (order.userId) {
+            const cart = await prisma.cart.findUnique({ where: { userId: order.userId } });
+            if (cart) {
+              await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+            }
+          }
+
           // Determinar nombre y email del destinatario cliente
           const clienteName = order.customerName || order.user?.name || null;
           const clienteEmail = order.customerEmail || order.user?.email || null;
