@@ -91,6 +91,16 @@ export async function POST(req: Request) {
           },
         });
       });
+
+      // Si el usuario está logueado, vaciamos su carrito en la BD inmediatamente
+      const userId = (session?.user as any)?.id;
+      if (userId) {
+        const cart = await prisma.cart.findUnique({ where: { userId } });
+        if (cart) {
+          await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+        }
+      }
+
     } catch (error: any) {
       console.error("Error validando stock:", error);
       return NextResponse.json(
