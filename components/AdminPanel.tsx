@@ -46,11 +46,15 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
     const formData = new FormData(e.currentTarget);
     const cost = formData.get("shippingCost") as string;
     try {
-      await updateSetting("SHIPPING_COST", cost);
-      alert("Costo de envío actualizado correctamente.");
+      const result = await updateSetting("SHIPPING_COST", cost);
+      if (result && result.error) {
+        alert("Error: " + result.error);
+      } else {
+        alert("Costo de envío actualizado correctamente.");
+      }
     } catch (err: any) {
       console.error(err);
-      alert("Hubo un error al guardar la configuración: " + (err.message || err));
+      alert("Hubo un error de conexión: " + (err.message || err));
     } finally {
       setIsSavingSettings(false);
     }

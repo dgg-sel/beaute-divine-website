@@ -208,8 +208,9 @@ export async function updateSetting(key: string, value: string) {
     revalidatePath("/admin");
     revalidatePath("/checkout");
     revalidatePath("/api/checkout");
+    return { success: true };
   } catch (error: any) {
     console.error("Error en updateSetting:", error);
-    throw new Error(error.message || "Error interno al actualizar la configuración");
+    return { error: error.message || "Error interno al actualizar la configuración" };
   }
 }
