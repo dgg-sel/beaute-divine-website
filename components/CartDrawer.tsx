@@ -17,6 +17,11 @@ export default function CartDrawer() {
     router.push("/checkout");
   };
 
+  const handleContinueShopping = () => {
+    setIsOpen(false);
+    router.push("/catalogo");
+  };
+
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -159,7 +164,7 @@ export default function CartDrawer() {
                   Ir al Checkout
                 </button>
                 <button
-                  onClick={handleClose}
+                  onClick={handleContinueShopping}
                   className="w-full bg-transparent border border-[#EAE5DF] text-[#4A4238] py-4 rounded-xl font-medium hover:bg-gray-50 transition-colors"
                 >
                   Seguir Comprando
