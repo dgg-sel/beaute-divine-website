@@ -35,13 +35,23 @@ export default function CartDrawer() {
 
   // Bloquear el scroll del body cuando el drawer está abierto
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
     }
+
     return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
 
