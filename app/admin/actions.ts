@@ -194,3 +194,17 @@ export async function createManualOrder(userId: string, items: { productId: stri
 
   revalidatePath("/admin");
 }
+
+export async function updateSetting(key: string, value: string) {
+  await requireAdmin();
+  
+  await prisma.appSetting.upsert({
+    where: { key },
+    update: { value },
+    create: { key, value }
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/checkout");
+  revalidatePath("/api/checkout");
+}

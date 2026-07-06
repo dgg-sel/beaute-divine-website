@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct } from "@/app/admin/actions";
+import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct, updateSetting } from "@/app/admin/actions";
 import type { Product, Category } from "@prisma/client";
 import ProductImage from "@/components/ProductImage";
 import AdminCustomerTab, { UserWithOrders } from "./AdminCustomerTab";
@@ -9,13 +9,14 @@ import { CldUploadWidget } from "next-cloudinary";
 
 type ProductWithCategory = Product & { category: Category | null };
 
-export default function AdminPanel({ products, categories, users, uploadFolder }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[], uploadFolder: string }) {
-  const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES">("CATALOGO");
+export default function AdminPanel({ products, categories, users, uploadFolder, shippingCost }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[], uploadFolder: string, shippingCost?: number }) {
+  const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES" | "CONFIGURACIÓN">("CATALOGO");
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
   const [uploadedImageId, setUploadedImageId] = useState<string>("");
   const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryError, setCategoryError] = useState<string | null>(null);
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
 
   const router = useRouter();
 
@@ -36,6 +37,21 @@ export default function AdminPanel({ products, categories, users, uploadFolder }
     if (confirm('¿Seguro que deseas eliminar esta categoría?')) {
       await deleteCategory(id);
       router.refresh();
+    }
+  };
+
+  const handleUpdateShippingCost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSavingSettings(true);
+    const formData = new FormData(e.currentTarget);
+    const cost = formData.get("shippingCost") as string;
+    try {
+      await updateSetting("SHIPPING_COST", cost);
+      alert("Costo de envío actualizado correctamente.");
+    } catch (err) {
+      alert("Hubo un error al guardar la configuración.");
+    } finally {
+      setIsSavingSettings(false);
     }
   };
 
@@ -111,6 +127,12 @@ export default function AdminPanel({ products, categories, users, uploadFolder }
           className={`font-label-sm uppercase tracking-widest px-4 py-2 transition-colors ${activeTab === "CLIENTES" ? "bg-primary text-on-primary" : "text-primary hover:bg-primary/10"}`}
         >
           Clientes y Ventas
+        </button>
+        <button 
+          onClick={() => setActiveTab("CONFIGURACIÓN")}
+          className={`font-label-sm uppercase tracking-widest px-4 py-2 transition-colors ${activeTab === "CONFIGURACIÓN" ? "bg-primary text-on-primary" : "text-primary hover:bg-primary/10"}`}
+        >
+          Configuración
         </button>
       </div>
 
@@ -306,6 +328,42 @@ export default function AdminPanel({ products, categories, users, uploadFolder }
 
       {activeTab === "CLIENTES" && (
         <AdminCustomerTab users={users} products={products} />
+      )}
+
+      {activeTab === "CONFIGURACIÓN" && (
+        <div className="max-w-2xl bg-surface-container-low p-6 rounded-sm soft-glow border border-primary/10">
+          <h2 className="font-headline-md text-2xl mb-6 text-primary border-b border-primary/10 pb-4">
+            Configuración Global
+          </h2>
+          
+          <form onSubmit={handleUpdateShippingCost} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="shippingCost" className="font-label-sm uppercase tracking-widest text-primary text-sm">
+                Costo Fijo de Envío ($ ARS)
+              </label>
+              <p className="text-xs text-on-surface-variant mb-2">
+                Este costo se sumará automáticamente al subtotal en la página de checkout.
+              </p>
+              <input 
+                id="shippingCost"
+                name="shippingCost" 
+                type="number" 
+                step="0.01" 
+                defaultValue={shippingCost || 0} 
+                required 
+                className="input-elegant py-2 max-w-xs" 
+              />
+            </div>
+            
+            <button 
+              type="submit" 
+              disabled={isSavingSettings} 
+              className="bg-primary text-on-primary py-3 px-6 mt-4 font-label-sm uppercase tracking-widest w-fit disabled:opacity-50 transition-opacity"
+            >
+              {isSavingSettings ? 'Guardando...' : 'Guardar Configuración'}
+            </button>
+          </form>
+        </div>
       )}
     </div>
   );

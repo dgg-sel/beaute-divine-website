@@ -3,6 +3,7 @@ import { MercadoPagoConfig, Preference } from "mercadopago";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getShippingCost } from "@/lib/settings";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || "TEST-mock",
@@ -36,8 +37,9 @@ export async function POST(req: Request) {
     const { releaseExpiredReservations } = await import("@/lib/stock");
     await releaseExpiredReservations();
 
-    // Costo fijo de envío desde variable de entorno
-    const shippingCost = parseFloat(process.env.SHIPPING_COST || "0");
+    // Costo fijo de envío desde la base de datos (con fallback a env)
+    const shippingCost = await getShippingCost();
+
 
     const subtotal = items.reduce(
       (acc: number, item: any) => acc + item.price * item.quantity,

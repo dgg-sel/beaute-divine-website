@@ -183,3 +183,10 @@ model ReviewRole {
   id    String @id @default(cuid())
   name  String @unique
 }
+
+model AppSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
