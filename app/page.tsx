@@ -73,7 +73,7 @@ export default async function Home() {
  <div className="bg-secondary-container w-fit px-3 py-1 rounded-full text-secondary font-label-sm text-xs">Exclusivo</div>
  <h3 className="font-headline-md text-headline-md">Fascial Fit Remodeling</h3>
  <p className="font-body-md text-on-surface-variant">Combina drenaje neurolinfático, trabajo miofascial, activación muscular y remodelación corporal logrando una silueta más armónica y funcional.</p>
- <Link href="/fascial-fit-remodeling" className="mt-4 text-primary font-label-sm text-sm uppercase tracking-widest flex items-center gap-2 group">
+ <Link href="/fascias#fascial-fit-remodeling" className="mt-4 text-primary font-label-sm text-sm uppercase tracking-widest flex items-center gap-2 group">
  Saber más <span className="material-symbols-outlined text-sm group-hover:translate-x-2 transition-transform">arrow_forward</span>
  </Link>
  </div>
