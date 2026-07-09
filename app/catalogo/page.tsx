@@ -110,6 +110,7 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  alt={product.title} 
  description={product.description}
  price={product.price || undefined}
+ stock={product.stock}
  className="w-full h-full object-cover transition-transform duration-700" 
  />
  {product.isImported && (

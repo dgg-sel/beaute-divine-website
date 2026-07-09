@@ -11,9 +11,10 @@ interface ImageModalProps {
   className?: string;
   description?: string;
   price?: number;
+  stock?: number;
 }
 
-export default function ImageModal({ src, alt, className, description, price }: ImageModalProps) {
+export default function ImageModal({ src, alt, className, description, price, stock }: ImageModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -97,6 +98,15 @@ export default function ImageModal({ src, alt, className, description, price }: 
                      <p className="text-xs text-on-surface-variant/70 mt-1">${(price / 1.21).toFixed(2)} sin impuestos</p>
                    </div>
                  ) : null}
+
+                 {stock !== undefined && (
+                   <div className="mb-6 flex items-center gap-2">
+                     <span className={`w-2 h-2 rounded-full ${stock > 0 ? 'bg-[#c49e62]' : 'bg-error'}`}></span>
+                     <span className="font-label-sm text-xs text-on-surface-variant uppercase tracking-widest">
+                       {stock > 0 ? `${stock} unidades disponibles` : 'Agotado'}
+                     </span>
+                   </div>
+                 )}
 
                  <div className="font-body-md text-on-surface-variant whitespace-pre-wrap leading-relaxed text-sm md:text-base">
                    {description}
