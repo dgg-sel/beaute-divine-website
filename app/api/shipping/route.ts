@@ -6,7 +6,7 @@ import { sendEmail } from "@/lib/email";
 // Types
 // ---------------------------------------------------------------------------
 
-interface ShippingOption {
+export interface ShippingOption {
   provider: string;
   type: string;
   cost: number;
@@ -281,6 +281,71 @@ async function getOcaRealOption(
 // Handler
 // ---------------------------------------------------------------------------
 
+export async function calculateShippingOptions(destinationZip: string, items: { productId: string; quantity: number }[]): Promise<ShippingOption[]> {
+  // Kill switch global: si SHIPPING_COST >= 0, devuelve precio único (0 = Gratis).
+  const globalCostRaw = process.env.SHIPPING_COST;
+  if (globalCostRaw !== undefined && !isNaN(Number(globalCostRaw)) && Number(globalCostRaw) >= 0) {
+    const globalCost = Number(globalCostRaw);
+    return [{
+      provider: globalCost === 0 ? "Envío Gratis" : "Envío Estándar",
+      type: "A domicilio",
+      cost: globalCost,
+      estimatedDelivery: "3 a 5 días hábiles",
+    }];
+  }
+
+  // A partir de aquí todas las variables son obligatorias.
+  const mode = requireEnvStr("SHIPPING_MODE") as ShippingMode;
+  if (!["FIXED", "API_ONLY", "HYBRID"].includes(mode)) {
+    throw new Error(`SHIPPING_MODE inválido: "${mode}". Valores válidos: FIXED, API_ONLY, HYBRID.`);
+  }
+
+  const originZip = requireEnvStr("SHIPPING_ORIGIN_ZIP");
+  const zone = getShippingZone(destinationZip);
+  const { totalWeight, totalVolume } = await getPackageStats(items);
+
+  let andreaniOption: ShippingOption | null = null;
+  let correoOption:   ShippingOption | null = null;
+  let ocaOption:      ShippingOption | null = null;
+
+  if (mode === "FIXED") {
+    // Modo Fijo: usa la tabla LOCAL/REGIONAL/NACIONAL. No llama ninguna API.
+    andreaniOption = getAndreaniFallback(zone);
+    correoOption   = getCorreoFallback(zone);
+    ocaOption      = getOcaFallback(zone);
+  } else {
+    // API_ONLY o HYBRID: cotiza en paralelo con los 3 proveedores.
+    [andreaniOption, correoOption, ocaOption] = await Promise.all([
+      getAndreaniRealOption(destinationZip, originZip, totalWeight, totalVolume),
+      getCorreoRealOption(destinationZip, originZip, totalWeight, totalVolume),
+      getOcaRealOption(destinationZip, originZip, totalWeight, totalVolume),
+    ]);
+
+    if (mode === "API_ONLY") {
+      const validOptions = [andreaniOption, correoOption, ocaOption].filter(
+        (o): o is ShippingOption => o !== null
+      );
+      if (validOptions.length === 0) {
+        console.error("[shipping] API_ONLY: All APIs failed for destinationZip:", destinationZip);
+        void notifyAdminShippingFailure(destinationZip);
+        throw new Error("No pudimos calcular las tarifas de envío en este momento. Por favor intentá nuevamente más tarde.");
+      }
+      return validOptions;
+    }
+
+    // HYBRID: si una API falló, usar tarifa fija de zona (también obligatoria).
+    if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
+    if (!correoOption)   correoOption   = getCorreoFallback(zone);
+    if (!ocaOption)      ocaOption      = getOcaFallback(zone);
+  }
+
+  return [andreaniOption, correoOption, ocaOption];
+}
+
+// ---------------------------------------------------------------------------
+// Handler
+// ---------------------------------------------------------------------------
+
 export async function POST(req: Request) {
   try {
     const body: RequestBody = await req.json();
@@ -290,77 +355,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing destinationZip or items" }, { status: 400 });
     }
 
-    // Kill switch global: si SHIPPING_COST >= 0, devuelve precio único (0 = Gratis).
-    const globalCostRaw = process.env.SHIPPING_COST;
-    if (globalCostRaw !== undefined && !isNaN(Number(globalCostRaw)) && Number(globalCostRaw) >= 0) {
-      const globalCost = Number(globalCostRaw);
-      return NextResponse.json({
-        options: [{
-          provider: globalCost === 0 ? "Envío Gratis" : "Envío Estándar",
-          type: "A domicilio",
-          cost: globalCost,
-          estimatedDelivery: "3 a 5 días hábiles",
-        }],
-      });
-    }
-
-    // A partir de aquí todas las variables son obligatorias.
-    // requireEnvStr/requireEnvNum lanzan un error descriptivo si falta algo.
-    const mode = requireEnvStr("SHIPPING_MODE") as ShippingMode;
-    if (!["FIXED", "API_ONLY", "HYBRID"].includes(mode)) {
-      return NextResponse.json(
-        { error: `SHIPPING_MODE inválido: "${mode}". Valores válidos: FIXED, API_ONLY, HYBRID.` },
-        { status: 500 }
-      );
-    }
-
-    const originZip = requireEnvStr("SHIPPING_ORIGIN_ZIP");
-    const zone = getShippingZone(destinationZip);
-    const { totalWeight, totalVolume } = await getPackageStats(items);
-
-    let andreaniOption: ShippingOption | null = null;
-    let correoOption:   ShippingOption | null = null;
-    let ocaOption:      ShippingOption | null = null;
-
-    if (mode === "FIXED") {
-      // Modo Fijo: usa la tabla LOCAL/REGIONAL/NACIONAL. No llama ninguna API.
-      andreaniOption = getAndreaniFallback(zone);
-      correoOption   = getCorreoFallback(zone);
-      ocaOption      = getOcaFallback(zone);
-    } else {
-      // API_ONLY o HYBRID: cotiza en paralelo con los 3 proveedores.
-      [andreaniOption, correoOption, ocaOption] = await Promise.all([
-        getAndreaniRealOption(destinationZip, originZip, totalWeight, totalVolume),
-        getCorreoRealOption(destinationZip, originZip, totalWeight, totalVolume),
-        getOcaRealOption(destinationZip, originZip, totalWeight, totalVolume),
-      ]);
-
-      if (mode === "API_ONLY") {
-        const validOptions = [andreaniOption, correoOption, ocaOption].filter(
-          (o): o is ShippingOption => o !== null
-        );
-        if (validOptions.length === 0) {
-          console.error("[shipping] API_ONLY: All APIs failed for destinationZip:", destinationZip);
-          void notifyAdminShippingFailure(destinationZip);
-          return NextResponse.json(
-            { error: "No pudimos calcular las tarifas de envío en este momento. Por favor intentá nuevamente más tarde." },
-            { status: 503 }
-          );
-        }
-        return NextResponse.json({ options: validOptions });
-      }
-
-      // HYBRID: si una API falló, usar tarifa fija de zona (también obligatoria).
-      if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
-      if (!correoOption)   correoOption   = getCorreoFallback(zone);
-      if (!ocaOption)      ocaOption      = getOcaFallback(zone);
-    }
-
-    return NextResponse.json({ options: [andreaniOption, correoOption, ocaOption] });
+    const options = await calculateShippingOptions(destinationZip, items);
+    return NextResponse.json({ options });
   } catch (error) {
     console.error("[shipping] Handler error:", error);
-    // Los errores de variable faltante se exponen en el mensaje para que sean visibles en los logs de Vercel.
     const message = error instanceof Error ? error.message : "Internal Server Error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    const status = message.includes("No pudimos calcular") ? 503 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }

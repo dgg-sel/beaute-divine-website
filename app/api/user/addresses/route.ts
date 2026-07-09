@@ -33,9 +33,9 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, street, number, apartment, city, province, zipCode, phone } = body;
+    const { name, street, number, apartment, city, province, zipCode, phone, dni } = body;
 
-    if (!name || !street || !number || !city || !province || !zipCode) {
+    if (!name || !street || !number || !city || !province || !zipCode || !dni || !phone) {
       return NextResponse.json(
         { message: "Faltan campos obligatorios" },
         { status: 400 }
@@ -53,6 +53,7 @@ export async function POST(req: Request) {
         province,
         zipCode,
         phone: phone || null,
+        dni: dni || null,
       },
     });
 

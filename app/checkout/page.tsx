@@ -3,7 +3,7 @@ import CheckoutClient from "./CheckoutClient";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getShippingCost } from "@/lib/settings";
+
 
 export default async function CheckoutPage() {
   const session = await getServerSession(authOptions);
@@ -20,12 +20,10 @@ export default async function CheckoutPage() {
     }
   }
 
-  const shippingCost = await getShippingCost();
-
   return (
     <main className="pt-10 pb-[64px] bg-surface min-h-screen">
       <div className="max-w-[1200px] mx-auto px-4 md:px-16">
-        <CheckoutClient userAddresses={userAddresses} userId={(session?.user as any)?.id} shippingCost={shippingCost} />
+        <CheckoutClient userAddresses={userAddresses} userId={(session?.user as any)?.id} />
       </div>
     </main>
   );

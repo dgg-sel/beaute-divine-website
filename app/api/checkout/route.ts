@@ -3,7 +3,7 @@ import { MercadoPagoConfig, Preference } from "mercadopago";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { getShippingCost } from "@/lib/settings";
+import { calculateShippingOptions, ShippingOption } from "../shipping/route";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || "TEST-mock",
@@ -23,7 +23,10 @@ export async function POST(req: Request) {
       shippingProvince, 
       shippingZipCode, 
       customerName, 
-      customerEmail 
+      customerEmail,
+      customerDni,
+      customerPhone,
+      selectedShipping
     } = body;
 
     if (!items || items.length === 0) {
@@ -37,9 +40,38 @@ export async function POST(req: Request) {
     const { releaseExpiredReservations } = await import("@/lib/stock");
     await releaseExpiredReservations();
 
-    // Costo fijo de envío desde la base de datos (con fallback a env)
-    const shippingCost = await getShippingCost();
+    if (!shippingZipCode) {
+      return NextResponse.json(
+        { message: "El código postal es requerido para envíos." },
+        { status: 400 }
+      );
+    }
 
+    if (!selectedShipping) {
+      return NextResponse.json(
+        { message: "Debe seleccionar una opción de envío." },
+        { status: 400 }
+      );
+    }
+
+    // Validar el costo de envío internamente (Anti-tampering)
+    const shippingOptions = await calculateShippingOptions(
+      shippingZipCode, 
+      items.map((i: any) => ({ productId: i.id, quantity: i.quantity }))
+    );
+
+    const validOption = shippingOptions.find(
+      (o) => o.provider === selectedShipping.provider && o.type === selectedShipping.type
+    );
+
+    if (!validOption || validOption.cost !== selectedShipping.cost) {
+      return NextResponse.json(
+        { message: "La opción de envío seleccionada no es válida o su precio ha cambiado. Por favor, actualizá la página e intentá de nuevo." },
+        { status: 400 }
+      );
+    }
+
+    const shippingCost = validOption.cost;
 
     const subtotal = items.reduce(
       (acc: number, item: any) => acc + item.price * item.quantity,
@@ -80,6 +112,10 @@ export async function POST(req: Request) {
             shippingZipCode: shippingZipCode || null,
             customerName: customerName || null,
             customerEmail: customerEmail || null,
+            customerDni: customerDni || null,
+            customerPhone: customerPhone || null,
+            shippingProvider: selectedShipping.provider || null,
+            shippingType: selectedShipping.type || null,
             userId: (session?.user as any)?.id || null,
             items: {
               create: items.map((item: any) => ({

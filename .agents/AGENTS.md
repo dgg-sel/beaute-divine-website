@@ -136,35 +136,6 @@ Los envíos tienen un **costo fijo configurado por variable de entorno**.
 
 ---
 
-## 🔷 Pendientes Arquitectónicos Críticos
-
-### ⚠️ Pendiente #1 — Prisma Adapter para Producción (CRÍTICO ANTES DE DEPLOY)
-El `lib/prisma.ts` actual usa `PrismaClient` directo. En Vercel serverless esto agotará conexiones.
-
-Acción: instalar `@prisma/adapter-pg` + `pg`, reemplazar `lib/prisma.ts` con versión que usa `pg.Pool`, agregar `previewFeatures = ["driverAdapters"]` en el generator del schema.
-
-### ⚠️ Pendiente #2 — Corregir `postinstall` (CRÍTICO ANTES DE DEPLOY)
-`package.json` actual: `"postinstall": "prisma generate && prisma db push"`.
-Corrección: `"postinstall": "prisma generate"` (el `db push` rompe el deploy en Vercel).
-
-### ⚠️ Pendiente #3 — Envío Fijo en API de Checkout
-Implementar en `POST /api/checkout/route.ts`:
-- Leer `parseFloat(process.env.SHIPPING_COST || "0")`.
-- Si `shippingCost > 0`: agregar al array de ítems de MP y sumar al `total` de la `Order`.
-- Guardar `shippingCost` y `shippingAddress` en la `Order`.
-
-### ⚠️ Pendiente #4 — Página de Checkout UI con Resumen + Dirección
-Crear `app/checkout/page.tsx`:
-- Revisión de carrito + campo **dirección de envío**.
-- Resumen de costos: subtotal + envío + total.
-- Botón "Pagar con Mercado Pago" (llama a `POST /api/checkout`).
-
-### ⚠️ Pendiente #5 — Emails con Desglose de Envío
-Los emails de confirmación (en el webhook) deben incluir:
-- Dirección de envío.
-- Costo de envío desglosado del total.
-
----
 
 ## 🔷 Estructura de Archivos Clave
 
