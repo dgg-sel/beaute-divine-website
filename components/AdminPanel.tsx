@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct, updateSetting } from "@/app/admin/actions";
+import { addCategory, deleteCategory, addProduct, editProduct, deleteProduct, updateMultipleSettings } from "@/app/admin/actions";
 import type { Product, Category } from "@prisma/client";
 import ProductImage from "@/components/ProductImage";
 import AdminCustomerTab, { UserWithOrders } from "./AdminCustomerTab";
@@ -9,7 +9,7 @@ import { CldUploadWidget } from "next-cloudinary";
 
 type ProductWithCategory = Product & { category: Category | null };
 
-export default function AdminPanel({ products, categories, users, uploadFolder, shippingCost }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[], uploadFolder: string, shippingCost?: number }) {
+export default function AdminPanel({ products, categories, users, uploadFolder, shippingSettings }: { products: ProductWithCategory[], categories: Category[], users: UserWithOrders[], uploadFolder: string, shippingSettings: { local: number, regional: number, nacional: number } }) {
   const [activeTab, setActiveTab] = useState<"CATALOGO" | "CLIENTES" | "CONFIGURACIÓN">("CATALOGO");
   const [editingProduct, setEditingProduct] = useState<ProductWithCategory | null>(null);
   const [uploadedImageId, setUploadedImageId] = useState<string>("");
@@ -40,17 +40,23 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
     }
   };
 
-  const handleUpdateShippingCost = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateShippingSettings = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSavingSettings(true);
     const formData = new FormData(e.currentTarget);
-    const cost = formData.get("shippingCost") as string;
+    const local = formData.get("shippingLocal") as string;
+    const regional = formData.get("shippingRegional") as string;
+    const nacional = formData.get("shippingNacional") as string;
     try {
-      const result = await updateSetting("SHIPPING_COST", cost);
+      const result = await updateMultipleSettings([
+        { key: "SHIPPING_FIXED_LOCAL", value: local },
+        { key: "SHIPPING_FIXED_REGIONAL", value: regional },
+        { key: "SHIPPING_FIXED_NACIONAL", value: nacional }
+      ]);
       if (result && result.error) {
         alert("Error: " + result.error);
       } else {
-        alert("Costo de envío actualizado correctamente.");
+        alert("Costos de envío actualizados correctamente.");
       }
     } catch (err: any) {
       console.error(err);
@@ -341,23 +347,52 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
             Configuración Global
           </h2>
           
-          <form onSubmit={handleUpdateShippingCost} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="shippingCost" className="font-label-sm uppercase tracking-widest text-primary text-sm">
-                Costo Fijo de Envío ($ ARS)
-              </label>
-              <p className="text-xs text-on-surface-variant mb-2">
-                Este costo se sumará automáticamente al subtotal en la página de checkout.
-              </p>
-              <input 
-                id="shippingCost"
-                name="shippingCost" 
-                type="number" 
-                step="0.01" 
-                defaultValue={shippingCost || 0} 
-                required 
-                className="input-elegant py-2 max-w-xs" 
-              />
+          <form onSubmit={handleUpdateShippingSettings} className="flex flex-col gap-6">
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="shippingLocal" className="font-label-sm uppercase tracking-widest text-primary text-sm">
+                  Envío Local ($ ARS)
+                </label>
+                <input 
+                  id="shippingLocal"
+                  name="shippingLocal" 
+                  type="number" 
+                  step="0.01" 
+                  defaultValue={shippingSettings.local || 0} 
+                  required 
+                  className="input-elegant py-2 w-full" 
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="shippingRegional" className="font-label-sm uppercase tracking-widest text-primary text-sm">
+                  Envío Regional ($ ARS)
+                </label>
+                <input 
+                  id="shippingRegional"
+                  name="shippingRegional" 
+                  type="number" 
+                  step="0.01" 
+                  defaultValue={shippingSettings.regional || 0} 
+                  required 
+                  className="input-elegant py-2 w-full" 
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="shippingNacional" className="font-label-sm uppercase tracking-widest text-primary text-sm">
+                  Envío Nacional ($ ARS)
+                </label>
+                <input 
+                  id="shippingNacional"
+                  name="shippingNacional" 
+                  type="number" 
+                  step="0.01" 
+                  defaultValue={shippingSettings.nacional || 0} 
+                  required 
+                  className="input-elegant py-2 w-full" 
+                />
+              </div>
             </div>
             
             <button 

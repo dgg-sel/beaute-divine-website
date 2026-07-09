@@ -1,23 +1,25 @@
 import { prisma } from "./prisma";
 
-/**
- * Obtiene el costo de envío dinámico desde la base de datos.
- * Si no existe en la BD, lee la variable de entorno SHIPPING_COST como fallback.
- * Si la variable de entorno tampoco existe, devuelve 0.
- */
-export async function getShippingCost(): Promise<number> {
+export async function getShippingSettings(): Promise<{ local: number; regional: number; nacional: number }> {
+  let local = parseFloat(process.env.SHIPPING_CORREO_LOCAL || "0");
+  let regional = parseFloat(process.env.SHIPPING_CORREO_REGIONAL || "0");
+  let nacional = parseFloat(process.env.SHIPPING_CORREO_NACIONAL || "0");
+
   try {
-    const setting = await prisma.appSetting.findUnique({
-      where: { key: "SHIPPING_COST" }
+    const settings = await prisma.appSetting.findMany({
+      where: {
+        key: { in: ["SHIPPING_FIXED_LOCAL", "SHIPPING_FIXED_REGIONAL", "SHIPPING_FIXED_NACIONAL"] }
+      }
     });
-    
-    if (setting) {
-      return parseFloat(setting.value);
+
+    for (const setting of settings) {
+      if (setting.key === "SHIPPING_FIXED_LOCAL") local = parseFloat(setting.value);
+      if (setting.key === "SHIPPING_FIXED_REGIONAL") regional = parseFloat(setting.value);
+      if (setting.key === "SHIPPING_FIXED_NACIONAL") nacional = parseFloat(setting.value);
     }
   } catch (error) {
-    console.error("Error leyendo SHIPPING_COST de la base de datos:", error);
+    console.error("Error leyendo configuración de envíos de la base de datos:", error);
   }
-  
-  // Fallback a la variable de entorno
-  return parseFloat(process.env.SHIPPING_COST || "0");
+
+  return { local, regional, nacional };
 }

@@ -214,3 +214,28 @@ export async function updateSetting(key: string, value: string) {
     return { error: error.message || "Error interno al actualizar la configuración" };
   }
 }
+
+export async function updateMultipleSettings(settings: { key: string, value: string }[]) {
+  try {
+    await requireAdmin();
+    
+    // We run multiple upserts in a transaction
+    await prisma.$transaction(
+      settings.map(s => 
+        prisma.appSetting.upsert({
+          where: { key: s.key },
+          update: { value: s.value },
+          create: { key: s.key, value: s.value }
+        })
+      )
+    );
+
+    revalidatePath("/admin");
+    revalidatePath("/checkout");
+    revalidatePath("/api/checkout");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Error en updateMultipleSettings:", error);
+    return { error: error.message || "Error interno al actualizar las configuraciones" };
+  }
+}

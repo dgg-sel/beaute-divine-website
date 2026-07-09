@@ -4,7 +4,7 @@ import AdminPanel from "@/components/AdminPanel";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getShippingCost } from "@/lib/settings";
+import { getShippingSettings } from "@/lib/settings";
 
 export default async function AdminPage() {
  const session = await getServerSession(authOptions);
@@ -39,7 +39,7 @@ export default async function AdminPage() {
     ? `${process.env.CLOUDINARY_ROOT_FOLDER}/${process.env.CLOUDINARY_CATALOG_FOLDER}`
     : process.env.CLOUDINARY_ROOT_FOLDER;
 
-  const shippingCost = await getShippingCost();
+  const shippingSettings = await getShippingSettings();
 
  return (
  <div className="max-w-container-max mx-auto px-8 py-section-padding">
@@ -48,7 +48,7 @@ export default async function AdminPage() {
    <Link href="/admin" className="font-label-sm text-sm uppercase tracking-widest text-primary font-bold">Catálogo y Clientes</Link>
    <Link href="/admin/reviews" className="font-label-sm text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Reseñas</Link>
  </div>
- <AdminPanel products={products} categories={categories} users={users} uploadFolder={uploadFolder || "beaute-divine-espace/catalogo"} shippingCost={shippingCost} />
+ <AdminPanel products={products} categories={categories} users={users} uploadFolder={uploadFolder || "beaute-divine-espace/catalogo"} shippingSettings={shippingSettings} />
  </div>
  );
 }

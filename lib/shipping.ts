@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
+import { getShippingSettings } from "@/lib/settings";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -152,11 +153,11 @@ function getAndreaniFallback(zone: ShippingZone): ShippingOption {
   };
 }
 
-function getCorreoFallback(zone: ShippingZone): ShippingOption {
+function getCorreoFallback(zone: ShippingZone, settings: { local: number, regional: number, nacional: number }): ShippingOption {
   const cost =
-    zone === "LOCAL"     ? requireEnvNum("SHIPPING_CORREO_LOCAL")
-    : zone === "REGIONAL" ? requireEnvNum("SHIPPING_CORREO_REGIONAL")
-    :                       requireEnvNum("SHIPPING_CORREO_NACIONAL");
+    zone === "LOCAL"     ? settings.local
+    : zone === "REGIONAL" ? settings.regional
+    :                       settings.nacional;
   return {
     provider: "Correo Argentino",
     type: "Clásico a Domicilio",
@@ -305,10 +306,12 @@ export async function calculateShippingOptions(destinationZip: string, items: { 
 
   let correoOption:   ShippingOption | null = null;
 
+  const settings = await getShippingSettings();
+
   if (mode === "FIXED") {
     // Modo Fijo: usa la tabla LOCAL/REGIONAL/NACIONAL. No llama ninguna API.
     // andreaniOption = getAndreaniFallback(zone);
-    correoOption   = getCorreoFallback(zone);
+    correoOption   = getCorreoFallback(zone, settings);
     // ocaOption      = getOcaFallback(zone);
   } else {
     // API_ONLY o HYBRID: cotiza en paralelo con los 3 proveedores.
@@ -332,7 +335,7 @@ export async function calculateShippingOptions(destinationZip: string, items: { 
 
     // HYBRID: si una API falló, usar tarifa fija de zona (también obligatoria).
     // if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
-    if (!correoOption)   correoOption   = getCorreoFallback(zone);
+    if (!correoOption)   correoOption   = getCorreoFallback(zone, settings);
     // if (!ocaOption)      ocaOption      = getOcaFallback(zone);
   }
 

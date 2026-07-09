@@ -3,21 +3,44 @@ export default function AddressModal({
   isOpen,
   onClose,
   onSuccess,
+  initialData,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (address: any) => void;
+  initialData?: any;
 }) {
   const [formData, setFormData] = useState({
-    name: "",
-    street: "",
-    number: "",
-    apartment: "",
-    city: "",
-    province: "",
-    zipCode: "",
-    phone: "",
+    name: initialData?.name || "",
+    street: initialData?.street || "",
+    number: initialData?.number || "",
+    apartment: initialData?.apartment || "",
+    city: initialData?.city || "",
+    province: initialData?.province || "",
+    zipCode: initialData?.zipCode || "",
+    phone: initialData?.phone || "",
+    dni: initialData?.dni || "",
   });
+  
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || "",
+        street: initialData.street || "",
+        number: initialData.number || "",
+        apartment: initialData.apartment || "",
+        city: initialData.city || "",
+        province: initialData.province || "",
+        zipCode: initialData.zipCode || "",
+        phone: initialData.phone || "",
+        dni: initialData.dni || "",
+      });
+    } else {
+      setFormData({
+        name: "", street: "", number: "", apartment: "", city: "", province: "", zipCode: "", phone: "", dni: "",
+      });
+    }
+  }, [initialData, isOpen]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
@@ -64,8 +87,12 @@ export default function AddressModal({
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/user/addresses", {
-        method: "POST",
+      const isEditing = !!initialData?.id;
+      const url = isEditing ? `/api/user/addresses/${initialData.id}` : "/api/user/addresses";
+      const method = isEditing ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
@@ -74,7 +101,7 @@ export default function AddressModal({
         const data = await res.json();
         onSuccess(data.address);
         setFormData({
-          name: "", street: "", number: "", apartment: "", city: "", province: "", zipCode: "", phone: "",
+          name: "", street: "", number: "", apartment: "", city: "", province: "", zipCode: "", phone: "", dni: ""
         });
         onClose();
       } else {
@@ -98,7 +125,9 @@ export default function AddressModal({
           <span className="material-symbols-outlined">close</span>
         </button>
 
-        <h2 className="font-headline-md text-2xl text-primary mb-6">Nueva Dirección</h2>
+        <h2 className="font-headline-md text-2xl text-primary mb-6">
+          {initialData ? "Editar Dirección" : "Nueva Dirección"}
+        </h2>
 
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
@@ -142,9 +171,13 @@ export default function AddressModal({
               <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">C.P. *</label>
               <input required type="text" value={formData.zipCode} onChange={e => setFormData({ ...formData, zipCode: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
             </div>
-            <div className="col-span-2">
-              <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">Teléfono de contacto</label>
-              <input type="text" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            <div>
+              <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">DNI / CUIL *</label>
+              <input required type="text" value={formData.dni} onChange={e => setFormData({ ...formData, dni: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            </div>
+            <div>
+              <label className="font-label-sm text-[10px] uppercase text-primary mb-1 block">Teléfono de contacto *</label>
+              <input required type="text" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-surface border border-primary/20 rounded-lg p-3 font-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
             </div>
           </div>
 

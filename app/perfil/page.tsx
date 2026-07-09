@@ -15,6 +15,7 @@ export default function PerfilPage() {
   const [addresses, setAddresses] = useState<any[]>([]);
   const [loadingAddresses, setLoadingAddresses] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addressToEdit, setAddressToEdit] = useState<any>(null);
 
   const fetchAddresses = useCallback(async () => {
     try {
@@ -101,7 +102,10 @@ export default function PerfilPage() {
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-headline-md text-xl text-primary uppercase tracking-widest">Mis Direcciones</h3>
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setAddressToEdit(null);
+                setIsModalOpen(true);
+              }}
               className="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg font-label-sm text-[10px] uppercase tracking-widest transition-colors"
             >
               <Plus className="w-4 h-4" />
@@ -119,13 +123,25 @@ export default function PerfilPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {addresses.map((addr) => (
                 <div key={addr.id} className="bg-surface p-4 rounded-lg border border-primary/10 relative group">
-                  <button 
-                    onClick={() => handleDeleteAddress(addr.id)}
-                    className="absolute top-4 right-4 text-on-surface-variant hover:text-error transition-colors opacity-0 group-hover:opacity-100"
-                    title="Eliminar dirección"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button 
+                      onClick={() => {
+                        setAddressToEdit(addr);
+                        setIsModalOpen(true);
+                      }}
+                      className="text-on-surface-variant hover:text-primary transition-colors"
+                      title="Editar dirección"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">edit</span>
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteAddress(addr.id)}
+                      className="text-on-surface-variant hover:text-error transition-colors"
+                      title="Eliminar dirección"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
@@ -166,8 +182,18 @@ export default function PerfilPage() {
 
       <AddressModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={(newAddr) => setAddresses([newAddr, ...addresses])}
+        onClose={() => {
+          setIsModalOpen(false);
+          setAddressToEdit(null);
+        }}
+        initialData={addressToEdit}
+        onSuccess={(newAddr) => {
+          if (addressToEdit) {
+            setAddresses(addresses.map(a => a.id === newAddr.id ? newAddr : a));
+          } else {
+            setAddresses([newAddr, ...addresses]);
+          }
+        }}
       />
     </div>
   );
