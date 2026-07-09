@@ -303,25 +303,23 @@ export async function calculateShippingOptions(destinationZip: string, items: { 
   const zone = getShippingZone(destinationZip);
   const { totalWeight, totalVolume } = await getPackageStats(items);
 
-  let andreaniOption: ShippingOption | null = null;
   let correoOption:   ShippingOption | null = null;
-  let ocaOption:      ShippingOption | null = null;
 
   if (mode === "FIXED") {
     // Modo Fijo: usa la tabla LOCAL/REGIONAL/NACIONAL. No llama ninguna API.
-    andreaniOption = getAndreaniFallback(zone);
+    // andreaniOption = getAndreaniFallback(zone);
     correoOption   = getCorreoFallback(zone);
-    ocaOption      = getOcaFallback(zone);
+    // ocaOption      = getOcaFallback(zone);
   } else {
     // API_ONLY o HYBRID: cotiza en paralelo con los 3 proveedores.
-    [andreaniOption, correoOption, ocaOption] = await Promise.all([
-      getAndreaniRealOption(destinationZip, originZip, totalWeight, totalVolume),
+    [correoOption] = await Promise.all([
+      // getAndreaniRealOption(destinationZip, originZip, totalWeight, totalVolume),
       getCorreoRealOption(destinationZip, originZip, totalWeight, totalVolume),
-      getOcaRealOption(destinationZip, originZip, totalWeight, totalVolume),
+      // getOcaRealOption(destinationZip, originZip, totalWeight, totalVolume),
     ]);
 
     if (mode === "API_ONLY") {
-      const validOptions = [andreaniOption, correoOption, ocaOption].filter(
+      const validOptions = [correoOption].filter(
         (o): o is ShippingOption => o !== null
       );
       if (validOptions.length === 0) {
@@ -333,10 +331,10 @@ export async function calculateShippingOptions(destinationZip: string, items: { 
     }
 
     // HYBRID: si una API falló, usar tarifa fija de zona (también obligatoria).
-    if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
+    // if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
     if (!correoOption)   correoOption   = getCorreoFallback(zone);
-    if (!ocaOption)      ocaOption      = getOcaFallback(zone);
+    // if (!ocaOption)      ocaOption      = getOcaFallback(zone);
   }
 
-  return [andreaniOption, correoOption, ocaOption];
+  return [correoOption].filter((o): o is ShippingOption => o !== null);
 }
