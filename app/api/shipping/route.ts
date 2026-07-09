@@ -19,19 +19,30 @@ interface RequestBody {
 }
 
 type ShippingZone = "LOCAL" | "REGIONAL" | "NACIONAL";
+type ShippingMode = "FIXED" | "API_ONLY" | "HYBRID";
 
 // ---------------------------------------------------------------------------
-// Config helpers — leer variables de entorno directamente (sin @t3-oss/env-nextjs)
+// Config helpers — sin fallbacks. Falla rápido con mensaje claro si falta algo.
 // ---------------------------------------------------------------------------
 
-function envNum(name: string, fallback: number): number {
+function requireEnvNum(name: string): number {
   const val = process.env[name];
-  if (!val || isNaN(Number(val))) return fallback;
+  if (!val || isNaN(Number(val))) {
+    throw new Error(`❌ Variable de entorno faltante o inválida: "${name}". Configurala en Vercel.`);
+  }
   return Number(val);
 }
 
-function envStr(name: string, fallback = ""): string {
-  return process.env[name]?.trim() || fallback;
+function requireEnvStr(name: string): string {
+  const val = process.env[name]?.trim();
+  if (!val) {
+    throw new Error(`❌ Variable de entorno faltante: "${name}". Configurala en Vercel.`);
+  }
+  return val;
+}
+
+function optionalEnvStr(name: string): string | undefined {
+  return process.env[name]?.trim() || undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -47,9 +58,7 @@ function isZipInRange(numericZip: number, rangeString: string): boolean {
   for (const part of parts) {
     if (part.includes("-")) {
       const [from, to] = part.split("-").map((n) => parseInt(n.trim(), 10));
-      if (!isNaN(from) && !isNaN(to) && numericZip >= from && numericZip <= to) {
-        return true;
-      }
+      if (!isNaN(from) && !isNaN(to) && numericZip >= from && numericZip <= to) return true;
     } else {
       const single = parseInt(part, 10);
       if (!isNaN(single) && numericZip === single) return true;
@@ -59,20 +68,18 @@ function isZipInRange(numericZip: number, rangeString: string): boolean {
 }
 
 /**
- * Determina la zona de envío según los rangos configurados en las variables de entorno.
- * - LOCAL:    el CP cae en SHIPPING_LOCAL_ZIPS   (ej: "1000-1499")
- * - REGIONAL: el CP cae en SHIPPING_REGIONAL_ZIPS (ej: "1600-1999")
- * - NACIONAL: cualquier otro CP
+ * Determina la zona de envío según los rangos configurados en Vercel.
+ * SHIPPING_LOCAL_ZIPS y SHIPPING_REGIONAL_ZIPS son obligatorias.
  */
 function getShippingZone(zip: string): ShippingZone {
   const match = zip.match(/\d+/);
   if (!match) return "NACIONAL";
   const numericZip = parseInt(match[0], 10);
 
-  const localRanges = envStr("SHIPPING_LOCAL_ZIPS", "1000-1499");
-  const regionalRanges = envStr("SHIPPING_REGIONAL_ZIPS", "1600-1999");
+  const localRanges    = requireEnvStr("SHIPPING_LOCAL_ZIPS");
+  const regionalRanges = requireEnvStr("SHIPPING_REGIONAL_ZIPS");
 
-  if (isZipInRange(numericZip, localRanges)) return "LOCAL";
+  if (isZipInRange(numericZip, localRanges))    return "LOCAL";
   if (isZipInRange(numericZip, regionalRanges)) return "REGIONAL";
   return "NACIONAL";
 }
@@ -81,10 +88,6 @@ function getShippingZone(zip: string): ShippingZone {
 // Package Stats
 // ---------------------------------------------------------------------------
 
-/**
- * Calcula el peso y volumen total del pedido desde la DB.
- * Si el producto no tiene dimensiones cargadas, usa defaults seguros.
- */
 async function getPackageStats(items: RequestBody["items"]) {
   const ids = items.map((i) => i.productId);
   const dbProducts = await prisma.product.findMany({ where: { id: { in: ids } } });
@@ -94,11 +97,11 @@ async function getPackageStats(items: RequestBody["items"]) {
 
   for (const item of items) {
     const p = dbProducts.find((d) => d.id === item.productId) as Record<string, unknown> | undefined;
-    // Los campos de dimensiones son opcionales: se agregan al schema cuando el cliente los necesite.
-    const weight: number = (p && typeof p.weight === "number") ? p.weight : 0.3;
-    const height: number = (p && typeof p.height === "number") ? p.height : 10;
-    const width: number  = (p && typeof p.width === "number")  ? p.width  : 10;
-    const depth: number  = (p && typeof p.depth === "number")  ? p.depth  : 10;
+    // Los campos de dimensiones son opcionales: se agregan al schema cuando el cliente active modo API.
+    const weight: number = (p && typeof p.weight === "number") ? p.weight : 0;
+    const height: number = (p && typeof p.height === "number") ? p.height : 0;
+    const width: number  = (p && typeof p.width  === "number") ? p.width  : 0;
+    const depth: number  = (p && typeof p.depth  === "number") ? p.depth  : 0;
 
     totalWeight += weight * item.quantity;
     totalVolume += height * width * depth * item.quantity;
@@ -111,10 +114,9 @@ async function getPackageStats(items: RequestBody["items"]) {
 // Admin Alert
 // ---------------------------------------------------------------------------
 
-/** Envía un email de alerta al admin cuando las 3 APIs de envío fallan simultáneamente. */
 async function notifyAdminShippingFailure(destinationZip: string) {
-  const adminEmail = envStr("SHIPPING_ADMIN_EMAIL") || envStr("SMTP_FROM") || envStr("SMTP_USER");
-  if (!adminEmail) return;
+  // SHIPPING_ADMIN_EMAIL es opcional; si no está se usa SMTP_FROM (que sí es requerido).
+  const adminEmail = optionalEnvStr("SHIPPING_ADMIN_EMAIL") ?? requireEnvStr("SMTP_FROM");
 
   await sendEmail({
     to: adminEmail,
@@ -122,8 +124,8 @@ async function notifyAdminShippingFailure(destinationZip: string) {
     html: `
       <h2>Fallo crítico en el cálculo de tarifas de envío</h2>
       <p>Ninguno de los proveedores (Andreani, Correo Argentino, OCA) pudo responder correctamente.</p>
-      <p><strong>CP de destino que disparó el error:</strong> ${destinationZip}</p>
-      <p>Por favor verificá el estado de las APIs y los tokens en las variables de entorno de Vercel.</p>
+      <p><strong>CP de destino:</strong> ${destinationZip}</p>
+      <p>Verificá el estado de las APIs y los tokens en Vercel.</p>
       <hr/>
       <p style="color:#999;font-size:12px;">Mensaje automático — Módulo de Envíos · Beauté Divine Espace</p>
     `,
@@ -133,14 +135,15 @@ async function notifyAdminShippingFailure(destinationZip: string) {
 }
 
 // ---------------------------------------------------------------------------
-// Fallback Providers — Tarifas fijas (modo FIXED o HYBRID)
+// Tarifas fijas por zona (solo modo FIXED o HYBRID)
+// Todas las variables son obligatorias. Si falta alguna, el error es claro.
 // ---------------------------------------------------------------------------
 
 function getAndreaniFallback(zone: ShippingZone): ShippingOption {
   const cost =
-    zone === "LOCAL"    ? envNum("SHIPPING_ANDREANI_LOCAL", 4500)
-    : zone === "REGIONAL" ? envNum("SHIPPING_ANDREANI_REGIONAL", 6500)
-    :                       envNum("SHIPPING_ANDREANI_NACIONAL", 9800);
+    zone === "LOCAL"     ? requireEnvNum("SHIPPING_ANDREANI_LOCAL")
+    : zone === "REGIONAL" ? requireEnvNum("SHIPPING_ANDREANI_REGIONAL")
+    :                       requireEnvNum("SHIPPING_ANDREANI_NACIONAL");
   return {
     provider: "Andreani",
     type: "Express Delivery",
@@ -152,9 +155,9 @@ function getAndreaniFallback(zone: ShippingZone): ShippingOption {
 
 function getCorreoFallback(zone: ShippingZone): ShippingOption {
   const cost =
-    zone === "LOCAL"    ? envNum("SHIPPING_CORREO_LOCAL", 4000)
-    : zone === "REGIONAL" ? envNum("SHIPPING_CORREO_REGIONAL", 5500)
-    :                       envNum("SHIPPING_CORREO_NACIONAL", 8500);
+    zone === "LOCAL"     ? requireEnvNum("SHIPPING_CORREO_LOCAL")
+    : zone === "REGIONAL" ? requireEnvNum("SHIPPING_CORREO_REGIONAL")
+    :                       requireEnvNum("SHIPPING_CORREO_NACIONAL");
   return {
     provider: "Correo Argentino",
     type: "Clásico a Domicilio",
@@ -166,9 +169,9 @@ function getCorreoFallback(zone: ShippingZone): ShippingOption {
 
 function getOcaFallback(zone: ShippingZone): ShippingOption {
   const cost =
-    zone === "LOCAL"    ? envNum("SHIPPING_OCA_LOCAL", 4200)
-    : zone === "REGIONAL" ? envNum("SHIPPING_OCA_REGIONAL", 6000)
-    :                       envNum("SHIPPING_OCA_NACIONAL", 9000);
+    zone === "LOCAL"     ? requireEnvNum("SHIPPING_OCA_LOCAL")
+    : zone === "REGIONAL" ? requireEnvNum("SHIPPING_OCA_REGIONAL")
+    :                       requireEnvNum("SHIPPING_OCA_NACIONAL");
   return {
     provider: "OCA",
     type: "Estándar a Domicilio",
@@ -179,15 +182,14 @@ function getOcaFallback(zone: ShippingZone): ShippingOption {
 }
 
 // ---------------------------------------------------------------------------
-// Real API Providers
+// APIs de proveedores en tiempo real
 // ---------------------------------------------------------------------------
 
 async function getAndreaniRealOption(
   destinationZip: string, originZip: string, totalWeight: number, totalVolume: number
 ): Promise<ShippingOption | null> {
-  const apiUrl = envStr("SHIPPING_ANDREANI_API_URL");
-  const apiKey = envStr("SHIPPING_ANDREANI_API_KEY");
-  if (!apiUrl || !apiKey) return null;
+  const apiUrl = requireEnvStr("SHIPPING_ANDREANI_API_URL");
+  const apiKey = requireEnvStr("SHIPPING_ANDREANI_API_KEY");
 
   try {
     const res = await fetch(`${apiUrl}/v1/tarifas`, {
@@ -197,7 +199,7 @@ async function getAndreaniRealOption(
         cpOrigen: originZip,
         cpDestino: destinationZip,
         bultos: [{ pesoPorBulto: totalWeight, volumenPorBulto: totalVolume }],
-        contrato: envStr("SHIPPING_ANDREANI_CONTRATO", "AND00001"),
+        contrato: requireEnvStr("SHIPPING_ANDREANI_CONTRATO"),
       }),
     });
     if (!res.ok) return null;
@@ -219,9 +221,8 @@ async function getAndreaniRealOption(
 async function getCorreoRealOption(
   destinationZip: string, originZip: string, totalWeight: number, totalVolume: number
 ): Promise<ShippingOption | null> {
-  const apiUrl = envStr("SHIPPING_CORREO_API_URL");
-  const apiKey = envStr("SHIPPING_CORREO_API_KEY");
-  if (!apiUrl || !apiKey) return null;
+  const apiUrl = requireEnvStr("SHIPPING_CORREO_API_URL");
+  const apiKey = requireEnvStr("SHIPPING_CORREO_API_KEY");
 
   try {
     const res = await fetch(`${apiUrl}/api/v1/cotizar`, {
@@ -247,9 +248,8 @@ async function getCorreoRealOption(
 async function getOcaRealOption(
   destinationZip: string, originZip: string, totalWeight: number, totalVolume: number
 ): Promise<ShippingOption | null> {
-  const apiUrl = envStr("SHIPPING_OCA_API_URL");
-  const apiKey = envStr("SHIPPING_OCA_API_KEY");
-  if (!apiUrl || !apiKey) return null;
+  const apiUrl = requireEnvStr("SHIPPING_OCA_API_URL");
+  const apiKey = requireEnvStr("SHIPPING_OCA_API_KEY");
 
   try {
     const res = await fetch(`${apiUrl}/epak_tracking/Oep_TrackEPak.asmx/Tarifar_Envio_Corporativo`, {
@@ -290,10 +290,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing destinationZip or items" }, { status: 400 });
     }
 
-    // Kill switch global: SHIPPING_COST >= 0 devuelve un único precio fijo (0 = Gratis).
-    // Compatible con el sistema existente de AppSetting / getShippingCost().
-    const globalCost = envNum("SHIPPING_COST", -1);
-    if (globalCost >= 0) {
+    // Kill switch global: si SHIPPING_COST >= 0, devuelve precio único (0 = Gratis).
+    const globalCostRaw = process.env.SHIPPING_COST;
+    if (globalCostRaw !== undefined && !isNaN(Number(globalCostRaw)) && Number(globalCostRaw) >= 0) {
+      const globalCost = Number(globalCostRaw);
       return NextResponse.json({
         options: [{
           provider: globalCost === 0 ? "Envío Gratis" : "Envío Estándar",
@@ -304,14 +304,23 @@ export async function POST(req: Request) {
       });
     }
 
-    const mode = envStr("SHIPPING_MODE", "FIXED");
-    const originZip = envStr("SHIPPING_ORIGIN_ZIP", "1640"); // San Isidro por defecto
+    // A partir de aquí todas las variables son obligatorias.
+    // requireEnvStr/requireEnvNum lanzan un error descriptivo si falta algo.
+    const mode = requireEnvStr("SHIPPING_MODE") as ShippingMode;
+    if (!["FIXED", "API_ONLY", "HYBRID"].includes(mode)) {
+      return NextResponse.json(
+        { error: `SHIPPING_MODE inválido: "${mode}". Valores válidos: FIXED, API_ONLY, HYBRID.` },
+        { status: 500 }
+      );
+    }
+
+    const originZip = requireEnvStr("SHIPPING_ORIGIN_ZIP");
     const zone = getShippingZone(destinationZip);
     const { totalWeight, totalVolume } = await getPackageStats(items);
 
     let andreaniOption: ShippingOption | null = null;
-    let correoOption: ShippingOption | null = null;
-    let ocaOption: ShippingOption | null = null;
+    let correoOption:   ShippingOption | null = null;
+    let ocaOption:      ShippingOption | null = null;
 
     if (mode === "FIXED") {
       // Modo Fijo: usa la tabla LOCAL/REGIONAL/NACIONAL. No llama ninguna API.
@@ -341,7 +350,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ options: validOptions });
       }
 
-      // HYBRID: inyectar tarifa fija de zona para proveedores que hayan fallado.
+      // HYBRID: si una API falló, usar tarifa fija de zona (también obligatoria).
       if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
       if (!correoOption)   correoOption   = getCorreoFallback(zone);
       if (!ocaOption)      ocaOption      = getOcaFallback(zone);
@@ -350,6 +359,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ options: [andreaniOption, correoOption, ocaOption] });
   } catch (error) {
     console.error("[shipping] Handler error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    // Los errores de variable faltante se exponen en el mensaje para que sean visibles en los logs de Vercel.
+    const message = error instanceof Error ? error.message : "Internal Server Error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
