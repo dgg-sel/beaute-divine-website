@@ -33,27 +33,28 @@ function optionalEnv(name: string): string {
 
 export const env = {
   // Cloudinary
-  get cloudinaryCloudName() { return requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"); },
-  get cloudinaryApiKey() { return requireEnv("CLOUDINARY_API_KEY"); },
-  get cloudinaryApiSecret() { return requireEnv("CLOUDINARY_API_SECRET"); },
-  get cloudinaryRootFolder() { return requireEnv("CLOUDINARY_ROOT_FOLDER"); },
-  get cloudinaryCatalogFolder() { return optionalEnv("CLOUDINARY_CATALOG_FOLDER"); },
+  cloudinaryCloudName: requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"),
+  cloudinaryApiKey: requireEnv("CLOUDINARY_API_KEY"),
+  cloudinaryApiSecret: requireEnv("CLOUDINARY_API_SECRET"),
+  cloudinaryRootFolder: requireEnv("CLOUDINARY_ROOT_FOLDER"),
+  // Opcional: si tu cuenta usa Dynamic Folders, el public_id no incluye la subcarpeta.
+  cloudinaryCatalogFolder: optionalEnv("CLOUDINARY_CATALOG_FOLDER"),
 
   // Auth
-  get nextAuthSecret() { return requireEnv("NEXTAUTH_SECRET"); },
+  nextAuthSecret: requireEnv("NEXTAUTH_SECRET"),
 
   // Database
-  get databaseUrl() { return requireEnv("DATABASE_URL"); },
+  databaseUrl: requireEnv("DATABASE_URL"),
 
   // Mercado Pago
-  get mpAccessToken() { return requireEnv("MP_ACCESS_TOKEN"); },
-  get mpWebhookSecret() { return requireEnv("MP_WEBHOOK_SECRET"); },
+  mpAccessToken: requireEnv("MP_ACCESS_TOKEN"),
+  mpWebhookSecret: requireEnv("MP_WEBHOOK_SECRET"),
 
   // Emails
-  get smtpHost() { return requireEnv("SMTP_HOST"); },
-  get smtpPort() { return requireEnv("SMTP_PORT"); },
-  get smtpUser() { return requireEnv("SMTP_USER"); },
-  get smtpPass() { return requireEnv("SMTP_PASS"); },
-  get smtpFrom() { return optionalEnv("SMTP_FROM") || requireEnv("SMTP_USER"); },
-  get salesEmails() { return requireEnv("SALES_EMAILS"); },
+  smtpHost: requireEnv("SMTP_HOST"),
+  smtpPort: requireEnv("SMTP_PORT"),
+  smtpUser: requireEnv("SMTP_USER"),
+  smtpPass: requireEnv("SMTP_PASS"),
+  smtpFrom: optionalEnv("SMTP_FROM") || requireEnv("SMTP_USER"),
+  salesEmails: requireEnv("SALES_EMAILS"),
 };
