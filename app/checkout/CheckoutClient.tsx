@@ -383,15 +383,7 @@ export default function CheckoutClient({
                 <input required type="text" value={formData.zipCode} onChange={e => setFormData({...formData, zipCode: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
               </div>
 
-              <div className="space-y-2">
-                <label className="font-label-sm text-label-sm uppercase text-on-surface">DNI / CUIL *</label>
-                <input required type="text" value={formData.dni} onChange={e => setFormData({...formData, dni: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
-              </div>
 
-              <div className="space-y-2 md:col-span-2">
-                <label className="font-label-sm text-label-sm uppercase text-on-surface">Teléfono *</label>
-                <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" placeholder="Ej: 1123456789" />
-              </div>
 
               {userId && (
                 <div className="mt-4 md:col-span-2 space-y-4">
@@ -423,6 +415,18 @@ export default function CheckoutClient({
               )}
             </div>
           )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="space-y-2">
+              <label className="font-label-sm text-label-sm uppercase text-on-surface">DNI / CUIL *</label>
+              <input required type="text" value={formData.dni} onChange={e => setFormData({...formData, dni: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="font-label-sm text-label-sm uppercase text-on-surface">Teléfono *</label>
+              <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:outline-none focus:border-primary transition-colors" placeholder="Ej: 1123456789" />
+            </div>
+          </div>
         </section>
 
         {/* Sección Opciones de Envío */}
