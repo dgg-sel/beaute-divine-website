@@ -3,7 +3,7 @@ import { MercadoPagoConfig, Preference } from "mercadopago";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { calculateShippingOptions, ShippingOption } from "../shipping/route";
+import { calculateShippingOptions, ShippingOption } from "@/lib/shipping";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || "TEST-mock",
