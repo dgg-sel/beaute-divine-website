@@ -165,6 +165,39 @@ export default function AdminCustomerTab({
                       </div>
                       <div className="font-bold text-primary">${order.total}</div>
                     </div>
+                    <div className="text-sm text-on-surface-variant mb-3 bg-surface p-3 rounded-sm border border-primary/5">
+                      <div className="font-bold text-primary mb-1">Datos de Envío / Facturación</div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <span className="font-label-sm uppercase text-[10px] tracking-widest block opacity-70">Nombre</span>
+                          {order.customerName || selectedUser.name || 'N/A'}
+                        </div>
+                        <div>
+                          <span className="font-label-sm uppercase text-[10px] tracking-widest block opacity-70">Email</span>
+                          {order.customerEmail || selectedUser.email || 'N/A'}
+                        </div>
+                        <div>
+                          <span className="font-label-sm uppercase text-[10px] tracking-widest block opacity-70">DNI / CUIL</span>
+                          {(order as any).customerDni || 'N/A'}
+                        </div>
+                        <div>
+                          <span className="font-label-sm uppercase text-[10px] tracking-widest block opacity-70">Teléfono</span>
+                          {(order as any).customerPhone || 'N/A'}
+                        </div>
+                        <div className="col-span-2">
+                          <span className="font-label-sm uppercase text-[10px] tracking-widest block opacity-70">Dirección</span>
+                          {order.shippingStreet ? (
+                            `${order.shippingStreet} ${order.shippingNumber} ${order.shippingApartment ? `(${order.shippingApartment})` : ''}, ${order.shippingCity}, ${order.shippingProvince} (CP: ${order.shippingZipCode})`
+                          ) : 'Retiro presencial / Sin envío'}
+                        </div>
+                        {(order as any).shippingProvider && (
+                          <div className="col-span-2 mt-1">
+                            <span className="font-label-sm uppercase text-[10px] tracking-widest block opacity-70">Método Elegido</span>
+                            {(order as any).shippingProvider} - {(order as any).shippingType} (Costo: ${order.shippingCost})
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <ul className="text-sm text-on-surface-variant list-disc list-inside">
                       {order.items.map(item => (
                         <li key={item.id}>
