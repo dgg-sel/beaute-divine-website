@@ -108,6 +108,8 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  <ImageModal 
  src={product.image} 
  alt={product.title} 
+ description={product.description}
+ price={product.price || undefined}
  className="w-full h-full object-cover transition-transform duration-700" 
  />
  {product.isImported && (
@@ -117,8 +119,8 @@ export default async function CatalogoPage({ searchParams }: { searchParams: { c
  </div>
  )}
  </div>
- <h3 className="font-headline-md text-xl text-primary mb-2">{product.title}</h3>
- <p className="font-body-md text-sm text-on-surface-variant flex-grow mb-6">{product.description}</p>
+ <h3 className="font-headline-md text-lg text-primary mb-2">{product.title}</h3>
+ <p className="font-body-md text-sm text-on-surface-variant flex-grow mb-6 line-clamp-3">{product.description}</p>
  <div className="flex justify-between items-center pt-4 border-t border-primary/10 gap-2">
  <div className="flex flex-col">
  <span className="font-label-sm text-sm text-on-surface tracking-widest">
