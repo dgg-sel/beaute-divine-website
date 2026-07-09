@@ -45,4 +45,16 @@ export const env = {
 
   // Database
   databaseUrl: requireEnv("DATABASE_URL"),
+
+  // Mercado Pago
+  mpAccessToken: requireEnv("MP_ACCESS_TOKEN"),
+  mpWebhookSecret: requireEnv("MP_WEBHOOK_SECRET"),
+
+  // Emails
+  smtpHost: requireEnv("SMTP_HOST"),
+  smtpPort: requireEnv("SMTP_PORT"),
+  smtpUser: requireEnv("SMTP_USER"),
+  smtpPass: requireEnv("SMTP_PASS"),
+  smtpFrom: optionalEnv("SMTP_FROM") || requireEnv("SMTP_USER"),
+  salesEmails: requireEnv("SALES_EMAILS"),
 };

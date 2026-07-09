@@ -3,8 +3,10 @@ import { MercadoPagoConfig, Payment } from "mercadopago";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
+import { env } from "@/lib/env";
+
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN || "TEST-mock", // Requerido en prod, mock en dev
+  accessToken: env.mpAccessToken,
 });
 
 export async function POST(req: Request) {
@@ -22,11 +24,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Missing security headers" }, { status: 400 });
     }
 
-    const secret = process.env.MP_WEBHOOK_SECRET?.trim();
-    if (!secret) {
-      console.error("[Webhook] MP_WEBHOOK_SECRET no está configurada.");
-      return NextResponse.json({ message: "Server configuration error" }, { status: 500 });
-    }
+    const secret = env.mpWebhookSecret;
 
     const parts = signature.split(",");
     let ts = "";
@@ -102,7 +100,7 @@ export async function POST(req: Request) {
 
         try {
           const { sendEmail } = await import("@/lib/email");
-          const salesEmails = process.env.SALES_EMAILS || "info@sanacionenluz.com";
+          const salesEmails = env.salesEmails;
 
           // Al admin
           await sendEmail({
