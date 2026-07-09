@@ -33,28 +33,27 @@ function optionalEnv(name: string): string {
 
 export const env = {
   // Cloudinary
-  cloudinaryCloudName: requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"),
-  cloudinaryApiKey: requireEnv("CLOUDINARY_API_KEY"),
-  cloudinaryApiSecret: requireEnv("CLOUDINARY_API_SECRET"),
-  cloudinaryRootFolder: requireEnv("CLOUDINARY_ROOT_FOLDER"),
-  // Opcional: si tu cuenta usa Dynamic Folders, el public_id no incluye la subcarpeta.
-  cloudinaryCatalogFolder: optionalEnv("CLOUDINARY_CATALOG_FOLDER"),
+  get cloudinaryCloudName() { return requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"); },
+  get cloudinaryApiKey() { return requireEnv("CLOUDINARY_API_KEY"); },
+  get cloudinaryApiSecret() { return requireEnv("CLOUDINARY_API_SECRET"); },
+  get cloudinaryRootFolder() { return requireEnv("CLOUDINARY_ROOT_FOLDER"); },
+  get cloudinaryCatalogFolder() { return optionalEnv("CLOUDINARY_CATALOG_FOLDER"); },
 
   // Auth
-  nextAuthSecret: requireEnv("NEXTAUTH_SECRET"),
+  get nextAuthSecret() { return requireEnv("NEXTAUTH_SECRET"); },
 
   // Database
-  databaseUrl: requireEnv("DATABASE_URL"),
+  get databaseUrl() { return requireEnv("DATABASE_URL"); },
 
   // Mercado Pago
-  mpAccessToken: requireEnv("MP_ACCESS_TOKEN"),
-  mpWebhookSecret: requireEnv("MP_WEBHOOK_SECRET"),
+  get mpAccessToken() { return requireEnv("MP_ACCESS_TOKEN"); },
+  get mpWebhookSecret() { return requireEnv("MP_WEBHOOK_SECRET"); },
 
   // Emails
-  smtpHost: requireEnv("SMTP_HOST"),
-  smtpPort: requireEnv("SMTP_PORT"),
-  smtpUser: requireEnv("SMTP_USER"),
-  smtpPass: requireEnv("SMTP_PASS"),
-  smtpFrom: optionalEnv("SMTP_FROM") || requireEnv("SMTP_USER"),
-  salesEmails: requireEnv("SALES_EMAILS"),
+  get smtpHost() { return requireEnv("SMTP_HOST"); },
+  get smtpPort() { return requireEnv("SMTP_PORT"); },
+  get smtpUser() { return requireEnv("SMTP_USER"); },
+  get smtpPass() { return requireEnv("SMTP_PASS"); },
+  get smtpFrom() { return optionalEnv("SMTP_FROM") || requireEnv("SMTP_USER"); },
+  get salesEmails() { return requireEnv("SALES_EMAILS"); },
 };
