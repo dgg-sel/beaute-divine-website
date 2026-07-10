@@ -357,7 +357,7 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
                   id="shippingLocal"
                   name="shippingLocal" 
                   type="number" 
-                  step="0.01" 
+                  step="500" 
                   defaultValue={shippingSettings.local || 0} 
                   required 
                   className="input-elegant py-2 w-full" 
@@ -372,7 +372,7 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
                   id="shippingRegional"
                   name="shippingRegional" 
                   type="number" 
-                  step="0.01" 
+                  step="500" 
                   defaultValue={shippingSettings.regional || 0} 
                   required 
                   className="input-elegant py-2 w-full" 
@@ -387,7 +387,7 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
                   id="shippingNacional"
                   name="shippingNacional" 
                   type="number" 
-                  step="0.01" 
+                  step="500" 
                   defaultValue={shippingSettings.nacional || 0} 
                   required 
                   className="input-elegant py-2 w-full" 
