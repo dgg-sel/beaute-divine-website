@@ -41,7 +41,7 @@ export default function LoginPage() {
  <main className="bg-surface flex items-center justify-center p-4">
  <div className="max-w-md w-full bg-surface-container p-8 rounded-2xl soft-glow border border-primary/10 my-8">
  <div className="text-center mb-8 border-b border-primary/10 pb-6">
- <h1 className="font-display-lg text-4xl md:text-headline-lg text-primary mb-2 uppercase tracking-widest break-words">Bienvenido</h1>
+ <h1 className="font-display-lg text-5xl md:text-headline-lg text-primary mb-2 uppercase tracking-widest break-words">Bienvenido</h1>
  <p className="font-body-md text-sm text-on-surface-variant">Iniciá sesión para continuar en Beauté Divine Espace.</p>
  </div>
 
