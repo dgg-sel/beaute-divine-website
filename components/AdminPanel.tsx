@@ -350,7 +350,7 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
           <form onSubmit={handleUpdateShippingSettings} className="flex flex-col gap-6">
             <div className="grid md:grid-cols-3 gap-6">
               <div className="flex flex-col gap-2">
-                <label htmlFor="shippingLocal" className="font-label-sm uppercase tracking-widest text-primary text-xs">
+                <label htmlFor="shippingLocal" className="font-label-sm uppercase tracking-widest text-primary text-[13px]">
                   Envío Local ($ ARS)
                 </label>
                 <input 
@@ -365,7 +365,7 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="shippingRegional" className="font-label-sm uppercase tracking-widest text-primary text-xs">
+                <label htmlFor="shippingRegional" className="font-label-sm uppercase tracking-widest text-primary text-[13px]">
                   Envío Regional ($ ARS)
                 </label>
                 <input 
@@ -380,7 +380,7 @@ export default function AdminPanel({ products, categories, users, uploadFolder, 
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="shippingNacional" className="font-label-sm uppercase tracking-widest text-primary text-xs">
+                <label htmlFor="shippingNacional" className="font-label-sm uppercase tracking-widest text-primary text-[13px]">
                   Envío Nacional ($ ARS)
                 </label>
                 <input 
