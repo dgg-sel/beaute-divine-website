@@ -4,55 +4,81 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { calculateShippingOptions, ShippingOption } from "@/lib/shipping";
+import { getClientIp, guard } from "@/lib/rate-limit";
+import { z } from "zod";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || "TEST-mock",
   options: { timeout: 5000, idempotencyKey: "abc" },
 });
 
+// Validación estricta del body. El precio (`price`) que manda el cliente se usa
+// solo para armar la preferencia de MP; el costo de envío se revalida contra el
+// servidor más abajo (anti-tampering). El stock y el total se recalculan server-side.
+const CheckoutItemSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  quantity: z.number().int().positive(),
+  price: z.number().nonnegative(),
+});
+
+const CheckoutBodySchema = z.object({
+  items: z.array(CheckoutItemSchema).min(1),
+  shippingStreet: z.string().nullish(),
+  shippingNumber: z.string().nullish(),
+  shippingApartment: z.string().nullish(),
+  shippingCity: z.string().nullish(),
+  shippingProvince: z.string().nullish(),
+  shippingZipCode: z.string().min(1),
+  customerName: z.string().nullish(),
+  customerEmail: z.string().email().or(z.literal("")).nullish(),
+  customerDni: z.string().nullish(),
+  customerPhone: z.string().nullish(),
+  selectedShipping: z.object({
+    provider: z.string().min(1),
+    type: z.string().min(1),
+    cost: z.number().nonnegative(),
+  }),
+});
+
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    const body = await req.json();
-    const { 
-      items, 
-      shippingStreet, 
-      shippingNumber, 
-      shippingApartment, 
-      shippingCity, 
-      shippingProvince, 
-      shippingZipCode, 
-      customerName, 
-      customerEmail,
-      customerDni,
-      customerPhone,
-      selectedShipping
-    } = body;
+    // Rate-limit: crear órdenes y pegarle a MP tiene costo; sin límite alguien
+    // llena la base de órdenes basura y consume la cuota de Mercado Pago.
+    const ip = getClientIp(req);
+    const limited = await guard([
+      { key: `checkout:burst:${ip}`, limit: 10, windowSec: 60 },
+      { key: `checkout:sustained:${ip}`, limit: 60, windowSec: 3600 },
+    ]);
+    if (limited) return limited;
 
-    if (!items || items.length === 0) {
+    const session = await getServerSession(authOptions);
+
+    const parsed = CheckoutBodySchema.safeParse(await req.json());
+    if (!parsed.success) {
       return NextResponse.json(
-        { message: "El carrito está vacío" },
+        { message: "Datos de checkout inválidos.", errors: parsed.error.flatten() },
         { status: 400 }
       );
     }
+    const {
+      items,
+      shippingStreet,
+      shippingNumber,
+      shippingApartment,
+      shippingCity,
+      shippingProvince,
+      shippingZipCode,
+      customerName,
+      customerEmail,
+      customerDni,
+      customerPhone,
+      selectedShipping,
+    } = parsed.data;
 
     // Limpieza perezosa: liberar stock de órdenes viejas
     const { releaseExpiredReservations } = await import("@/lib/stock");
     await releaseExpiredReservations();
-
-    if (!shippingZipCode) {
-      return NextResponse.json(
-        { message: "El código postal es requerido para envíos." },
-        { status: 400 }
-      );
-    }
-
-    if (!selectedShipping) {
-      return NextResponse.json(
-        { message: "Debe seleccionar una opción de envío." },
-        { status: 400 }
-      );
-    }
 
     // Validar el costo de envío internamente (Anti-tampering)
     const shippingOptions = await calculateShippingOptions(

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import { getClientIp, guard } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
@@ -14,9 +16,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "La contraseña debe tener al menos 6 caracteres" }, { status: 400 });
     }
 
+    const ip = getClientIp(req);
+    const limited = await guard([
+      { key: `reset:ip:${ip}`, limit: 10, windowSec: 3600 },
+    ]);
+    if (limited) return limited;
+
+    // El token viaja crudo en el link; en la DB está el hash. Hasheamos el
+    // entrante para buscarlo (mismo SHA-256 que en forgot-password).
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
     // Find token in DB
     const resetToken = await prisma.passwordResetToken.findUnique({
-      where: { token },
+      where: { token: tokenHash },
     });
 
     if (!resetToken) {

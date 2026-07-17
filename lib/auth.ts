@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
+import { consume, getClientIpFromHeaders } from "@/lib/rate-limit";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
@@ -27,11 +28,26 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Contraseña", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Credenciales inválidas");
         }
-        
+
+        // Rate-limit anti fuerza bruta. Dos cubetas: por IP (frena el spray a
+        // muchas cuentas) y por email (frena el ataque dirigido a una cuenta).
+        // Se evalúan ambas. Falla cerrado (ver lib/rate-limit.ts).
+        const ip = getClientIpFromHeaders(
+          req?.headers as Record<string, string | undefined> | undefined
+        );
+        const emailKey = credentials.email.toLowerCase().trim();
+        const [ipCheck, emailCheck] = await Promise.all([
+          consume({ key: `login:ip:${ip}`, limit: 30, windowSec: 600 }),
+          consume({ key: `login:email:${emailKey}`, limit: 8, windowSec: 900 }),
+        ]);
+        if (!ipCheck.allowed || !emailCheck.allowed) {
+          throw new Error("Demasiados intentos. Esperá unos minutos e intentá de nuevo.");
+        }
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email }
         });

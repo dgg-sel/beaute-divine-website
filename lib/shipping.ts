@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
-import { getShippingSettings } from "@/lib/settings";
+import { getShippingSettings, ZonePrices } from "@/lib/settings";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -25,14 +25,6 @@ type ShippingMode = "FIXED" | "API_ONLY" | "HYBRID";
 // Config helpers — sin fallbacks. Falla rápido con mensaje claro si falta algo.
 // ---------------------------------------------------------------------------
 
-function requireEnvNum(name: string): number {
-  const val = process.env[name];
-  if (!val || isNaN(Number(val))) {
-    throw new Error(`❌ Variable de entorno faltante o inválida: "${name}". Configurala en Vercel.`);
-  }
-  return Number(val);
-}
-
 function requireEnvStr(name: string): string {
   const val = process.env[name]?.trim();
   if (!val) {
@@ -43,6 +35,15 @@ function requireEnvStr(name: string): string {
 
 function optionalEnvStr(name: string): string | undefined {
   return process.env[name]?.trim() || undefined;
+}
+
+/**
+ * Proveedores "en potencia": el código de Andreani y OCA está listo, pero solo
+ * se ofrecen si el cliente los prende explícitamente por env. Off por defecto,
+ * así el comportamiento actual (solo Correo) no cambia hasta que se active.
+ */
+function isProviderEnabled(name: string): boolean {
+  return (process.env[name]?.trim().toLowerCase() ?? "") === "true";
 }
 
 // ---------------------------------------------------------------------------
@@ -139,43 +140,35 @@ async function notifyAdminShippingFailure(destinationZip: string) {
 // Todas las variables son obligatorias. Si falta alguna, el error es claro.
 // ---------------------------------------------------------------------------
 
-function getAndreaniFallback(zone: ShippingZone): ShippingOption {
-  const cost =
-    zone === "LOCAL"     ? requireEnvNum("SHIPPING_ANDREANI_LOCAL")
-    : zone === "REGIONAL" ? requireEnvNum("SHIPPING_ANDREANI_REGIONAL")
-    :                       requireEnvNum("SHIPPING_ANDREANI_NACIONAL");
+function priceForZone(zone: ShippingZone, prices: ZonePrices): number {
+  return zone === "LOCAL" ? prices.local : zone === "REGIONAL" ? prices.regional : prices.nacional;
+}
+
+function getAndreaniFallback(zone: ShippingZone, prices: ZonePrices): ShippingOption {
   return {
     provider: "Andreani",
     type: "Express Delivery",
-    cost,
+    cost: priceForZone(zone, prices),
     estimatedDelivery:
       zone === "LOCAL" ? "1 a 2 días hábiles" : zone === "REGIONAL" ? "2 a 3 días hábiles" : "3 a 5 días hábiles",
   };
 }
 
-function getCorreoFallback(zone: ShippingZone, settings: { local: number, regional: number, nacional: number }): ShippingOption {
-  const cost =
-    zone === "LOCAL"     ? settings.local
-    : zone === "REGIONAL" ? settings.regional
-    :                       settings.nacional;
+function getCorreoFallback(zone: ShippingZone, prices: ZonePrices): ShippingOption {
   return {
     provider: "Correo Argentino",
     type: "Clásico a Domicilio",
-    cost,
+    cost: priceForZone(zone, prices),
     estimatedDelivery:
       zone === "LOCAL" ? "2 a 4 días hábiles" : zone === "REGIONAL" ? "3 a 5 días hábiles" : "4 a 7 días hábiles",
   };
 }
 
-function getOcaFallback(zone: ShippingZone): ShippingOption {
-  const cost =
-    zone === "LOCAL"     ? requireEnvNum("SHIPPING_OCA_LOCAL")
-    : zone === "REGIONAL" ? requireEnvNum("SHIPPING_OCA_REGIONAL")
-    :                       requireEnvNum("SHIPPING_OCA_NACIONAL");
+function getOcaFallback(zone: ShippingZone, prices: ZonePrices): ShippingOption {
   return {
     provider: "OCA",
     type: "Estándar a Domicilio",
-    cost,
+    cost: priceForZone(zone, prices),
     estimatedDelivery:
       zone === "LOCAL" ? "1 a 3 días hábiles" : zone === "REGIONAL" ? "2 a 4 días hábiles" : "3 a 6 días hábiles",
   };
@@ -304,40 +297,52 @@ export async function calculateShippingOptions(destinationZip: string, items: { 
   const zone = getShippingZone(destinationZip);
   const { totalWeight, totalVolume } = await getPackageStats(items);
 
-  let correoOption:   ShippingOption | null = null;
+  // Andreani y OCA quedan "en potencia": solo se ofrecen si el cliente los
+  // prende por env. Off por defecto → hoy sigue devolviendo solo Correo.
+  const andreaniEnabled = isProviderEnabled("SHIPPING_ANDREANI_ENABLED");
+  const ocaEnabled      = isProviderEnabled("SHIPPING_OCA_ENABLED");
 
   const settings = await getShippingSettings();
 
   if (mode === "FIXED") {
     // Modo Fijo: usa la tabla LOCAL/REGIONAL/NACIONAL. No llama ninguna API.
-    // andreaniOption = getAndreaniFallback(zone);
-    correoOption   = getCorreoFallback(zone, settings);
-    // ocaOption      = getOcaFallback(zone);
-  } else {
-    // API_ONLY o HYBRID: cotiza en paralelo con los 3 proveedores.
-    [correoOption] = await Promise.all([
-      // getAndreaniRealOption(destinationZip, originZip, totalWeight, totalVolume),
-      getCorreoRealOption(destinationZip, originZip, totalWeight, totalVolume),
-      // getOcaRealOption(destinationZip, originZip, totalWeight, totalVolume),
-    ]);
-
-    if (mode === "API_ONLY") {
-      const validOptions = [correoOption].filter(
-        (o): o is ShippingOption => o !== null
-      );
-      if (validOptions.length === 0) {
-        console.error("[shipping] API_ONLY: All APIs failed for destinationZip:", destinationZip);
-        void notifyAdminShippingFailure(destinationZip);
-        throw new Error("No pudimos calcular las tarifas de envío en este momento. Por favor intentá nuevamente más tarde.");
-      }
-      return validOptions;
-    }
-
-    // HYBRID: si una API falló, usar tarifa fija de zona (también obligatoria).
-    // if (!andreaniOption) andreaniOption = getAndreaniFallback(zone);
-    if (!correoOption)   correoOption   = getCorreoFallback(zone, settings);
-    // if (!ocaOption)      ocaOption      = getOcaFallback(zone);
+    const options = [getCorreoFallback(zone, settings.correo)];
+    if (andreaniEnabled) options.push(getAndreaniFallback(zone, settings.andreani));
+    if (ocaEnabled)      options.push(getOcaFallback(zone, settings.oca));
+    return options;
   }
 
-  return [correoOption].filter((o): o is ShippingOption => o !== null);
+  // API_ONLY o HYBRID: cotiza en paralelo con los proveedores activos.
+  const [correoReal, andreaniReal, ocaReal] = await Promise.all([
+    getCorreoRealOption(destinationZip, originZip, totalWeight, totalVolume),
+    andreaniEnabled
+      ? getAndreaniRealOption(destinationZip, originZip, totalWeight, totalVolume)
+      : Promise.resolve(null),
+    ocaEnabled
+      ? getOcaRealOption(destinationZip, originZip, totalWeight, totalVolume)
+      : Promise.resolve(null),
+  ]);
+
+  let correoOption   = correoReal;
+  let andreaniOption = andreaniReal;
+  let ocaOption      = ocaReal;
+
+  if (mode === "API_ONLY") {
+    const validOptions = [correoOption, andreaniOption, ocaOption].filter(
+      (o): o is ShippingOption => o !== null
+    );
+    if (validOptions.length === 0) {
+      console.error("[shipping] API_ONLY: All APIs failed for destinationZip:", destinationZip);
+      void notifyAdminShippingFailure(destinationZip);
+      throw new Error("No pudimos calcular las tarifas de envío en este momento. Por favor intentá nuevamente más tarde.");
+    }
+    return validOptions;
+  }
+
+  // HYBRID: si una API falló, usar tarifa fija de zona.
+  if (!correoOption)                      correoOption   = getCorreoFallback(zone, settings.correo);
+  if (andreaniEnabled && !andreaniOption) andreaniOption = getAndreaniFallback(zone, settings.andreani);
+  if (ocaEnabled && !ocaOption)           ocaOption      = getOcaFallback(zone, settings.oca);
+
+  return [correoOption, andreaniOption, ocaOption].filter((o): o is ShippingOption => o !== null);
 }

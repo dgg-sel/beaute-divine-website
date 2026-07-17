@@ -15,10 +15,10 @@ export async function POST(req: Request) {
     const id = url.searchParams.get("data.id") || url.searchParams.get("id");
     const topic = url.searchParams.get("type") || url.searchParams.get("topic");
 
-    // 1. HMAC SHA-256 Signature Validation (Obligatorio)
+    // 1. Validación de firma HMAC SHA-256 (obligatoria, fail-closed)
     const signature = req.headers.get("x-signature");
     const xRequestId = req.headers.get("x-request-id");
-    
+
     if (!signature || !xRequestId || !id) {
       console.error("[Webhook] Faltan headers de seguridad o ID.");
       return NextResponse.json({ message: "Missing security headers" }, { status: 400 });
@@ -31,14 +31,22 @@ export async function POST(req: Request) {
     let v1 = "";
     parts.forEach((part) => {
       const [key, value] = part.split("=");
-      if (key === "ts") ts = value;
-      if (key === "v1") v1 = value;
+      if (key?.trim() === "ts") ts = value;
+      if (key?.trim() === "v1") v1 = value;
     });
 
     const manifest = `id:${id};request-id:${xRequestId};ts:${ts};`;
-    const hmac = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
+    const expected = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
 
-    if (hmac !== v1) {
+    // Comparación en tiempo constante: evita filtrar la firma por timing. El
+    // chequeo de longitud es necesario porque timingSafeEqual tira si los
+    // buffers no miden igual.
+    const expectedBuf = Buffer.from(expected);
+    const receivedBuf = Buffer.from(v1 || "");
+    if (
+      expectedBuf.length !== receivedBuf.length ||
+      !crypto.timingSafeEqual(expectedBuf, receivedBuf)
+    ) {
       console.error("[Webhook] Firma HMAC inválida. Posible ataque o clave secreta incorrecta.");
       return NextResponse.json({ message: "Invalid signature" }, { status: 403 });
     }
@@ -48,6 +56,7 @@ export async function POST(req: Request) {
       const payment = new Payment(client);
       const paymentData = await payment.get({ id });
       const orderId = paymentData.external_reference;
+      const paymentId = paymentData.id?.toString();
 
       if (!orderId) {
         return NextResponse.json({ received: true }, { status: 200 });
@@ -55,17 +64,87 @@ export async function POST(req: Request) {
 
       // Si el pago es exitoso
       if (paymentData.status === "approved") {
-        const order = await prisma.order.update({
+        // Idempotencia: reclamar la orden SOLO si sigue PENDING. `updateMany`
+        // con count es atómico: dos notificaciones simultáneas no pueden ambas
+        // "reclamar" y duplicar mails/procesamiento.
+        const claimed = await prisma.order.updateMany({
+          where: { id: orderId, status: "PENDING" },
+          data: { status: "PAID", paymentId },
+        });
+
+        if (claimed.count === 0) {
+          // No estaba PENDING: o ya fue procesada (notificación repetida) o
+          // estaba CANCELLED y este pago aprobado la reactiva.
+          const current = await prisma.order.findUnique({
+            where: { id: orderId },
+            include: { items: { include: { product: true } } },
+          });
+
+          if (!current) {
+            console.error("[Webhook] Pago aprobado para una orden inexistente:", orderId);
+            return NextResponse.json({ received: true }, { status: 200 });
+          }
+
+          // Notificación repetida sobre una orden ya PAID/despachada: no
+          // reprocesar (ni duplicar mails ni vaciar carrito de nuevo).
+          if (current.status !== "CANCELLED") {
+            return NextResponse.json({ received: true }, { status: 200 });
+          }
+
+          // Pago aprobado sobre una orden CANCELLED: su stock ya fue devuelto por
+          // la cancelación/limpieza, así que hay que volver a descontarlo o se
+          // produce sobreventa silenciosa.
+          const sinStock: string[] = [];
+          await prisma.$transaction(async (tx) => {
+            for (const item of current.items) {
+              const updated = await tx.product.updateMany({
+                where: { id: item.productId, stock: { gte: item.quantity } },
+                data: { stock: { decrement: item.quantity } },
+              });
+              if (updated.count === 0) {
+                sinStock.push(item.product?.title ?? item.productId);
+              }
+            }
+            await tx.order.update({
+              where: { id: orderId },
+              data: { status: "PAID", paymentId },
+            });
+          });
+
+          if (sinStock.length > 0) {
+            try {
+              const { sendEmail } = await import("@/lib/email");
+              await sendEmail({
+                to: env.salesEmails,
+                subject: `⚠️ Sobreventa potencial en la orden #${orderId}`,
+                html: `
+                  <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2 style="color: #dc2626;">Pago aprobado sin stock suficiente</h2>
+                    <p>Se aprobó el pago de la orden <strong>#${orderId}</strong>, pero su reserva había expirado y ya no hay stock suficiente de:</p>
+                    <ul>${sinStock.map((n) => `<li>${n}</li>`).join("")}</ul>
+                    <p>Revisá el inventario y contactá al cliente para reponer o reembolsar.</p>
+                  </div>
+                `,
+              });
+            } catch (error) {
+              console.error("Error enviando alerta de sobreventa:", error);
+            }
+          }
+        }
+
+        // A esta altura la orden quedó PAID (recién reclamada o reactivada).
+        // Cargamos la orden completa para vaciar carrito y mandar mails UNA vez.
+        const order = await prisma.order.findUnique({
           where: { id: orderId },
-          data: {
-            status: "PAID",
-            paymentId: paymentData.id?.toString(),
-          },
           include: {
             user: true,
             items: { include: { product: true } },
           },
         });
+
+        if (!order) {
+          return NextResponse.json({ received: true }, { status: 200 });
+        }
 
         // Vaciamos carrito si el usuario estaba logueado
         if (order.userId) {
@@ -144,7 +223,7 @@ export async function POST(req: Request) {
         } catch (error) {
           console.error("Error enviando email de confirmación:", error);
         }
-      } 
+      }
       // Si el pago falla o es cancelado de forma terminal
       else if (["rejected", "cancelled", "refunded", "charged_back"].includes(paymentData.status || "")) {
         const order = await prisma.order.findUnique({
@@ -152,20 +231,23 @@ export async function POST(req: Request) {
           include: { items: true },
         });
 
-        // Solo restauramos stock si la orden estaba pendiente. Si ya estaba CANCELLED, evitamos duplicar la devolución.
-        if (order && order.status === "PENDING") {
+        if (order) {
+          // Transición atómica PENDING -> CANCELLED + devolución de stock en una
+          // sola transacción. El `updateMany` con guarda por count evita que dos
+          // notificaciones simultáneas dupliquen la devolución de stock.
           await prisma.$transaction(async (tx) => {
-            // Cancelar orden
-            await tx.order.update({
-              where: { id: orderId },
-              data: { status: "CANCELLED" },
+            const cancelled = await tx.order.updateMany({
+              where: { id: orderId, status: "PENDING" },
+              data: { status: "CANCELLED", paymentId },
             });
-            // Devolver stock
-            for (const item of order.items) {
-              await tx.product.update({
-                where: { id: item.productId },
-                data: { stock: { increment: item.quantity } },
-              });
+
+            if (cancelled.count === 1) {
+              for (const item of order.items) {
+                await tx.product.update({
+                  where: { id: item.productId },
+                  data: { stock: { increment: item.quantity } },
+                });
+              }
             }
           });
           console.log(`[Webhook] Stock devuelto para la orden rechazada/cancelada: ${orderId}`);

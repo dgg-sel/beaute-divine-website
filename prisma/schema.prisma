@@ -197,3 +197,14 @@ model AppSetting {
   updatedAt DateTime @updatedAt
 }
 
+// --- HARDENING: Rate limiting (ventana fija en Postgres) ---
+// Tabla nueva y aditiva: no afecta datos existentes. La consume lib/rate-limit.ts
+// vía UPSERT atómico (SQL crudo) y un barrido pasivo de filas vencidas.
+model RateLimit {
+  key       String   @id
+  count     Int      @default(1)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+

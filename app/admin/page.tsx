@@ -48,7 +48,7 @@ export default async function AdminPage() {
    <Link href="/admin" className="font-label-sm text-sm uppercase tracking-widest text-primary font-bold">Catálogo y Clientes</Link>
    <Link href="/admin/reviews" className="font-label-sm text-sm uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Reseñas</Link>
  </div>
- <AdminPanel products={products} categories={categories} users={users} uploadFolder={uploadFolder || "beaute-divine-espace/catalogo"} shippingSettings={shippingSettings} />
+ <AdminPanel products={products} categories={categories} users={users} uploadFolder={uploadFolder || "beaute-divine-espace/catalogo"} shippingSettings={shippingSettings.correo} />
  </div>
  );
 }

@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { getClientIp, guard } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const limited = await guard([
+      { key: `register:burst:${ip}`, limit: 3, windowSec: 60 },
+      { key: `register:sustained:${ip}`, limit: 10, windowSec: 3600 },
+    ]);
+    if (limited) return limited;
+
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
